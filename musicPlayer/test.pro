@@ -21,6 +21,7 @@ QML_IMPORT_PATH =
 
 # Additional import path used to resolve QML modules just for Qt Quick Designer
 QML_DESIGNER_IMPORT_PATH =
+RC_ICONS = images/cloudMusic.ico
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
