@@ -21,5 +21,20 @@
         <file>images/bottomArea/pause.png</file>
         <file>images/bottomArea/play.png</file>
         <file>images/bottomArea/previous.png</file>
+        <file>images/leftArea/btndownload.png</file>
+        <file>images/leftArea/btnfriends.png</file>
+        <file>images/leftArea/btnlove2.png</file>
+        <file>images/leftArea/btnmusic2.png</file>
+        <file>images/leftArea/btnradio2.png</file>
+        <file>images/leftArea/btnmv.png</file>
+        <file>images/leftArea/creatSongList.png</file>
+        <file>images/leftArea/favorite.png</file>
+        <file>images/leftArea/localMusic.png</file>
+        <file>images/leftArea/showAllCreatedSongList.png</file>
+        <file>images/leftArea/sound.png</file>
+        <file>images/leftArea/sound.svg</file>
+        <file>images/leftArea/btnfavorite.png</file>
+        <file>middleArea/LeftItem.qml</file>
+        <file>middleArea/LeftArea.qml</file>
     </qresource>
 </RCC>

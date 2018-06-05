@@ -11,20 +11,22 @@ Rectangle {
     color: "#a82828"
 
     TextInput {
-        id:textEdit
+        id: textEdit
         width: parent.width
         anchors.left: parent.left
         anchors.leftMargin: 10
-        anchors.verticalCenter:parent.verticalCenter
+        anchors.verticalCenter: parent.verticalCenter
 
         text: "搜索音乐，视频，歌词，电台"
-        font.pointSize: 10
-        color:"#C77373"
+        //        font.pointSize:
+        font.pixelSize: 12
+        color: "#C77373"
         focus: false
         onFocusChanged: {
-            if(focus == true){
-            text = " "}
-            else text = "搜索音乐，视频，歌词，电台"
-    }
+            if (focus == true) {
+                text = " "
+            } else
+                text = "搜索音乐，视频，歌词，电台"
+        }
     }
 }

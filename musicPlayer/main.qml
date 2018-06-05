@@ -9,10 +9,9 @@ import "middleArea"
 import "bottomArea"
 
 Window {
-    id:mainWindow
+    id: mainWindow
     visible: true
-    title:"netMusic"
-
+    title: "netMusic"
 
     //最小窗口大小
     minimumWidth: 1025
@@ -22,18 +21,18 @@ Window {
 
     //---------------------top栏
     TopArea {
-        id:topArea
+        id: topArea
     }
     //---------------------middle栏
     MiddleArea {
-        id:middleArea
+        id: middleArea
+        LeftArea {
+            id: leftArea
+        }
     }
 
     //---------------------bottom栏
     BottomArea {
-        id:bottomArea
+        id: bottomArea
     }
-
-
 }
-
