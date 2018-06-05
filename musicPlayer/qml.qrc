@@ -36,5 +36,10 @@
         <file>images/leftArea/btnfavorite.png</file>
         <file>middleArea/LeftItem.qml</file>
         <file>middleArea/LeftArea.qml</file>
+        <file>dialog/CreateSongistDialogItem.qml</file>
+        <file>dialog/CreateSongListDialog.qml</file>
+        <file>dialog/MyButton.qml</file>
+        <file>images/leftArea/close.png</file>
+        <file>images/leftArea/list.png</file>
     </qresource>
 </RCC>

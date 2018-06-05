@@ -10,6 +10,8 @@ Item {
     property var leftElementTextColor: "#333333"
     property var leftElementTextSize: 12.5
 
+    signal createClicked
+
     Text {
         id: classify
         anchors {
@@ -53,7 +55,12 @@ Item {
                 create.opacity = 0.8
             }
             onClicked: {
-
+                createClicked()
+                //                if (!rec_parent.showAllCreateClicked) {
+                rec_parent.showAllCreateClicked = true
+                //                } else {
+                //                    rec_parent.showAllCreateClicked = false
+                //                }
             }
         }
 

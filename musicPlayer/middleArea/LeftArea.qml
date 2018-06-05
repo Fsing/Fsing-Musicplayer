@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls 1.4
+import "../dialog"
 
 Rectangle {
     id: rec_parent
@@ -47,6 +48,9 @@ Rectangle {
         LeftItem {
             width: parent.width - 10
             height: classfify.visible ? 50 : 25
+            onCreateClicked: {
+                createSongListDialog.open()
+            }
         }
     }
     ListModel {
@@ -156,6 +160,20 @@ Rectangle {
             for (j; j >= creatIndex; j--) {
                 listModel.setProperty(j, "delegate_listVisible", false)
             }
+        }
+    }
+    CreateSongListDialog {
+        id: createSongListDialog
+        onInputAccepted: {
+            listModel.append({
+                                 recColor: "#F5F5F7",
+                                 imagesource: "../images/leftArea/list.png",
+                                 tx: createSongListDialog.inputText,
+                                 opaci: 0.55,
+                                 classifyText: "",
+                                 delegate_listVisible: true
+                             })
+            //            console.log(listMode /*l*/.count + " " + maxIndex)
         }
     }
 }
