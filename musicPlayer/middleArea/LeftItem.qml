@@ -11,6 +11,7 @@ Item {
     property var leftElementTextSize: 12.5
 
     signal createClicked
+    signal itemClicked(int index)
 
     Text {
         id: classify
@@ -155,6 +156,8 @@ Item {
                     listModel.setProperty(index, "opaci", 0.55)
             }
             onClicked: {
+
+                itemClicked(index)
                 if (rec_parent.modelindex != -1) {
                     listModel.setProperty(rec_parent.modelindex, "recColor",
                                           "#F5F5F7")

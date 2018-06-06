@@ -41,5 +41,6 @@
         <file>dialog/MyButton.qml</file>
         <file>images/leftArea/close.png</file>
         <file>images/leftArea/list.png</file>
+        <file>middleArea/RightArea.qml</file>
     </qresource>
 </RCC>

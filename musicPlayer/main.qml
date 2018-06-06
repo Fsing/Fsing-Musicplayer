@@ -26,9 +26,6 @@ Window {
     //---------------------middle栏
     MiddleArea {
         id: middleArea
-        LeftArea {
-            id: leftArea
-        }
     }
 
     //---------------------bottom栏

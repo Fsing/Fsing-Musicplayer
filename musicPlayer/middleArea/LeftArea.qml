@@ -1,13 +1,13 @@
 import QtQuick 2.0
-import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls 1.4
 import "../dialog"
 
 Rectangle {
     id: rec_parent
-    width: parent.width * 0.2
-    height: 570 //topArea.height - bottomArea.height
+    //width: parent.width * 0.2
+    width: 200
+    height: parent.height //topArea.height - bottomArea.height
     color: "#F5F5F7"
 
     //    border.width: 1
@@ -20,6 +20,7 @@ Rectangle {
     property bool showAllCreateClicked: false
     property int creatIndex: 9
     property int maxIndex: listModel.count
+    signal leftAreaClicked(int n)
 
     ScrollView {
         id: leftItem
