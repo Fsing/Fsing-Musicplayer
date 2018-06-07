@@ -1,5 +1,5 @@
-import QtQuick 2.9
-import QtQuick.Controls 2.2
+import QtQuick 2.2
+import QtQuick.Controls 2.1
 
 Popup {
     id: popup
@@ -23,7 +23,7 @@ Popup {
         }
     }
     dim: false
-    enabled: true
+    //enabled: true
     //    implicitHeight: 300
     //    implicitWidth: 300
     //    enter: Transition {

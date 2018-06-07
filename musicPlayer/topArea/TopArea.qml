@@ -10,6 +10,9 @@ Rectangle {
     radius: 0
     border.width: 0
 
+    property var xPosition: 0.0
+    property var yPosition: 0.0
+
     //--------------左上角图标
     Image {
         id: titleImage
@@ -50,6 +53,8 @@ Rectangle {
             var delta = Qt.point(mouse.x - clickPos.x, mouse.y - clickPos.y)
             mainWindow.setX(mainWindow.x + delta.x)
             mainWindow.setY(mainWindow.y + delta.y)
+            xPosition = mainWindow.x + delta.x
+            yPosition = mainWindow.y + delta.y
         }
     }
     MouseArea {
@@ -65,7 +70,9 @@ Rectangle {
         onPositionChanged: {
             var delta = Qt.point(mouse.x - clickPos.x, mouse.y - clickPos.y)
             mainWindow.setX(mainWindow.x + delta.x)
+            xPosition = mainWindow.x + delta.x
             mainWindow.setY(mainWindow.y + delta.y)
+            yPosition = mainWindow.y + delta.y
         }
     }
 

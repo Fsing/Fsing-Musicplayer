@@ -1,5 +1,7 @@
-import QtQuick 2.0
-import QtQuick.Controls 2.2
+import QtQuick 2.5
+import QtQuick.Controls 2.1
+import "RightAreaComponents"
+import "RightAreaJS.js" as Js
 
 Rectangle {
     anchors.left: leftArea.right
@@ -7,24 +9,120 @@ Rectangle {
     anchors.top: parent.top
     anchors.bottom: parent.bottom
 
+
     StackView {
         id: stackView
-        Component.onCompleted: pushIntoStack()
+        anchors.fill: parent
+
+        popEnter: Transition {
+            NumberAnimation {
+
+                properties: "opacity"
+                from:0
+                to:1
+                duration: 2000
+            }
+        }
+
+        popExit: Transition {
+             NumberAnimation {
+
+                 properties: "opacity"
+                 from:1
+                 to:0
+                 duration: 2000
+             }
+        }
+        pushEnter: Transition {
+            NumberAnimation {
+
+                properties: "opacity"
+                from:0
+                to:1
+                duration: 2000
+            }
+        }
+
+        pushExit: Transition {
+             NumberAnimation {
+
+                 properties: "opacity"
+                 from:1
+                 to:0
+                 duration: 2000
+             }
+        }
+    }
+
+
+
+
+    Connections {
+        target: leftArea
+        onLeftAreaClicked:{
+            Js.popView(n)
+
+            console.log("deepth" + stackView.depth)
+
+        }
+    }
+
+
+
+    Component {
+        id: findMusicComponent
+        FindMusic {
+            id:findMusic
+        }
+
     }
     Component {
-        id: findMusic
-        Rectangle {
-            color: "blue"
+        id: fmComponent
+        FM{
+            id:fm
         }
     }
     Component {
-        id: fm
-        Rectangle {
-            color: "yellow"
+        id: mvComponent
+        Mv{
+            id:mv
         }
     }
-    function pushIntoStack() {
-        stackView.push(findMusic)
-        stackView.push(fm)
+    Component {
+        id: friendComponent
+        Friends{
+            id:friend
+        }
+
+    }
+    Component {
+        id: localMusicComponent
+        LocalMusic{
+            id:localMusic
+        }
+    }
+    Component {
+        id: downloadComponent
+        Download{
+            id:download
+        }
+    }
+    Component {
+        id: myMusicCloudDiskComponent
+        MyMusicCloudDisk{
+            id:myMusicCloudDisk
+        }
+    }
+    Component {
+        id: mySingerComponent
+        MySinger{
+            id:mySinger
+        }
+    }
+    Component {
+        id: myMvComponent
+        MyMv{
+            id:mymv
+        }
     }
 }

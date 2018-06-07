@@ -40,7 +40,19 @@ Rectangle {
             id: maxButtonMouseArea
             anchors.fill: parent
             hoverEnabled: true
-            onClicked: mainWindow.visibility = Window.FullScreen
+            onClicked: {
+                if(mainWindow.visibility === Window.FullScreen){
+                    mainWindow.width =1025
+                    mainWindow.height =670
+                    mainWindow.setX(xPosition)
+                    mainWindow.setY(yPosition)
+                }
+                else {
+                    xPosition = mainWindow.x
+                    yPosition = mainWindow.y
+                mainWindow.visibility = Window.FullScreen
+                }
+            }
         }
 
         background:

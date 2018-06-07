@@ -1,7 +1,6 @@
 import QtQuick 2.0
 
 Item {
-    id: leftDelegateItem
     //    width: parent.width - 10
     //    height: classify.visible ? 60 : 35
 
@@ -158,6 +157,7 @@ Item {
             onClicked: {
 
                 itemClicked(index)
+                //console.log(index)
                 if (rec_parent.modelindex != -1) {
                     listModel.setProperty(rec_parent.modelindex, "recColor",
                                           "#F5F5F7")

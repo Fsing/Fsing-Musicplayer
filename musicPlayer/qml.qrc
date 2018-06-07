@@ -42,5 +42,15 @@
         <file>images/leftArea/close.png</file>
         <file>images/leftArea/list.png</file>
         <file>middleArea/RightArea.qml</file>
+        <file>middleArea/RightAreaComponents/FindMusic.qml</file>
+        <file>middleArea/RightAreaComponents/FM.qml</file>
+        <file>middleArea/RightAreaComponents/Mv.qml</file>
+        <file>middleArea/RightAreaComponents/Friends.qml</file>
+        <file>middleArea/RightAreaComponents/LocalMusic.qml</file>
+        <file>middleArea/RightAreaComponents/MyMusicCloudDisk.qml</file>
+        <file>middleArea/RightAreaComponents/MySinger.qml</file>
+        <file>middleArea/RightAreaComponents/MyMv.qml</file>
+        <file>middleArea/RightAreaComponents/Download.qml</file>
+        <file>middleArea/RightAreaJS.js</file>
     </qresource>
 </RCC>

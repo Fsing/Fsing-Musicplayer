@@ -47,11 +47,11 @@ Rectangle {
     Component {
         id: delegates
         LeftItem {
+            id:leftItemDelegates
             width: parent.width - 10
             height: classfify.visible ? 50 : 25
-            onCreateClicked: {
-                createSongListDialog.open()
-            }
+            onItemClicked: leftAreaClicked(index)
+            onCreateClicked:createSongListDialog.open()
         }
     }
     ListModel {
