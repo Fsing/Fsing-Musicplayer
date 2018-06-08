@@ -8,7 +8,7 @@ Popup {
     y: 100
 
     signal inputAccepted
-    property var inputText: ""
+    property string inputText: ""
 
     width: 300
     height: 300
@@ -22,7 +22,7 @@ Popup {
             inputAccepted()
         }
     }
-    dim: false
+    dim: false //是否背景变暗
     //enabled: true
     //    implicitHeight: 300
     //    implicitWidth: 300

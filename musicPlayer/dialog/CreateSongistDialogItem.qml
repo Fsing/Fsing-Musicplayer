@@ -5,9 +5,9 @@ import "../"
 
 Rectangle {
     id: dialog
-    border.color: "#F5F5F7"
+    border.color: "white"
     //        color: "red" //"#F5F5F7"
-    border.width: 0.5
+//    border.width: 0.5
 
     anchors.fill: parent
 
@@ -28,7 +28,7 @@ Rectangle {
         Rectangle {
             anchors.fill: parent
             border.color: "Silver"
-            color: "#F5F5F7"
+            color: "white"
             border.width: 0.5
             Text {
                 id: name
@@ -43,7 +43,7 @@ Rectangle {
             }
             Rectangle {
                 id: re1
-                color: "#F5F5F7"
+                color: "white"
                 border.width: 0
                 width: 17
                 height: 17

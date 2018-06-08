@@ -7,6 +7,7 @@ import QtMultimedia 5.2
 import "topArea"
 import "middleArea"
 import "bottomArea"
+import "./dialog"
 
 Window {
     id: mainWindow
@@ -32,4 +33,5 @@ Window {
     BottomArea {
         id: bottomArea
     }
+
 }

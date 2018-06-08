@@ -52,5 +52,8 @@
         <file>middleArea/RightAreaComponents/MyMv.qml</file>
         <file>middleArea/RightAreaComponents/Download.qml</file>
         <file>middleArea/RightAreaJS.js</file>
+        <file>dialog/LoginDialog.qml</file>
+        <file>dialog/LoginDialogItem.qml</file>
+        <file>dialog/ImageButton.qml</file>
     </qresource>
 </RCC>

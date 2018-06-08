@@ -8,9 +8,10 @@ Rectangle {
     radius: 6
     opacity: 0.7
 
-    property var textColor: "#333333"
-    property var buttonColor: "white"
+    property string textColor: "#333333"
+    property string buttonColor: "white"
     property alias text: t.text
+    property alias radius: button.radius
     signal buttonClicked
 
     Text {
