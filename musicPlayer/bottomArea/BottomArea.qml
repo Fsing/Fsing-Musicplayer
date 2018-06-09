@@ -11,4 +11,10 @@ Rectangle {
     BottomLeftButton {
         id: bottomLeftButton
     }
+   BottomRightButton {
+       id:bottomRightButton
+   }
+   BottomMiddleButton{
+       id:bottomMiddleButton
+   }
 }

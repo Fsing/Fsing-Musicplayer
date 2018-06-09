@@ -55,5 +55,14 @@
         <file>dialog/LoginDialog.qml</file>
         <file>dialog/LoginDialogItem.qml</file>
         <file>dialog/ImageButton.qml</file>
+        <file>bottomArea/BottomRightButton.qml</file>
+        <file>images/bottomArea/songlist.png</file>
+        <file>images/bottomArea/liric.png</file>
+        <file>images/bottomArea/random.png</file>
+        <file>images/bottomArea/sequence.png</file>
+        <file>images/bottomArea/single.png</file>
+        <file>images/bottomArea/circle.png</file>
+        <file>images/bottomArea/voice.png</file>
+        <file>bottomArea/BottomMiddleButton.qml</file>
     </qresource>
 </RCC>

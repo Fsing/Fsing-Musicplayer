@@ -2,7 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 2.0
 
 Rectangle {
-    width: 270
+    width: 200
     height: parent.height
     anchors.left: parent.left
     color: parent.color
@@ -88,4 +88,5 @@ Rectangle {
                     }
         }
     }
+
 }
