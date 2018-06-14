@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtMultimedia 5.5
 
 Rectangle {
     width: parent.width
@@ -11,10 +12,16 @@ Rectangle {
     BottomLeftButton {
         id: bottomLeftButton
     }
-   BottomRightButton {
-       id:bottomRightButton
-   }
-   BottomMiddleButton{
-       id:bottomMiddleButton
-   }
+    BottomRightButton {
+        id: bottomRightButton
+    }
+    BottomMiddleButton {
+        id: bottomMiddleButton
+    }
+
+    MediaPlayer {
+        id: mediaPlayer
+        autoPlay: true
+        source: "rtsp://192.168.30.67/zuimei.mp3"
+    }
 }
