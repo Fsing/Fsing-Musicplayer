@@ -22,6 +22,16 @@ Rectangle {
     MediaPlayer {
         id: mediaPlayer
         autoPlay: true
-        source: "rtsp://192.168.30.67/zuimei.mp3"
+        volume: 0.5
+        //source: "rtsp://192.168.1.102:8554/music/dukou.mp3"
+    }
+
+    Connections {
+        target: mainWindow
+        onSelectSong:{
+            mediaPlayer.source = song
+            mediaPlayer.play()
+        }
+
     }
 }

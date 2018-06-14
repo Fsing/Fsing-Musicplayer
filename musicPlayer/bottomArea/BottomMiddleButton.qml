@@ -12,20 +12,18 @@ Rectangle {
         id: totalTime
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
-        text: mediaPlayer.duration
+        text: change(mediaPlayer.duration)
     }
     Text {
         id: currentTime
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
-        text: mediaPlayer.position
+        text: change(mediaPlayer.position)
     }
     Slider {
         id: positionSlider
         anchors.left: currentTime.right
         anchors.right: totalTime.left
-        anchors.leftMargin: 5
-        anchors.rightMargin: 5
         anchors.verticalCenter: parent.verticalCenter
         from: 0.0
         to: 1.0
@@ -34,7 +32,8 @@ Rectangle {
         handle: Rectangle {
             id: handleRectangle
             visible: true
-            x: positionSlider.value * positionSlider.width
+            x: positionSlider.value * (positionSlider.width - positionSlider.leftPadding
+                                       - positionSlider.rightPadding)
             y: positionSlider.topPadding + positionSlider.availableHeight / 2 - height / 2
             implicitWidth: 14
             implicitHeight: 14
@@ -51,12 +50,35 @@ Rectangle {
         }
         Rectangle {
             anchors.left: positionSlider.left
-            anchors.leftMargin: 6
+            anchors.leftMargin: positionSlider.leftPadding
             anchors.right: handleRectangle.left
+            anchors.rightMargin: positionSlider.rightPadding
+
             y: positionSlider.topPadding + positionSlider.availableHeight / 2 - height / 2
             radius: 13
             height: 4
             color: "red"
         }
+        MouseArea{
+            anchors.fill: parent;
+            acceptedButtons: Qt.LeftButton;
+            onReleased: {
+                mediaPlayer.seek(Math.round(mouse.x / parent.width * mediaPlayer.duration));
+            }
+            onWheel: wheel.accepted = true;
+
+        }
+    }
+    function change(value){
+        var s = Math.round(value / 1000);
+        var m = Math.round(s / 60);
+        s = s % 60;
+        var mm = "0" + m;
+        if(m > 9)
+            mm = "%1".arg(m);
+        var ss = "0" + s;
+        if(s > 9)
+            ss = "%1".arg(s);
+        return mm + ":" + ss;
     }
 }

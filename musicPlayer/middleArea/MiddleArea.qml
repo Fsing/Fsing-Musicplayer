@@ -14,4 +14,5 @@ Rectangle {
     RightArea {
         id: rightArea
     }
+
 }

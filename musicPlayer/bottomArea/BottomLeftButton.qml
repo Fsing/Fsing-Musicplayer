@@ -45,7 +45,13 @@ Rectangle {
             id: pauseButtonMouseArea
             anchors.fill: parent
             hoverEnabled: true
-            //************
+            onClicked: {
+                console.log(mediaPlayer.playbackState)
+                if(mediaPlayer.playbackState === 1)
+                            mediaPlayer.pause()
+                else
+                    mediaPlayer.play()
+            }
         }
         background:Rectangle{
             id:pauseButtonRectangle
@@ -58,7 +64,9 @@ Rectangle {
                         id:pauseButtonImage
                         anchors.centerIn:parent
                         opacity: pauseButtonMouseArea.containsMouse ? 0.8 : 1.0
-                        source: "qrc:/images/bottomArea/pause.png"
+                        source: mediaPlayer.playbackState === 1 ?
+                            "qrc:/images/bottomArea/pause.png"
+                                  : "qrc:/images/bottomArea/play.png"
                     }
         }
     }
@@ -88,5 +96,6 @@ Rectangle {
                     }
         }
     }
+
 
 }

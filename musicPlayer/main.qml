@@ -20,6 +20,8 @@ Window {
     //无边框flag
     flags: Qt.Window | Qt.FramelessWindowHint
 
+    signal selectSong(string song)
+
     //---------------------top栏
     TopArea {
         id: topArea

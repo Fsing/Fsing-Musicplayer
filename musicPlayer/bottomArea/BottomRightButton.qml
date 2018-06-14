@@ -112,12 +112,13 @@ Rectangle {
         width: 120;
         from:0.0
         to:1.0
-        value: 0.5
+        value: mediaPlayer.volume
 
         handle: Rectangle {
             id:handleRectangle
             visible: sliderMouseArea.containsMouse ? true : false
-            x: voiceSlider.leftPadding + voiceSlider.visualPosition * (voiceSlider.availableWidth - width)
+            x: voiceSlider.value * (voiceSlider.width - voiceSlider.leftPadding
+            - voiceSlider.rightPadding)
             y: voiceSlider.topPadding + voiceSlider.availableHeight / 2 - height / 2
             implicitWidth: 14
             implicitHeight: 14
@@ -134,21 +135,28 @@ Rectangle {
         }
         Rectangle {
             anchors.left: voiceSlider.left
-            anchors.leftMargin: 6
+            anchors.leftMargin: voiceSlider.leftPadding
             anchors.right: handleRectangle.left
+            anchors.rightMargin: voiceSlider.rightPadding
             y: voiceSlider.topPadding + voiceSlider.availableHeight / 2 - height / 2
             radius: 13
             height: 4
             color: "red"
         }
-    MouseArea {
-        id:sliderMouseArea
-        anchors.fill: parent
-        hoverEnabled: true
-        propagateComposedEvents: true
+        MouseArea{
+            id:sliderMouseArea
+            anchors.fill: parent;
+            hoverEnabled: true
+            propagateComposedEvents: true
+            onPressed: mouse.accepted = false
 
-        onPressed: mouse.accepted = false
-    }
+            acceptedButtons: Qt.LeftButton;
+            onReleased: {
+                mediaPlayer.volume = (mouse.x  / voiceSlider.width);
+            }
+            onWheel: wheel.accepted = true;
+
+        }
     }
 
     Button {
@@ -162,6 +170,9 @@ Rectangle {
             id: voiceButtonMouseArea
             anchors.fill: parent
             hoverEnabled: true
+
+            onClicked: mediaPlayer.muted ? mediaPlayer.muted = false :
+                                     mediaPlayer.muted = true
         }
 
         background: Image {
