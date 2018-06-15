@@ -23,7 +23,7 @@ Rectangle {
         id: mediaPlayer
         autoPlay: true
         volume: 0.5
-        //source: "rtsp://192.168.1.102:8554/music/dukou.mp3"
+
     }
 
     Connections {
@@ -32,6 +32,7 @@ Rectangle {
             mediaPlayer.source = song
             mediaPlayer.play()
         }
+
 
     }
 }

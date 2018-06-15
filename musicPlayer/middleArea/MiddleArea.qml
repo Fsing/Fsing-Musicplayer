@@ -13,6 +13,8 @@ Rectangle {
     }
     RightArea {
         id: rightArea
+
     }
+
 
 }

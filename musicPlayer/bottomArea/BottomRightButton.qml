@@ -113,6 +113,7 @@ Rectangle {
         from:0.0
         to:1.0
         value: mediaPlayer.volume
+        onValueChanged: mediaPlayer.volume = value
 
         handle: Rectangle {
             id:handleRectangle

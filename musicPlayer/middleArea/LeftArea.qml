@@ -22,9 +22,33 @@ Rectangle {
     property int maxIndex: listModel.count
     signal leftAreaClicked(int n)
 
+
+    //-----
+
+    Rectangle {
+        id:lyric
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: parent.bottom
+        width: 50
+        height: 50
+        color: "red"
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+
+                leftAreaClicked(9)
+            }
+        }
+    }
+
+
+
     ScrollView {
         id: leftItem
-        anchors.fill: parent
+        anchors.top:parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: lyric.top
         clip: true
         style: ScrollViewStyle {
             id: ss

@@ -8,6 +8,7 @@ import "topArea"
 import "middleArea"
 import "bottomArea"
 import "./dialog"
+import LyricObject 1.0
 
 Window {
     id: mainWindow

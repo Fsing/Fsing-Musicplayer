@@ -64,5 +64,6 @@
         <file>images/bottomArea/circle.png</file>
         <file>images/bottomArea/voice.png</file>
         <file>bottomArea/BottomMiddleButton.qml</file>
+        <file>middleArea/RightAreaComponents/Liric.qml</file>
     </qresource>
 </RCC>

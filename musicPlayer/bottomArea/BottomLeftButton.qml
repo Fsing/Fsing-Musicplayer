@@ -19,6 +19,15 @@ Rectangle {
             id: preButtonMouseArea
             anchors.fill: parent
             hoverEnabled: true
+            onClicked: {
+                var previousIndex = mediaPlayer.playlist.previousIndex()
+                if (previousIndex === -1) {
+                    mediaPlayer.playlist.currentIndex = mediaPlayer.playlist.itemCount - 1
+                } else {
+                    mediaPlayer.playlist.previous()
+                }
+                mediaPlayer.play()
+            }
         }
         background:Rectangle{
             id:preButtonRectangle
@@ -82,6 +91,15 @@ Rectangle {
             id: nextButtonMouseArea
             anchors.fill: parent
             hoverEnabled: true
+            onClicked: {
+                var nextIndex = mediaPlayer.playlist.nextIndex()
+                if (nextIndex === -1) {
+                    mediaPlayer.playlist.currentIndex = 0
+                } else {
+                    mediaPlayer.playlist.next()
+                }
+                mediaPlayer.play()
+            }
         }
         background:Rectangle{
             id:nextButtonRectangle

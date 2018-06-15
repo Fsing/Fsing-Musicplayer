@@ -68,6 +68,12 @@ Rectangle {
     }
 
 
+    Component{
+        id:lyricComponent
+        Liric{
+            id:lyric
+        }
+    }
 
     Component {
         id: findMusicComponent

@@ -109,6 +109,17 @@ function popView(n){
 
            };
             break;
+        case 9:
+            var lyric = stackView.find( function(item){
+
+                        return item.index === n ? true : false;
+                      });
+           if(lyric === null){
+               stackView.push(lyricComponent)
+           }else {
+               stackView.pop(lyric)
+           };
+            break;
         default:
 
     }

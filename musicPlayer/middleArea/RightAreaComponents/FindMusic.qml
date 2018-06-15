@@ -16,7 +16,7 @@ Rectangle {
         }
         MouseArea {
             anchors.fill: parent
-            onClicked:selectSong("rtsp://192.168.1.102:8554/music/dukou.mp3")
+            onClicked:selectSong("rtsp://192.168.1.102/music/dukou.mp3")
         }
     }
     Rectangle {
@@ -24,11 +24,11 @@ Rectangle {
         height: 30
         anchors.top: dukou.bottom
         Text {
-            text: qsTr("timian")
+            text: qsTr("zuimei")
         }
         MouseArea {
             anchors.fill: parent
-            onClicked:selectSong("rtsp://192.168.1.102:8554/music/timian.mp3")
+            onClicked:selectSong("rtsp://192.168.1.102/music/zuimei.mp3")
         }
     }
 }
