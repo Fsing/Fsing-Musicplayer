@@ -22,6 +22,7 @@ Window {
     flags: Qt.Window | Qt.FramelessWindowHint
 
     signal selectSong(string song)
+    signal positionChange(int positions)
 
     //---------------------top栏
     TopArea {

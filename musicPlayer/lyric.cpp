@@ -32,7 +32,7 @@ QList<QObject *> Lyric::getLyric(QString path)
     QList<QObject*> lyric;
 
     QFileInfo fi(path);
-    path = fi.path()+ "/" + fi.completeBaseName() + ".lrc";
+    path = "./" + fi.completeBaseName() + ".lrc";
     fi.setFile(path);
 
     if (fi.exists() && fi.isReadable()) {

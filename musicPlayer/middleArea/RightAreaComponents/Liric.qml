@@ -16,6 +16,30 @@ Rectangle {
     LyricObject {
         id: lyric
     }
+    Connections {
+        target: mainWindow
+        onPositionChange:{
+            var i = 0
+            while (i < lyricview.count) {
+                if (positions > lyricview.model[i].time) {
+                    i++
+                } else {
+                    if (i == 0) {
+                        rec0.current = i
+                    } else {
+                        rec0.current = i - 1
+                    }
+                    break
+                }
+            }
+        }
+        onSelectSong:{
+
+            lyricview.model = lyric.getLyric(song)
+            console.log(song)
+        }
+    }
+
 
 
 
@@ -23,12 +47,15 @@ Rectangle {
             property bool increasing: true
             ListView {
                 id: lyricview
-                width: rec0.width
-                height: rec0.height
+                anchors.top:parent.top
+                anchors.topMargin: 50
+                width: parent.width
+                height: parent.height * 0.7
 
                 spacing: 10 //每个Rectangle相隔10的单位
-
-                model: lyric.getLyric("../musicPlayer/zuimei.lrc")
+                displayMarginBeginning: 0
+                displayMarginEnd: 0
+                model: lyric.getLyric("./test")
                 delegate: Rectangle {
                     height: 25
                     width: parent.width
@@ -46,6 +73,7 @@ Rectangle {
                         onClicked: rec0.current = index
                     }
                 }
+
                 currentIndex: rec0.current
                 onCurrentIndexChanged: {
 
@@ -56,9 +84,6 @@ Rectangle {
                     if (rec0.current == lyricview.count)
                         lyricAnimtion.loops = 0
                 }
-                preferredHighlightBegin: 125
-                preferredHighlightEnd: 125
-                highlightRangeMode: ListView.StrictlyEnforceRange
             }
 
 

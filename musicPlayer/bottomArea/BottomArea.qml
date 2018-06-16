@@ -1,5 +1,6 @@
 import QtQuick 2.0
-import QtMultimedia 5.5
+import QtMultimedia 5.8
+
 
 Rectangle {
     width: parent.width
@@ -23,6 +24,9 @@ Rectangle {
         id: mediaPlayer
         autoPlay: true
         volume: 0.5
+        onPositionChanged: {
+            positionChange(mediaPlayer.position)
+        }
 
     }
 
