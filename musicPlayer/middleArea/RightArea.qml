@@ -131,4 +131,5 @@ Rectangle {
             id:mymv
         }
     }
+    Component.onCompleted:  stackView.push(lyricComponent)
 }

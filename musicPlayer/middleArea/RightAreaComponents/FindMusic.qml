@@ -20,6 +20,7 @@ Rectangle {
         }
     }
     Rectangle {
+        id:zuimei
         width: parent.width
         height: 30
         anchors.top: dukou.bottom
@@ -29,6 +30,18 @@ Rectangle {
         MouseArea {
             anchors.fill: parent
             onClicked:selectSong("rtsp://192.168.30.21/music/zuimei.mp3")
+        }
+    }
+    Rectangle {
+        width: parent.width
+        height: 30
+        anchors.top: zuimei.bottom
+        Text {
+            text: qsTr("yiluxiangbei")
+        }
+        MouseArea {
+            anchors.fill: parent
+            onClicked:selectSong("rtsp://192.168.30.21/music/yiluxiangbei.mp3")
         }
     }
 }
