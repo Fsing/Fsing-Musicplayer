@@ -9,7 +9,6 @@ Rectangle {
     anchors.top: parent.top
     anchors.bottom: parent.bottom
 
-
     StackView {
         id: stackView
         anchors.fill: parent
@@ -103,7 +102,9 @@ Rectangle {
     }
     Component {
         id: localMusicComponent
+
         LocalMusic{
+
             id:localMusic
         }
     }
@@ -131,5 +132,8 @@ Rectangle {
             id:mymv
         }
     }
-    Component.onCompleted:  stackView.push(lyricComponent)
+    Component.onCompleted:  {
+        stackView.push(lyricComponent)
+        stackView.push(localMusicComponent)
+    }
 }

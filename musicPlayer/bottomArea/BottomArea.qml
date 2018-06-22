@@ -1,7 +1,6 @@
 import QtQuick 2.0
 import QtMultimedia 5.8
 
-
 Rectangle {
     width: parent.width
     y: parent.height - 50
@@ -18,25 +17,5 @@ Rectangle {
     }
     BottomMiddleButton {
         id: bottomMiddleButton
-    }
-
-    MediaPlayer {
-        id: mediaPlayer
-        autoPlay: true
-        volume: 0.5
-        onPositionChanged: {
-            positionChange(mediaPlayer.position)
-        }
-
-    }
-
-    Connections {
-        target: mainWindow
-        onSelectSong:{
-            mediaPlayer.source = song
-            mediaPlayer.play()
-        }
-
-
     }
 }

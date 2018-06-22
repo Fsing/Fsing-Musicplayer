@@ -20,6 +20,12 @@ Rectangle {
             id: songlistButtonMouseArea
             anchors.fill: parent
             hoverEnabled: true
+            onClicked: {
+                if(currentListRectangle.visible)
+                    currentListRectangle.visible = false
+                else
+                    currentListRectangle.visible = true
+            }
         }
 
         background: Image {

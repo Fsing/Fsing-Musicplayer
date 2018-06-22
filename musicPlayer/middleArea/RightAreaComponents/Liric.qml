@@ -33,7 +33,7 @@ Rectangle {
                 }
             }
         }
-        onSelectSong:{
+        onSongChanged:{
 
             lyricview.model = lyric.getLyric(song)
             console.log(song)

@@ -27,6 +27,7 @@ Rectangle {
                     mediaPlayer.playlist.previous()
                 }
                 mediaPlayer.play()
+                songChanged(currentPlaylist.currentItemSource)
             }
         }
         background:Rectangle{
@@ -99,6 +100,7 @@ Rectangle {
                     mediaPlayer.playlist.next()
                 }
                 mediaPlayer.play()
+                songChanged(currentPlaylist.currentItemSource)
             }
         }
         background:Rectangle{
