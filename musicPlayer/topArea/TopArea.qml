@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.0
 import QtQuick.Window 2.0
+import "../dialog"
 
 Rectangle {
     id: rectangle
@@ -35,6 +36,10 @@ Rectangle {
     //-----------------右上角功能组件
     TopRightButton {
         id: topRightButton
+        onLoginButtonClicked: loginDialog.open()
+    }
+    LoginDialog{
+        id:loginDialog
     }
 
     //-----------------------------
@@ -58,6 +63,7 @@ Rectangle {
         }
     }
     MouseArea {
+        //搜索栏和设置按钮中间区域的拖动栏
         anchors.left: topSearch.right
         anchors.right: topRightButton.left
         height: parent.height

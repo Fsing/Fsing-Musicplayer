@@ -1,7 +1,7 @@
 //import QtQuick 2.0
 import QtQuick 2.7
 import QtQuick.Controls 2.1
-import "../"
+import "common"
 
 Rectangle {
     id: dialog
@@ -58,11 +58,6 @@ Rectangle {
                     height: 17
                     source: "../images/leftArea/close.png"
                     anchors.fill: parent
-                    //                    anchors {
-                    //                        right: parent.right
-                    //                        rightMargin: 10
-                    //                        verticalCenter: parent.verticalCenter
-                    //                    }
                 }
                 MouseArea {
                     anchors.fill: re1
@@ -70,6 +65,7 @@ Rectangle {
                     acceptedButtons: Qt.LeftButton
                     onClicked: {
                         quitClicked()
+                        titlerec.text = ""
                     }
                 }
             }
@@ -104,8 +100,8 @@ Rectangle {
 
                 //                }
                 var delta = Qt.point(mouse.x - clickpos.x, mouse.y - clickpos.y)
-                popup.x = (popup.x + delta.x)
-                popup.y = (popup.y + delta.y)
+                createSongListDialog.x = (createSongListDialog.x + delta.x)
+                createSongListDialog.y = (createSongListDialog.y + delta.y)
             }
         }
     }
@@ -130,44 +126,24 @@ Rectangle {
                 anchors.left: parent.left
                 anchors.leftMargin: 30
             }
-
-            Rectangle {
-                id: titlerec
-                width: parent.width * 0.5
+            MyTextInput{
+                id:titlerec
+                width: 150
                 height: titlename.height * 1.5
-                anchors.left: titlename.right
-                anchors.leftMargin: 10
-                anchors.verticalCenter: parent.verticalCenter
-                border.color: "silver"
-                border.width: 0.5
-                radius: 2
-
-                TextInput {
-                    id: input
-                    focus: true
-                    anchors.fill: parent
-                    anchors.left: titlerec.left
-                    anchors.leftMargin: 10
-                    anchors.top: titlerec.top
-                    anchors.topMargin: 5
-                    color: "#666666"
-
-                    //                    onAccepted: {
-                    //                        inputValid = true
-                    //                        console.log(input.text)
-                    //                    }
-                    maximumLength: 10
-                    selectByMouse: true
-                    mouseSelectionMode: TextInput.SelectWords
-
-                    //                    onTextChanged: {
-                    //                        if (input.text != "") {
-                    //                            inputValid = true
-                    //                            console.log(input.text)
-                    //                        }
-                    //                    }
-
-                    //                    onEditingFinished: edittingFinished()
+                maxTextLength:15
+                anchors{
+                    left: titlename.right
+                    leftMargin: 10
+                    verticalCenter: parent.verticalCenter
+                }
+                remindText: titlerec.text == "" ? "输入歌单名" :""
+                text:remindText == "" ? titlerec.text :""
+                onTextAccepted: {
+                    if (titlerec.text != "" && titlerec.text != " ") {
+                        createSongListDialog.inputText = titlerec.text
+                        okButtonClicked()
+                        titlerec.text = ""
+                    }
                 }
             }
         }
@@ -196,13 +172,13 @@ Rectangle {
                     width: 80
                     height: 30
                     text: "确定"
-                    buttonColor: "#3333CC"
+                    color: "#3333CC"
                     textColor: "white"
                     onButtonClicked: {
-                        if (input.text != "" && input.text != " ") {
-                            popup.inputText = input.text
+                        if (titlerec.text != "" && titlerec.text != " ") {
+                            createSongListDialog.inputText = titlerec.text
                             okButtonClicked()
-                            input.text = ""
+                            titlerec.text = ""
                         }
                     }
                 }
@@ -213,6 +189,7 @@ Rectangle {
                     text: "取消"
                     onButtonClicked: {
                         quitClicked()
+                        titlerec.text = ""
                     }
                 }
             }

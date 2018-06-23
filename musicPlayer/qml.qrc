@@ -38,7 +38,6 @@
         <file>middleArea/LeftArea.qml</file>
         <file>dialog/CreateSongistDialogItem.qml</file>
         <file>dialog/CreateSongListDialog.qml</file>
-        <file>dialog/MyButton.qml</file>
         <file>images/leftArea/close.png</file>
         <file>images/leftArea/list.png</file>
         <file>middleArea/RightArea.qml</file>
@@ -52,9 +51,7 @@
         <file>middleArea/RightAreaComponents/MyMv.qml</file>
         <file>middleArea/RightAreaComponents/Download.qml</file>
         <file>middleArea/RightAreaJS.js</file>
-        <file>dialog/LoginDialog.qml</file>
         <file>dialog/LoginDialogItem.qml</file>
-        <file>dialog/ImageButton.qml</file>
         <file>bottomArea/BottomRightButton.qml</file>
         <file>images/bottomArea/songlist.png</file>
         <file>images/bottomArea/liric.png</file>
@@ -65,5 +62,10 @@
         <file>images/bottomArea/voice.png</file>
         <file>bottomArea/BottomMiddleButton.qml</file>
         <file>middleArea/RightAreaComponents/Liric.qml</file>
+        <file>dialog/common/ImageButton.qml</file>
+        <file>dialog/common/MyButton.qml</file>
+        <file>dialog/LoginDialog.qml</file>
+        <file>dialog/common/MyTextInput.qml</file>
+        <file>dialog/common/CommonDialog.qml</file>
     </qresource>
 </RCC>

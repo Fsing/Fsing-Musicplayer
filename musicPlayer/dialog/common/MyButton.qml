@@ -16,7 +16,6 @@ Rectangle {
 
     Text {
         id: t
-        //        text: "确定"
         color: textColor
         anchors.centerIn: parent
     }

@@ -3,11 +3,14 @@ import QtQuick.Controls 2.0
 import QtQuick.Window 2.0
 
 Rectangle {
-    width: 100
+    width: 250
     height: parent.height
     anchors.right: parent.right
     anchors.rightMargin: 5
     color: parent.color
+
+    signal loginButtonClicked
+
     Button {
         id: closebutton
         anchors.right: parent.right
@@ -154,6 +157,27 @@ Rectangle {
             id:skinbuttonImage
             anchors.fill: parent
             opacity: skinbuttonMouseArea.containsMouse ? 1.0 : 0.5
+            source: "qrc:/images/topArea/skin.png"
+        }
+    }
+    Button {
+        id: loginbutton
+        anchors.right: skinbutton.left
+        anchors.rightMargin: 20
+        anchors.verticalCenter: parent.verticalCenter
+        width: 16
+        height: 16
+        MouseArea{
+            id: loginbuttonMouseArea
+            anchors.fill: parent
+            hoverEnabled: true
+            onClicked: loginButtonClicked()
+        }
+
+        background: Image {
+            id:loginbuttonImage
+            anchors.fill: parent
+            opacity: loginbuttonMouseArea.containsMouse ? 1.0 : 0.5
             source: "qrc:/images/topArea/skin.png"
         }
     }

@@ -19,7 +19,7 @@ Rectangle {
             anchors.fill: parent
             onClicked:{
                 if(!dukou.add){
-                currentPlaylist.addItem("rtsp://192.168.30.21/music/dukou.mp3")
+                currentPlaylist.addItem("rtsp://192.168.31.109/music/dukou.mp3")
                 mediaPlayer.play()
                 songChanged(currentPlaylist.currentItemSource)
                     dukou.add = true
@@ -41,7 +41,7 @@ Rectangle {
             anchors.fill: parent
             onClicked:{
                 if(!zuimei.add){
-                currentPlaylist.addItem("rtsp://192.168.30.21/music/zuimei.mp3")
+                currentPlaylist.addItem("rtsp://192.168.31.109/music/zuimei.mp3")
                 mediaPlayer.play()
                 songChanged(currentPlaylist.currentItemSource)
                     zuimei.add =true
@@ -62,7 +62,7 @@ Rectangle {
             anchors.fill: parent
             onClicked:{
                 if(!yiluxiangbei.add){
-                currentPlaylist.addItem("rtsp://192.168.30.21/music/yiluxiangbei.mp3")
+                currentPlaylist.addItem("rtsp://192.168.31.109/music/yiluxiangbei.mp3")
                 mediaPlayer.play()
                 songChanged(currentPlaylist.currentItemSource)
                     yiluxiangbei.add = true

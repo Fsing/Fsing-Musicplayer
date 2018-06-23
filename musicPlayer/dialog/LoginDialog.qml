@@ -1,20 +1,30 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.1
+import "./common"
 
-Popup {
-    id: loginDialog
-    x: parent.width / 2 - 150
-    y: 100
-
-    signal inputAccepted
-    property string inputText: ""
-
+CommonDialog{
+    id:loginDialog
     width: 300
     height: 400
-    modal: true
-    focus: true
-    closePolicy: Popup.CloseOnEscape
-    contentItem: LoginDialogItem {
+    contentItem:LoginDialogItem {
+        onUserLoginClicked:{
+            middleItemVisibe = false
+            middleLoginItemVisible = true
+        }
+        onUserRegisterClicked:{
+            middleItemVisibe = false
+            middleRegisterItemVisible = true
+        }
+        onReturnClicked:{
+            middleLoginItemVisible = false
+            middleRegisterItemVisible = false
+            middleItemVisibe = true
+        }
+        onLoginClicked: {
+
+        }
+        onRegisterClicked: {
+//            mainWindow
+        }
     }
-    dim: false
 }
