@@ -10,11 +10,8 @@ class Client:public QObject
     Q_PROPERTY(QString userName READ userName WRITE setUserName NOTIFY userNameChanged)
     Q_PROPERTY(int userID READ userID WRITE setUserID NOTIFY userIDChanged)
     Q_PROPERTY(bool logining READ logining WRITE setLogining NOTIFY loginingChanged)
+    Q_PROPERTY(QString result READ result WRITE setResult NOTIFY resultChanged)
 
-//    typedef boost::asio::ip::tcp::endpoint endpoint_type;
-//    typedef boost::asio::ip::address address_type;
-//    typedef boost::asio::ip::tcp::socket socket_type;
-//    typedef boost::system::error_code error_code;
 
 public:
     //构造函数
@@ -37,16 +34,19 @@ public:
     Q_INVOKABLE void setUserName(QString name){m_userName = name;}
     Q_INVOKABLE void setUserID(int id){m_userID = id;}
     Q_INVOKABLE void setLogining(bool b){m_logining = b;}
+    Q_INVOKABLE void setResult(QString str){m_result = str;}
 
     //getting
     Q_INVOKABLE QString userName(){return m_userName;}
     Q_INVOKABLE int userID(){return m_userID;}
     Q_INVOKABLE bool logining(){return m_logining;}
+    Q_INVOKABLE QString result(){return m_result;}
 
 signals:
     void userNameChanged();
     void userIDChanged();
     void loginingChanged();
+    void resultChanged();
 
 private:
     //用户信息
@@ -54,8 +54,9 @@ private:
     int m_userID;
     bool m_logining;
 
+    QString m_result;
     //异步连接run
-    void run_service();
+//    void run_service();
 };
 
 

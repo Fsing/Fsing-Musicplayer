@@ -13,6 +13,12 @@ Rectangle {
     property alias middleItemVisibe:middleItem.visible
     property alias middleLoginItemVisible: middleLoginItem.visible
     property alias middleRegisterItemVisible: middleRegisterItem.visible
+    property alias loginUserNameText: loginUserName.text
+    property alias loginUserPasswordText: loginUserPassword.text
+    property alias registerUserNameText: registerUserName.text
+    property alias registerUserPasswordText: registerUserPassword.text
+    property string remindMessageVisible
+    property alias remindMessageText: remindMessage.text
 
     Item {
         id: header
@@ -44,6 +50,7 @@ Rectangle {
                     middleLoginItemVisible = false
                     middleRegisterItemVisible = false
                     middleItemVisibe = true
+                    remindMessageVisible = ""
                 }
             }
         }
@@ -68,6 +75,19 @@ Rectangle {
                     returnClicked()
                 }
             }
+        }
+        Text {
+            id: remindMessage
+            text:"注册成功，请返回登录"
+            font.pixelSize: 10
+            color: "red"
+            anchors{
+                bottom: parent.bottom
+                bottomMargin: 20
+                left: parent.left
+                leftMargin: (parent.width - remindMessage.width)/2.0
+            }
+            visible: middleRegisterItemVisible && remindMessageVisible != "" ?true :false
         }
 
         //对话框的拖动
@@ -158,7 +178,7 @@ Rectangle {
             id:loginUserPassword
             width: parent.width * 0.7
             height: 40
-             maxTextLength: 11
+            maxTextLength: 11
             anchors{
                 top:loginUserName.bottom
                 left: parent.left
@@ -167,6 +187,8 @@ Rectangle {
             remindText: loginUserPassword.text == "" ? "输入密码":""
             text:middleLoginItem.visible ? loginUserPassword.text : ""
             onTextAccepted: {
+                if(isInputAccept(loginUserName.text,loginUserPassword.text))
+                    loginClicked()
             }
         }
         MyButton{
@@ -181,6 +203,10 @@ Rectangle {
                 leftMargin: 35
             }
             text: "登录"
+            onButtonClicked:{
+                if(isInputAccept(loginUserName.text,loginUserPassword.text))
+                    loginClicked()
+            }
         }
     }
     Item{
@@ -196,7 +222,7 @@ Rectangle {
             id:registerUserName
             width: parent.width * 0.7
             height: 40
-             maxTextLength: 11
+            maxTextLength: 11
             anchors{
                 top:parent.top
                 left: parent.left
@@ -209,7 +235,7 @@ Rectangle {
             id:registerUserPassword
             width: parent.width * 0.7
             height: 40
-             maxTextLength: 11
+            maxTextLength: 11
             anchors{
                 top:registerUserName.bottom
                 left: parent.left
@@ -218,7 +244,9 @@ Rectangle {
             remindText: registerUserPassword.text == "" ? "输入密码，至少6位":""
             text:middleRegisterItem.visible ? registerUserPassword.text : ""
             onTextAccepted: {
-
+                console.log()
+                if(isInputAccept(registerUserName.text,registerUserPassword.text))
+                    registerClicked()
             }
         }
         MyButton{
@@ -233,6 +261,28 @@ Rectangle {
                 leftMargin: 35
             }
             text: "注册"
+            onButtonClicked: {
+                if(isInputAccept(registerUserName.text,registerUserPassword.text))
+                    registerClicked()
+            }
+        }
+    }
+    function isInputAccept(username,userpassword)
+    {
+        if(username != "" && userpassword != "")
+            return true;
+        else
+            return false;
+    }
+
+    function setRemindMessage(result)
+    {
+        if(middleRegisterItemVisible){
+            remindMessageVisible = result
+            if(result == "s")
+                remindMessageText = "注册成功，请返回登录"
+            else
+                remindMessageText = "注册失败，用户名或者密码错误"
         }
     }
 

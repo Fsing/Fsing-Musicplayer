@@ -36,7 +36,7 @@ Rectangle {
     //-----------------右上角功能组件
     TopRightButton {
         id: topRightButton
-        onLoginButtonClicked: loginDialog.open()
+        onLoginButtonClicked:loginDialog.open()
     }
     LoginDialog{
         id:loginDialog

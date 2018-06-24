@@ -6,6 +6,7 @@ CommonDialog{
     id:loginDialog
     width: 300
     height: 400
+
     contentItem:LoginDialogItem {
         onUserLoginClicked:{
             middleItemVisibe = false
@@ -14,6 +15,7 @@ CommonDialog{
         onUserRegisterClicked:{
             middleItemVisibe = false
             middleRegisterItemVisible = true
+            remindMessageVisible = ""
         }
         onReturnClicked:{
             middleLoginItemVisible = false
@@ -21,10 +23,13 @@ CommonDialog{
             middleItemVisibe = true
         }
         onLoginClicked: {
-
+            mainWindow.client.myLogin(loginUserNameText,loginUserPasswordText)
+            console.log(client.result)
         }
         onRegisterClicked: {
-//            mainWindow
+            mainWindow.client.myRegister(registerUserNameText,registerUserPasswordText)
+            setRemindMessage(client.result)
+            console.log(client.result)
         }
     }
 }

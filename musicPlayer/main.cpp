@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QFile>
 #include "lyric.h"
+#include "client.h"
 
 int main(int argc, char *argv[])
 {
@@ -9,6 +10,7 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
     qmlRegisterType<Lyric>("LyricObject", 1, 0, "LyricObject");
+    qmlRegisterType<Client>("Client",1,0,"Client");
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 

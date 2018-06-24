@@ -7,6 +7,7 @@
 #include <iostream>
 #include <algorithm>
 #include <boost/thread.hpp>
+#include "macro.h"
 
 using boost::asio::io_service;
 using namespace boost::asio;
@@ -27,15 +28,9 @@ Client::Client()
 {
     myConnect();
 }
-void Client::run_service()
-{
-    service.run();
-}
-
 void Client::myConnect()
 {
     //    ip::tcp::socket sock(service);
-
     boost::system::error_code e;
     sock.async_connect(ep,[](const error_code &e){
         if(e){
@@ -81,28 +76,60 @@ void Client::readUserConfig()
 
 void Client::myLogin(QString username, QString userpw)
 {
-
-
-}
-
-void Client::myRegister(QString username, QString userpw)
-{
-    //    auto sock = myConnect();
-    char data[512];
-    auto str = username.toStdString() +"," + userpw.toStdString();
+    string log = LOGIN;
+    auto str = log + "," + username.toStdString() +"," + userpw.toStdString();
     auto s = str.data();
-    sock.write_some(buffer(s,strlen(s)));
-
     boost::system::error_code ec;
+    sock.write_some(buffer(s,strlen(s)),ec);
+    if(ec)
+    {
+        std::cout << boost::system::system_error(ec).what() << std::endl;
+    }
+
+    //接受服务器返回的用户信息：基本信息、用户粉丝、关注、收藏歌单、创建歌单
+    char data[512];
     sock.read_some(buffer(data),ec);
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
     }
-    cout << data[0] << endl;
+    string ret;
+    ret.push_back(data[0]);
+    m_result = QString::fromStdString(ret);
+    emit resultChanged();
+}
+
+void Client::myRegister(QString username, QString userpw)
+{
+    string log = REGISTER;
+    auto str = log + "," +  username.toStdString() +"," + userpw.toStdString();
+    auto s = str.data();
+    boost::system::error_code ec;
+    sock.write_some(buffer(s,strlen(s)),ec);
+    if(ec)
+    {
+        std::cout << boost::system::system_error(ec).what() << std::endl;
+    }
+
+    //读取服务器返回的消息：是否注册成功
+    char data[512];
+    sock.read_some(buffer(data),ec);
+    if(ec)
+    {
+        std::cout << boost::system::system_error(ec).what() << std::endl;
+    }
+    string ret;
+    ret.push_back(data[0]);
+    m_result = QString::fromStdString(ret);
+    emit resultChanged();
 }
 
 void Client::addCreateSongList(QString songlistName)
 {
 
 }
+//void Client::run_service()
+//{
+//    service.run();
+//}
+

@@ -32,5 +32,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     lyric.h \
-    client.h
+    client.h \
+    macro.h
 LIBS += -lpthread -lboost_system -lboost_thread

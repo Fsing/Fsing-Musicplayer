@@ -9,6 +9,7 @@ import "middleArea"
 import "bottomArea"
 import "./dialog"
 import LyricObject 1.0
+import Client 1.0
 
 Window {
     id: mainWindow
@@ -20,6 +21,8 @@ Window {
     minimumHeight: 670
     //无边框flag
     flags: Qt.Window | Qt.FramelessWindowHint
+
+    property alias client: client
 
     signal positionChange(int positions)
     signal songChanged(string song)
@@ -38,8 +41,9 @@ Window {
         id: bottomArea
     }
 
-
-
+    Client{
+        id:client
+    }
 
     MediaPlayer {
         id: mediaPlayer
@@ -49,12 +53,9 @@ Window {
         onPositionChanged: {
             positionChange(mediaPlayer.position)
         }
-
     }
     Playlist {
         id:currentPlaylist
-
-
     }
 
     Rectangle {
