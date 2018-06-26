@@ -1,5 +1,6 @@
 import QtQuick 2.5
 import QtQuick.Controls 2.1
+import "../songList"
 import "RightAreaComponents"
 import "RightAreaJS.js" as Js
 
@@ -17,122 +18,122 @@ Rectangle {
             NumberAnimation {
 
                 properties: "opacity"
-                from:0
-                to:1
+                from: 0
+                to: 1
                 duration: 2000
             }
         }
 
         popExit: Transition {
-             NumberAnimation {
+            NumberAnimation {
 
-                 properties: "opacity"
-                 from:1
-                 to:0
-                 duration: 2000
-             }
+                properties: "opacity"
+                from: 1
+                to: 0
+                duration: 2000
+            }
         }
         pushEnter: Transition {
             NumberAnimation {
 
                 properties: "opacity"
-                from:0
-                to:1
+                from: 0
+                to: 1
                 duration: 2000
             }
         }
 
         pushExit: Transition {
-             NumberAnimation {
+            NumberAnimation {
 
-                 properties: "opacity"
-                 from:1
-                 to:0
-                 duration: 2000
-             }
+                properties: "opacity"
+                from: 1
+                to: 0
+                duration: 2000
+            }
         }
     }
-
-
-
 
     Connections {
         target: leftArea
-        onLeftAreaClicked:{
+        onLeftAreaClicked: {
             Js.popView(n)
 
             console.log("deepth" + stackView.depth)
-
         }
     }
 
-
-    Component{
-        id:lyricComponent
-        Liric{
-            id:lyric
+    Component {
+        id: lyricComponent
+        Liric {
+            id: lyric
         }
     }
 
     Component {
         id: findMusicComponent
         FindMusic {
-            id:findMusic
+            id: findMusic
         }
-
     }
     Component {
         id: fmComponent
-        FM{
-            id:fm
+        FM {
+            id: fm
         }
     }
     Component {
         id: mvComponent
-        Mv{
-            id:mv
+        Mv {
+            id: mv
         }
     }
     Component {
         id: friendComponent
-        Friends{
-            id:friend
+        Friends {
+            id: friend
         }
-
     }
     Component {
         id: localMusicComponent
 
-        LocalMusic{
+        LocalMusic {
 
-            id:localMusic
+            id: localMusic
         }
     }
     Component {
         id: downloadComponent
-        Download{
-            id:download
+        Download {
+            id: download
         }
     }
     Component {
         id: myMusicCloudDiskComponent
-        MyMusicCloudDisk{
-            id:myMusicCloudDisk
+        MyMusicCloudDisk {
+            id: myMusicCloudDisk
         }
     }
     Component {
         id: mySingerComponent
-        MySinger{
-            id:mySinger
+        MySinger {
+            id: mySinger
         }
     }
     Component {
         id: myMvComponent
-        MyMv{
-            id:mymv
+        MyMv {
+            id: mymv
         }
     }
-    Component.onCompleted:  {
+
+    Component {
+        id: mySonglistComponent
+        SongList {
+            id: songlist
+        }
+    }
+    Component.onCompleted: {
         stackView.push(lyricComponent)
         stackView.push(localMusicComponent)
     }

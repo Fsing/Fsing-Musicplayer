@@ -68,5 +68,12 @@
         <file>dialog/common/MyTextInput.qml</file>
         <file>dialog/common/CommonDialog.qml</file>
         <file>topArea/CurrentPlayList.qml</file>
+        <file>songList/TwoButton.qml</file>
+        <file>songList/SongList.qml</file>
+        <file>songList/RecIcon.qml</file>
+        <file>songList/PlayAllBtn.qml</file>
+        <file>songList/ListSongs.qml</file>
+        <file>songList/CircleIcon.qml</file>
+        <file>images/logo.jpg</file>
     </qresource>
 </RCC>

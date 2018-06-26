@@ -36,7 +36,7 @@ Rectangle {
             anchors.fill: parent
             onClicked: {
 
-                leftAreaClicked(9)
+                leftAreaClicked(10)
             }
         }
     }
