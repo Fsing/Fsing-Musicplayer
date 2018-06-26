@@ -16,5 +16,6 @@
 #define ADD_BEATTENTION         "7"  //添加粉丝
 #define DELETE_BEATTENTION      "8"  //减少粉丝
 #define ADD_SONG                "7"  //添加歌曲（只有原创歌单才能添加歌曲）
+#define SONGINFORMATION         "9"
 
 #endif // MACRO_H

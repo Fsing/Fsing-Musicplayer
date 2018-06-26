@@ -66,6 +66,41 @@ std::string DatabaseController::myLogin(std::string username, std::string passwo
     auto res =findUser(username,password);
     return res;
 }
+std::string DatabaseController::songInformation(std::string songSource)
+{
+    MYSQL mysql;
+    mysql_init(&mysql);
+    if(!mysql_real_connect(&mysql,"localhost","mxy","mxy","mxy",3306,NULL,0)){
+        cout << "findUser conect MYSQL failed!" << endl;
+        return FAILD;
+    }
+
+    char sql[100];
+    auto source = songSource.data();
+//    auto pw = password.data();
+    std::sprintf(sql,"select * from songinfo WHERE source= '%s'",source);
+    size_t length =strlen(sql);
+    int res = mysql_real_query(&mysql,sql,length);
+    if(res != 0){
+        cout <<"fondUser select * from Account failed" << endl;
+    }else{
+        MYSQL_RES *result;
+        MYSQL_ROW row;
+        //    MYSQL_FIELD *fields;
+
+        result = mysql_store_result(&mysql);
+        if(result){
+            while(row = mysql_fetch_row(result)){
+                //                m_userNameFlag = true;
+                if(string(row[1]) == source){
+                    std::string songName = row[0];
+                    return songName;
+            }
+        }
+    }
+    }
+    return "null infomation";
+}
 
 std::string DatabaseController::myRegister(std::string username, std::string password)
 {

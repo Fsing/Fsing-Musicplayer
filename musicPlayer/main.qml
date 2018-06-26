@@ -58,21 +58,7 @@ Window {
         id:currentPlaylist
     }
 
-    Rectangle {
-        id:currentListRectangle
-        color: "red"
-        anchors.right: parent.right
-        anchors.bottom: bottomArea.top
-        visible: true
-        width: 300
-        height: 500
-        ListView {
-            anchors.fill: parent
-            model: currentPlaylist
-            delegate:Text {
-                font.pixelSize: 16
-                text: source
-            }
-        }
+    CurrentPlayList{
+         id:currentListRectangle
     }
 }

@@ -1,4 +1,4 @@
-import QtQuick 2.11
+import QtQuick 2.5
 
 Rectangle {
     border.color: "silver"

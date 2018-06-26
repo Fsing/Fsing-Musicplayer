@@ -24,8 +24,9 @@ Rectangle {
 
 
     //-----
+
     Rectangle {
-        id: lyric
+        id:lyric
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         width: 50
@@ -35,14 +36,16 @@ Rectangle {
             anchors.fill: parent
             onClicked: {
 
-                leftAreaClicked(10)
+                leftAreaClicked(9)
             }
         }
     }
 
+
+
     ScrollView {
         id: leftItem
-        anchors.top: parent.top
+        anchors.top:parent.top
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: lyric.top
@@ -68,11 +71,11 @@ Rectangle {
     Component {
         id: delegates
         LeftItem {
-            id: leftItemDelegates
+            id:leftItemDelegates
             width: parent.width - 10
             height: classfify.visible ? 50 : 25
             onItemClicked: leftAreaClicked(index)
-            onCreateClicked: createSongListDialog.open()
+            onCreateClicked:createSongListDialog.open()
         }
     }
     ListModel {

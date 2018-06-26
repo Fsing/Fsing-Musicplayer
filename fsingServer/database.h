@@ -16,6 +16,7 @@ public:
     std::string myLogin(std::string username,std::string password);
     //注册用户
     std::string myRegister(std::string username,std::string password);
+    std::string songInformation(std::string songSource);
     //获得最大用户表最大id
     int getMaxid();
     //查看是否有Account表,没有则创建

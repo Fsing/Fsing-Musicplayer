@@ -69,6 +69,11 @@ string Server::dealMessage(string sig,vector<string> str)
 
     }else if(sig == DELETE_BEATTENTION){//减少粉丝
 
+    }else if(sig == SONGINFORMATION){
+        cout << str[1] <<endl;
+        res = database.songInformation(str[1]);
+        cout <<res <<endl;
+        str.clear();
     }
     return res;
 }
@@ -108,6 +113,8 @@ void receiveMessage(socket_ptr sock)
             std::cout << boost::system::system_error(ec).what() << std::endl;
             break;
         }
+        memset(data1,0,sizeof(char)*512);
+        memset(data2,0,sizeof(char)*512);
     }
     std::cout<<ep1.address().to_string()<<"关闭"<<std::endl;
 }

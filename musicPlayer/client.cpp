@@ -124,6 +124,38 @@ void Client::myRegister(QString username, QString userpw)
     emit resultChanged();
 }
 
+QString Client::songInformation(QString songSource){
+    string log = SONGINFORMATION;
+    auto str = log + "," +  songSource.toStdString();
+    auto s = str.data();
+    boost::system::error_code ec;
+    sock.write_some(buffer(s,strlen(s)),ec);
+            std::cout<<"send message to server: " <<str<<endl;
+    if(ec)
+    {
+
+        std::cout << boost::system::system_error(ec).what() << std::endl;
+    }
+
+
+    //读取服务器返回的消息：是否注册成功
+    char data[512];
+    sock.read_some(buffer(data),ec);
+    if(ec)
+    {
+        std::cout << boost::system::system_error(ec).what() << std::endl;
+
+    }
+    string ret = data;
+    //auto length = s;
+            //ret.push_back();
+    m_result = QString::fromStdString(ret);
+    std::cout <<"receive frome server : "<< m_result.toStdString() <<std::endl;
+    memset(data,0,sizeof(char)*512);
+    emit resultChanged();
+    return m_result;
+}
+
 void Client::addCreateSongList(QString songlistName)
 {
 

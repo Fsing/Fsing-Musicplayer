@@ -28,6 +28,7 @@ public:
     //创建歌单
     Q_INVOKABLE void addCreateSongList(QString songlistName);
     //下载音乐
+    Q_INVOKABLE QString songInformation(QString songSource);
 //    void downloadMusic();
 
     //setting
