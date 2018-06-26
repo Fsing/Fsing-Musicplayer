@@ -22,8 +22,10 @@ Rectangle {
             }
             MouseArea {
                 anchors.fill: parent
-                onClicked:
+                onClicked:{
                     currentPlaylist.currentIndex = index
+                songChanged(currentPlaylist.currentItemSource)
+                }
             }
         }
     }

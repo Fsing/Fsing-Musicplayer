@@ -138,7 +138,6 @@ QString Client::songInformation(QString songSource){
     }
 
 
-    //读取服务器返回的消息：是否注册成功
     char data[512];
     sock.read_some(buffer(data),ec);
     if(ec)
