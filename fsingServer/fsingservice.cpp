@@ -53,10 +53,13 @@ string Server::dealMessage(string sig,vector<string> str)
 {
     string res;
     if(sig == "SONGINFO"){
-        cout << str[1] <<endl;
         res = database.songInformation(str[1]);
-        cout <<res <<endl;
-        str.clear();
+        return res;
+    }else if(sig == "REGISTER"){
+        res = database.myRegister(str[1],str[2]);
+        return res;
+    }else if(sig == "LOGIN"){
+        res = database.myLogin(str[1],str[2]);
         return res;
     }
     return "nomatch sig";
@@ -70,7 +73,7 @@ void receiveMessage(socket_ptr sock)
     auto ep1 = sock->remote_endpoint(ec); //获得客户端的连接端口
     if(ec)
     {
-        std::cout << "fslfkjsfl" << boost::system::system_error(ec).what() << std::endl;
+        std::cout << boost::system::system_error(ec).what() << std::endl;
     }
     std::cout<<ep1.address().to_string()<<"连接"<<std::endl;
 
@@ -87,9 +90,10 @@ void receiveMessage(socket_ptr sock)
             std::cout << boost::system::system_error(ec).what() << std::endl;
             break;
         }
+        cout << "receive from client : " << data1<<endl;
+
         auto result1 = jsonParase(data1);
         auto result2 = service.dealMessage(result1[0],result1);
-
         //写回客户端
         char data2[512];
         memset(data2,0,sizeof(char)*512);
@@ -100,6 +104,7 @@ void receiveMessage(socket_ptr sock)
             std::cout << boost::system::system_error(ec).what() << std::endl;
             break;
         }
+        cout << "send to client : " << data2<<endl;
 
     }
     std::cout<<ep1.address().to_string()<<"关闭"<<std::endl;
@@ -114,14 +119,20 @@ vector<string>  jsonParase(char data[]){
         cout << "receive from client failed" <<endl;
     }else{
         string type = value["type"].asString();
-        if(type == "SONGINFO")
+        if(type == "SONGINFO"){
             parameter.push_back(value["type"].asString());
             parameter.push_back(value["songInfo"].asString());
+        }else if(type == "REGISTER"){
+            parameter.push_back(value["type"].asString());
+            parameter.push_back(value["userName"].asString());
+            parameter.push_back(value["userPassword"].asString());
+        }else if(type == "LOGIN"){
+            parameter.push_back(value["type"].asString());
+            parameter.push_back(value["userName"].asString());
+            parameter.push_back(value["userPassword"].asString());
+        }
         }
     return parameter;
 }
 
-void dealResult(socket_ptr sock)
-{
-
-}
+void dealResult(socket_ptr sock){}

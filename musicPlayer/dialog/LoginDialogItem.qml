@@ -279,7 +279,7 @@ Rectangle {
     {
         if(middleRegisterItemVisible){
             remindMessageVisible = result
-            if(result == "s")
+            if(result === "SUCCESS")
                 remindMessageText = "注册成功，请返回登录"
             else
                 remindMessageText = "注册失败，用户名或者密码错误"

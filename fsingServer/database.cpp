@@ -22,11 +22,18 @@ std::string DatabaseController::findUser(std::string username, std::string passw
     //姓名正确、密码错误返回PW_INVALID
     //账户不存在NAME_INVALID
 
+    Json::Value root;
+    root["type"] = "LOGIN";
+    root["userName"] = username;
+    root["userPassword"] = password;
+
     MYSQL mysql;
     mysql_init(&mysql);
     if(!mysql_real_connect(&mysql,"localhost","mxy","mxy","mxy",3306,NULL,0)){
         cout << "findUser conect MYSQL failed!" << endl;
-        return FAILD;
+        root["loginSuccess"] = "FAILD";
+        root.toStyledString();
+        return root.toStyledString();
     }
 
     char sql[100];
@@ -50,16 +57,22 @@ std::string DatabaseController::findUser(std::string username, std::string passw
                     m_userName = row[1];
                     m_userPassword = row[2];
                     //                    m_userPassword = true;
-                    return SUCCESS;
+                    root["loginSuccess"] = "SUCCESS";
+                    root.toStyledString();
+                    return root.toStyledString();
                 }else
-                    return PW_INVALID;
+                    root["loginSuccess"] = "PW_INVALID";
+                    root.toStyledString();
+                    return root.toStyledString();
+
             }
         }
     }
-    return NAME_INVALID;
-    //    if(!m_userNameFlag){
-    //        return USER_INVALID;
-    //    }
+
+
+            root["loginSuccess"] = "NAME_INVALID";
+            root.toStyledString();
+            return root.toStyledString();
 }
 
 std::string DatabaseController::myLogin(std::string username, std::string password)
@@ -112,12 +125,21 @@ std::string DatabaseController::songInformation(std::string songSource)
 
 std::string DatabaseController::myRegister(std::string username, std::string password)
 {
+    Json::Value root;
+    root["type"] = "REGISTER";
+    root["userName"] = username;
+    root["userPassword"] = password;
+
+
     //注册成功返回SUCCESS,反之返回FAILD
     MYSQL mysql;
     mysql_init(&mysql);
     if(!mysql_real_connect(&mysql,"localhost","mxy","mxy","mxy",3306,NULL,0)){
         cout << "findUser conect MYSQL failed!" << endl;
-        return FAILD;
+
+        root["registerSuccess"] = "FAILD";
+        root.toStyledString();
+        return root.toStyledString();
     }
 
     //创建Account表
@@ -133,11 +155,16 @@ std::string DatabaseController::myRegister(std::string username, std::string pas
         auto length = strlen(sql);
         if(!mysql_real_query(&mysql,sql,length)){
             cout <<"create user " << username << " success " << endl;
-            return SUCCESS;
+            root["registerSuccess"] = "SUCCESS";
+            root.toStyledString();
+            return root.toStyledString();
         }
-    }
+    }else {
 
-    return FAILD;
+    root["registerSuccess"] = "USER VALID";
+    root.toStyledString();
+    return root.toStyledString();
+    }
 }
 
 int DatabaseController::getMaxid()

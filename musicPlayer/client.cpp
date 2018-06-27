@@ -77,9 +77,14 @@ void Client::readUserConfig()
 
 void Client::myLogin(QString username, QString userpw)
 {
-    string log = LOGIN;
-    auto str = log + "," + username.toStdString() +"," + userpw.toStdString();
-    auto s = str.data();
+    Json::Value root;
+    root["type"] = "LOGIN";
+    root["userName"] = username.toStdString();
+    root["userPassword"] = userpw.toStdString();
+    root.toStyledString();
+    std::string out = root.toStyledString();
+
+    auto s = out.data();
     boost::system::error_code ec;
     sock.write_some(buffer(s,strlen(s)),ec);
     if(ec)
@@ -89,40 +94,66 @@ void Client::myLogin(QString username, QString userpw)
 
     //接受服务器返回的用户信息：基本信息、用户粉丝、关注、收藏歌单、创建歌单
     char data[512];
+    memset(data,0,sizeof(char)*512);//reset 0 to data[]
     sock.read_some(buffer(data),ec);
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
     }
-    string ret;
-    ret.push_back(data[0]);
+    Json::Reader reader;
+    Json::Value resultRoot;
+    if(!reader.parse(data, resultRoot)){
+      std::cout << "json received faild" <<std::endl;
+      return;
+    }else {
+    string ret = resultRoot["loginSuccess"].asString();
     m_result = QString::fromStdString(ret);
+    cout << "login " << ret<<endl;
+
     emit resultChanged();
+    }
 }
 
 void Client::myRegister(QString username, QString userpw)
 {
-    string log = REGISTER;
-    auto str = log + "," +  username.toStdString() +"," + userpw.toStdString();
-    auto s = str.data();
+    Json::Value root;
+    root["type"] = "REGISTER";
+    root["userName"] = username.toStdString();
+    root["userPassword"] = userpw.toStdString();
+    root.toStyledString();
+    std::string out = root.toStyledString();
+
+    auto s = out.data();
     boost::system::error_code ec;
     sock.write_some(buffer(s,strlen(s)),ec);
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
     }
+    std::cout<<"send message to server: " <<out<<endl;
 
     //读取服务器返回的消息：是否注册成功
     char data[512];
+    memset(data,0,sizeof(char)*512);//reset 0 to data[]
     sock.read_some(buffer(data),ec);
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
+
     }
-    string ret;
-    ret.push_back(data[0]);
+    cout << "receive from server : " << data<<endl;
+    Json::Reader reader;
+    Json::Value resultRoot;
+    if(!reader.parse(data, resultRoot)){
+      std::cout << "json received faild" <<std::endl;
+      return;
+    }else {
+    string ret = resultRoot["registerSuccess"].asString();
     m_result = QString::fromStdString(ret);
+    cout << "register " << ret<<endl;
     emit resultChanged();
+    return;
+    }
 }
 
 QString Client::songInformation(QString songSource){
@@ -131,7 +162,6 @@ QString Client::songInformation(QString songSource){
     root["songInfo"] = songSource.toStdString();
     root.toStyledString();
     std::string out = root.toStyledString();
-
 
     auto s = out.data();
     boost::system::error_code ec;
@@ -161,7 +191,6 @@ QString Client::songInformation(QString songSource){
     string ret = resultRoot["songName"].asString();;
     m_result = QString::fromStdString(ret);
     std::cout <<"receive frome server : "<< m_result.toStdString() <<std::endl;
-    emit resultChanged();
     return m_result;
     }
 }
