@@ -12,6 +12,9 @@
 using std::string;           using std::cout;
 using std::endl;
 
+//INVALID 无效
+//VALID 有效，存在
+
 DatabaseController::DatabaseController()
 {
 }
@@ -22,18 +25,11 @@ std::string DatabaseController::findUser(std::string username, std::string passw
     //姓名正确、密码错误返回PW_INVALID
     //账户不存在NAME_INVALID
 
-    Json::Value root;
-    root["type"] = "LOGIN";
-    root["userName"] = username;
-    root["userPassword"] = password;
-
     MYSQL mysql;
     mysql_init(&mysql);
     if(!mysql_real_connect(&mysql,"localhost","mxy","mxy","mxy",3306,NULL,0)){
         cout << "findUser conect MYSQL failed!" << endl;
-        root["loginSuccess"] = "FAILD";
-        root.toStyledString();
-        return root.toStyledString();
+        return "FAILD";
     }
 
     char sql[100];
@@ -57,28 +53,26 @@ std::string DatabaseController::findUser(std::string username, std::string passw
                     m_userName = row[1];
                     m_userPassword = row[2];
                     //                    m_userPassword = true;
-                    root["loginSuccess"] = "SUCCESS";
-                    root.toStyledString();
-                    return root.toStyledString();
+                    return "SUCCESS";
                 }else
-                    root["loginSuccess"] = "PW_INVALID";
-                    root.toStyledString();
-                    return root.toStyledString();
-
+                    return "PW_INVALID";
             }
         }
     }
-
-
-            root["loginSuccess"] = "NAME_INVALID";
-            root.toStyledString();
-            return root.toStyledString();
+    return "NAME_INVALID";
 }
+
 
 std::string DatabaseController::myLogin(std::string username, std::string password)
 {
     auto res =findUser(username,password);
-    return res;
+    Json::Value root;
+    root["type"] = "LOGIN";
+    root["userName"] = username;
+    root["userPassword"] = password;
+    root["loginSuccess"] = res;
+    root.toStyledString();
+    return root.toStyledString();
 }
 std::string DatabaseController::songInformation(std::string songSource)
 {
@@ -146,9 +140,10 @@ std::string DatabaseController::myRegister(std::string username, std::string pas
     hasAccountTable();
 
     auto ret = findUser(username,password);
+
     auto name = username.data();
     auto pw = password.data();
-    if(ret == NAME_INVALID){
+    if(ret == "NAME_INVALID"){
         auto maxid = getMaxid();
         char sql[100];
         std::sprintf(sql,"insert into Account(id,name,password) values('%d','%s','%s')",maxid,name,pw);
