@@ -7,6 +7,7 @@
 #include <vector>
 #include "database.h"
 #include "macro.h"
+#include "json/json.h"
 
 using namespace boost::asio;
 using std::cout;            using std::endl;
@@ -20,8 +21,7 @@ ip::tcp::endpoint ep(ip::tcp::v4(),2001);  //监听端口
 ip::tcp::acceptor acc(service,ep); //创建连接器
 DatabaseController database;
 
-//拆分来自客户端的消息
-vector<string> splitToString(char data[]);
+vector<std::string> jsonParase(char data[]);
 //接受客户端传来的请求事务,并将结果返回给客户端
 void receiveMessage(socket_ptr sock);
 //返回处理信息给客户端
@@ -48,34 +48,18 @@ void Server::connect()
     }
 }
 
+
 string Server::dealMessage(string sig,vector<string> str)
 {
     string res;
-    if(sig == LOGIN){//请求登录
-        res =database.myLogin(str[1],str[2]);
-    }else if(sig == REGISTER){//请求注册
-        res = database.myRegister(str[1],str[2]);
-    }else if(sig == ADD_CREATESONGLIST){//创建新歌单
-
-    }else if(sig == ADD_ATTENTION){//添加关注好友
-
-    }else if(sig == ADD_COLLECTIONSONGLIST){//添加收藏歌单
-
-    }else if(sig == ADD_BEATTENTION){//添加粉丝
-
-    }else if(sig == ADD_SONG){//添加歌曲（只有原创歌单才能添加歌曲）
-
-    }else if(sig == DELETE_ATTENTION){//取消关注
-
-    }else if(sig == DELETE_BEATTENTION){//减少粉丝
-
-    }else if(sig == SONGINFORMATION){
+    if(sig == "SONGINFO"){
         cout << str[1] <<endl;
         res = database.songInformation(str[1]);
         cout <<res <<endl;
         str.clear();
+        return res;
     }
-    return res;
+    return "nomatch sig";
 }
 
 //接受客户端传来的请求事务,并将结果返回给客户端
@@ -94,6 +78,8 @@ void receiveMessage(socket_ptr sock)
     while(true)
     {
         char data1[512];
+        memset(data1,0,sizeof(char)*512);
+
         DatabaseController database;
         /*auto len = */sock->read_some(buffer(data1), ec);
         if(ec)
@@ -101,11 +87,12 @@ void receiveMessage(socket_ptr sock)
             std::cout << boost::system::system_error(ec).what() << std::endl;
             break;
         }
-        auto result1 = splitToString(data1);
+        auto result1 = jsonParase(data1);
         auto result2 = service.dealMessage(result1[0],result1);
 
         //写回客户端
         char data2[512];
+        memset(data2,0,sizeof(char)*512);
         result2.copy(data2,result2.size(),0);
         sock->write_some(buffer(data2), ec);  //客户输入的消息，重新写到客户端
         if(ec)
@@ -113,25 +100,25 @@ void receiveMessage(socket_ptr sock)
             std::cout << boost::system::system_error(ec).what() << std::endl;
             break;
         }
-        memset(data1,0,sizeof(char)*512);
-        memset(data2,0,sizeof(char)*512);
+
     }
     std::cout<<ep1.address().to_string()<<"关闭"<<std::endl;
 }
-vector<string> splitToString(char data[])
-{
-    string str = data;
-    vector<string> ret;
-    auto l = find(str.begin(),str.end(),',');
-    string tmp{str.begin(),l};
-    ret.push_back(tmp);
-    auto i = l;
-    while((l != str.end()) && ((l = find(++i,str.end(),','))  <= str.end())){
-        tmp = {i,l};
-        i = l;
-        ret.push_back(tmp);
-    }
-    return ret;
+
+vector<string>  jsonParase(char data[]){
+    vector<string>  parameter;
+    Json::Reader reader;
+    Json::Value value;
+    if (!reader.parse(data, value))
+    {
+        cout << "receive from client failed" <<endl;
+    }else{
+        string type = value["type"].asString();
+        if(type == "SONGINFO")
+            parameter.push_back(value["type"].asString());
+            parameter.push_back(value["songInfo"].asString());
+        }
+    return parameter;
 }
 
 void dealResult(socket_ptr sock)

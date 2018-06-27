@@ -7,6 +7,7 @@
 #include <macro.h>
 #include <sstream>
 #include "macro.h"
+#include "json/json.h"
 
 using std::string;           using std::cout;
 using std::endl;
@@ -68,6 +69,7 @@ std::string DatabaseController::myLogin(std::string username, std::string passwo
 }
 std::string DatabaseController::songInformation(std::string songSource)
 {
+
     MYSQL mysql;
     mysql_init(&mysql);
     if(!mysql_real_connect(&mysql,"localhost","mxy","mxy","mxy",3306,NULL,0)){
@@ -93,8 +95,14 @@ std::string DatabaseController::songInformation(std::string songSource)
             while(row = mysql_fetch_row(result)){
                 //                m_userNameFlag = true;
                 if(string(row[1]) == source){
+
                     std::string songName = row[0];
-                    return songName;
+                    Json::Value root;
+                    root["type"] = "SONGINFO";
+                    root["songName"] = songName;
+                    root.toStyledString();
+                    std::string out = root.toStyledString();
+                    return out.data();
             }
         }
     }

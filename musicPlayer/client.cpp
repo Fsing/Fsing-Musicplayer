@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <boost/thread.hpp>
 #include "macro.h"
+#include "json/json.h"
 
 using boost::asio::io_service;
 using namespace boost::asio;
@@ -125,12 +126,17 @@ void Client::myRegister(QString username, QString userpw)
 }
 
 QString Client::songInformation(QString songSource){
-    string log = SONGINFORMATION;
-    auto str = log + "," +  songSource.toStdString();
-    auto s = str.data();
+    Json::Value root;
+    root["type"] = "SONGINFO";
+    root["songInfo"] = songSource.toStdString();
+    root.toStyledString();
+    std::string out = root.toStyledString();
+
+
+    auto s = out.data();
     boost::system::error_code ec;
     sock.write_some(buffer(s,strlen(s)),ec);
-            std::cout<<"send message to server: " <<str<<endl;
+            std::cout<<"send message to server: " <<out<<endl;
     if(ec)
     {
 
@@ -139,20 +145,25 @@ QString Client::songInformation(QString songSource){
 
 
     char data[512];
+    memset(data,0,sizeof(char)*512);//reset 0 to data[]
     sock.read_some(buffer(data),ec);
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
 
     }
-    string ret = data;
-    //auto length = s;
-            //ret.push_back();
+    Json::Reader reader;
+    Json::Value resultRoot;
+    if(!reader.parse(data, resultRoot)){
+      std::cout << "json received faild" <<std::endl;
+      return "json received faild";
+    }else {
+    string ret = resultRoot["songName"].asString();;
     m_result = QString::fromStdString(ret);
     std::cout <<"receive frome server : "<< m_result.toStdString() <<std::endl;
-    memset(data,0,sizeof(char)*512);
     emit resultChanged();
     return m_result;
+    }
 }
 
 void Client::addCreateSongList(QString songlistName)
