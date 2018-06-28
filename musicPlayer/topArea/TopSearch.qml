@@ -29,5 +29,11 @@ Rectangle {
             } else
                 text = "搜索音乐，视频，歌词，电台"
         }
+        onAccepted: {
+
+            text = client.search(text)
+            console.log(text)
+        }
+
     }
 }

@@ -195,6 +195,52 @@ QString Client::songInformation(QString songSource){
     }
 }
 
+QString Client:: search(QString key){
+    Json::Value root;
+    root["type"] = "SEARCH";
+    root["songKey"] = key.toStdString();
+    root.toStyledString();
+    std::string out = root.toStyledString();
+    auto s = out.data();
+    boost::system::error_code ec;
+    sock.write_some(buffer(s,strlen(s)),ec);
+            std::cout<<"send message to server: " <<out<<endl;
+    if(ec)
+    {
+
+        std::cout << boost::system::system_error(ec).what() << std::endl;
+        return "ERROR";
+    }
+
+
+    char data[512];
+    memset(data,0,sizeof(char)*512);//reset 0 to data[]
+    sock.read_some(buffer(data),ec);
+    if(ec)
+    {
+        std::cout << boost::system::system_error(ec).what() << std::endl;
+                return "ERROR";
+    }
+
+
+    Json::Reader reader;
+    Json::Value resultRoot;
+
+    if (reader.parse(data, resultRoot))
+    {
+        const Json::Value arrayObj = resultRoot["array"];
+        for (unsigned int i = 0; i < arrayObj.size(); i++)
+        {
+            //------------------------------
+        }
+        std::cout <<"receive frome server : "<< data <<std::endl;
+        return QString::number(arrayObj.size());
+    }
+
+    return "ERROR";
+
+}
+
 void Client::addCreateSongList(QString songlistName)
 {
 

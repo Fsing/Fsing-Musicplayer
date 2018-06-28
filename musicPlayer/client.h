@@ -29,6 +29,7 @@ public:
     Q_INVOKABLE void addCreateSongList(QString songlistName);
     //下载音乐
     Q_INVOKABLE QString songInformation(QString songSource);
+    Q_INVOKABLE QString search(QString key);
 //    void downloadMusic();
 
     //setting
@@ -56,6 +57,7 @@ private:
     bool m_logining;
 
     QString m_result;
+    QString m_songName;
     //异步连接run
 //    void run_service();
 };

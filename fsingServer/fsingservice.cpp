@@ -61,6 +61,9 @@ string Server::dealMessage(string sig,vector<string> str)
     }else if(sig == "LOGIN"){
         res = database.myLogin(str[1],str[2]);
         return res;
+    }else if(sig == "SEARCH"){
+        res = database.search(str[1]);
+        return res;
     }
     return "nomatch sig";
 }
@@ -112,8 +115,8 @@ void receiveMessage(socket_ptr sock)
 
 vector<string>  jsonParase(char data[]){
     vector<string>  parameter;
-    Json::Reader reader;
     Json::Value value;
+    Json::Reader reader;
     if (!reader.parse(data, value))
     {
         cout << "receive from client failed" <<endl;
@@ -130,6 +133,9 @@ vector<string>  jsonParase(char data[]){
             parameter.push_back(value["type"].asString());
             parameter.push_back(value["userName"].asString());
             parameter.push_back(value["userPassword"].asString());
+        }else if(type == "SEARCH"){
+            parameter.push_back(value["type"].asString());
+            parameter.push_back(value["songKey"].asString());
         }
         }
     return parameter;
