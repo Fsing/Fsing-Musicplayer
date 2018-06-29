@@ -49,7 +49,7 @@ void Server::connect()
 }
 
 
-string Server::dealMessage(string sig,vector<string> str)
+string Server::dealMessage(string sig,vector<string> str,socket_ptr sock)
 {
     string res;
     if(sig == "SONGINFO"){
@@ -63,6 +63,10 @@ string Server::dealMessage(string sig,vector<string> str)
         return res;
     }else if(sig == "SEARCH"){
         res = database.search(str[1]);
+        return res;
+    }else if(sig == "FILETRANSFER"){
+        fileSender(str[1],sock);
+        res = "fileTransfer";
         return res;
     }
     return "nomatch sig";
@@ -96,7 +100,12 @@ void receiveMessage(socket_ptr sock)
         cout << "receive from client : " << data1<<endl;
 
         auto result1 = jsonParase(data1);
-        auto result2 = service.dealMessage(result1[0],result1);
+        auto result2 = service.dealMessage(result1[0],result1,sock);
+
+        if(result2 == "fileTransfer"){
+            cout << "transfer finished" << endl;
+            return;
+        }
         //写回客户端
         char data2[512];
         memset(data2,0,sizeof(char)*512);
@@ -136,9 +145,65 @@ vector<string>  jsonParase(char data[]){
         }else if(type == "SEARCH"){
             parameter.push_back(value["type"].asString());
             parameter.push_back(value["songKey"].asString());
+        }else if(type == "FILETRANSFER"){
+            parameter.push_back(value["type"].asString());
+            parameter.push_back(value["fileName"].asString());
         }
         }
     return parameter;
+}
+void Server::fileSender(string fileName,socket_ptr sock){
+    typedef boost::asio::ip::tcp TCP;
+
+    auto filename = fileName.data();
+    FILE *fp = fopen(filename, "rb");
+    if (fp == NULL) {
+      cout << "cannot open file\n" <<endl;;
+      return;
+    }
+
+    //使用智能指针，防止程序出现异常时，fclose未被调用。
+    boost::shared_ptr<FILE> file_ptr(fp, fclose);
+
+    clock_t cost_time = clock();
+
+    const size_t k_buffer_size = 32 * 1024;
+    char buffer[k_buffer_size];
+    File_info file_info;
+
+    int filename_size  = strlen(filename) + 1;
+    size_t file_info_size = sizeof(file_info);
+    size_t total_size = file_info_size + filename_size;
+    if (total_size > k_buffer_size) {
+      std::cerr << "File name is too long";
+      return;
+    }
+    file_info.filename_size = filename_size;
+
+    fseek(fp, 0, SEEK_END);
+    file_info.filesize = ftell(fp);
+    rewind(fp);
+
+    memcpy(buffer, &file_info, file_info_size);
+    memcpy(buffer + file_info_size, filename, filename_size);
+
+
+    std::cout << "Sending file : " << filename << "\n";
+    size_t len = total_size;
+    unsigned long long total_bytes_read = 0;
+    while (true) {
+      sock->send(boost::asio::buffer(buffer, len), 0);
+      if (feof(fp)) break;
+      len = fread(buffer, 1, k_buffer_size, fp);
+      total_bytes_read += len;
+    }
+
+    cost_time = clock() - cost_time;
+    if (cost_time == 0) cost_time = 1;
+    double speed = total_bytes_read * (CLOCKS_PER_SEC / 1024.0 / 1024.0) / cost_time;
+    std::cout << "cost time: " << cost_time / (double) CLOCKS_PER_SEC  << " s "
+      << "  transferred_bytes: " << total_bytes_read << " bytes\n"
+      << "speed: " <<  speed << " MB/s\n\n";
 }
 
 void dealResult(socket_ptr sock){}

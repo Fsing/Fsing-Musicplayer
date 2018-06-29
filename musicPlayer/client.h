@@ -3,6 +3,15 @@
 
 #include <QObject>
 #include <boost/asio.hpp>
+#include <boost/shared_ptr.hpp>
+
+struct File_info {
+    typedef unsigned long long Size_type;
+    Size_type filesize;
+    size_t filename_size;
+    File_info() : filesize(0), filename_size(0) {}
+};
+
 
 class Client:public QObject
 {
@@ -30,6 +39,8 @@ public:
     //下载音乐
     Q_INVOKABLE QString songInformation(QString songSource);
     Q_INVOKABLE QString search(QString key);
+    Q_INVOKABLE void fileTransfer(QString fileName);
+
 //    void downloadMusic();
 
     //setting
@@ -43,6 +54,14 @@ public:
     Q_INVOKABLE int userID(){return m_userID;}
     Q_INVOKABLE bool logining(){return m_logining;}
     Q_INVOKABLE QString result(){return m_result;}
+
+
+    //filetransfer
+    void fileReceiver();
+    void handle_write(const boost::system::error_code& error, size_t bytes_transferred);
+    void receive_file_content();
+    void handle_file(const boost::system::error_code& error);
+    void handle_header(const boost::system::error_code& error);
 
 signals:
     void userNameChanged();
@@ -58,8 +77,14 @@ private:
 
     QString m_result;
     QString m_songName;
-    //异步连接run
-//    void run_service();
+
+    //for file transfer
+    clock_t clock_;
+    FILE *fp_;
+    File_info file_info_;
+    File_info::Size_type total_bytes_writen_;
+    static const unsigned k_buffer_size = 1024 * 32;
+    char buffer_[k_buffer_size];
 };
 
 

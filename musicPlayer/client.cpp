@@ -27,6 +27,7 @@ ip::tcp::socket sock(service);
 
 Client::Client()
 {
+    memset(buffer_,0,sizeof(char)*k_buffer_size);
     myConnect();
 }
 void Client::myConnect()
@@ -195,7 +196,28 @@ QString Client::songInformation(QString songSource){
     }
 }
 
-QString Client:: search(QString key){
+void Client::fileTransfer(QString fileName){
+    Json::Value root;
+    root["type"] = "FILETRANSFER";
+    root["fileName"] = fileName.toStdString();
+    root.toStyledString();
+    std::string out = root.toStyledString();
+    auto s = out.data();
+
+    boost::system::error_code ec;
+    sock.write_some(buffer(s,strlen(s)),ec);
+            std::cout<<"send message to server: " <<out<<endl;
+    if(ec)
+    {
+        std::cout << boost::system::system_error(ec).what() << std::endl;
+        return;
+    }
+
+    fileReceiver();
+    cout << "transfer successful " << fileName.toStdString()<<endl;
+}
+
+QString Client::search(QString key){
     Json::Value root;
     root["type"] = "SEARCH";
     root["songKey"] = key.toStdString();
@@ -238,7 +260,71 @@ QString Client:: search(QString key){
     }
 
     return "ERROR";
+}
 
+
+void Client::fileReceiver(){
+    clock_ = clock();
+    sock.receive(buffer(reinterpret_cast<char*>(&file_info_), sizeof(file_info_)));
+    boost::system::error_code error;
+    handle_header(error);
+}
+void Client::handle_header(const boost::system::error_code& error)
+{
+    if (error) {
+      std::cout << boost::system::system_error(error).what() << std::endl;
+    };
+  size_t filename_size = file_info_.filename_size;
+  if (filename_size > k_buffer_size) {
+    std::cerr << "Path name is too long!\n";
+    return;
+  }
+  //得用async_read, 不能用async_read_some，防止路径名超长时，一次接收不完
+    read(sock, buffer(buffer_, file_info_.filename_size));
+    handle_file(error);
+}
+
+void Client::handle_file(const boost::system::error_code& error)
+{
+    if (error) {
+      std::cout << boost::system::system_error(error).what() << std::endl;
+    };
+  const char *basename = buffer_ + file_info_.filename_size - 1;
+  while (basename >= buffer_ && (*basename != '\\' && *basename != '/')) --basename;
+  ++basename;
+
+  std::cout << "Open file: " << basename << " (" << buffer_ << ")\n";
+
+  fp_ = fopen(basename, "wb");
+  if (fp_ == NULL) {
+    std::cerr << "Failed to open file to write\n";
+    return;
+  }
+  receive_file_content();
+}
+
+void Client::receive_file_content()
+{
+
+  boost::system::error_code error;
+  size_t bytes_transferred = 0;
+  total_bytes_writen_ = 0;
+
+  while(total_bytes_writen_ != file_info_.filesize){
+      bytes_transferred = sock.receive(buffer(buffer_, k_buffer_size));
+      //bytes_transferred = strlen(buffer_);
+  if (error) {
+    if (error != error::eof)
+        return;
+    File_info::Size_type filesize = file_info_.filesize;
+    if (total_bytes_writen_ != filesize)
+        std::cerr <<  "Filesize not matched! " << total_bytes_writen_
+          << "/" << filesize << "\n";
+    return;
+  }
+  total_bytes_writen_ += fwrite(buffer_, 1, bytes_transferred, fp_);
+  }
+  fclose(fp_);
 }
 
 void Client::addCreateSongList(QString songlistName)
