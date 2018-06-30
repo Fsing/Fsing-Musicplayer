@@ -1,13 +1,12 @@
 #include "fanbroker.h"
 
+FanBroker *FanBroker::_instance = new FanBroker();
+FanBroker *FanBroker::getInstance()
+{
+    return _instance;
+}
+
 FanBroker::FanBroker()
 {
 
-}
-
-FanBroker *FanBroker::Instance()
-{
-    if (m_instance == nullptr)
-        m_instance = new FanBroker();
-    return m_instance;
 }

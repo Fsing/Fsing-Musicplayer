@@ -1,13 +1,12 @@
 #include "songbroker.h"
 
+SongBroker *SongBroker::_instance = new SongBroker();
+
 SongBroker::SongBroker()
 {
 
 }
-
-SongBroker *SongBroker::Instance()
+SongBroker *SongBroker::getInstance()
 {
-    if(m_instance == nullptr)
-        m_instance = new SongBroker();
-    return m_instance;
+    return _instance;
 }

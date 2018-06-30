@@ -1,25 +1,24 @@
 #ifndef SONGLISTBROKER_H
 #define SONGLISTBROKER_H
-class RelationBroker;
-class vector;
-class SongList;
+#include "ralationbroker.h"
+#include "songlist.h"
+#include <map>
+#include <memory>
+#include <string>
 
-class SongListBroker
+class SongListBroker:public RalationBroker
 {
 public:
-    static SongListBroker *Instance();
-    void findByAuthor();
-    void findByName();
-    void selectAll();
-    void getNext();
-    void addSongList();
-    void deleteSongList();
-
-
+    static SongListBroker *getInstance();
+//    void findByAuthor();
+//    void findByName();
+//    void selectAll();
+//    void getNext();
+//    void addSongList();
+//    void deleteSongList();
 private:
     SongListBroker();
-    static SongListBroker *m_instance;
-    vector<SongList*> _songLists;
+    static SongListBroker *_instance;
+    std::map<std::string,std::shared_ptr<SongList>> _songLists;
 };
-
 #endif // SONGLISTBROKER_H

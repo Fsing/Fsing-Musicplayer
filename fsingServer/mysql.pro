@@ -6,25 +6,24 @@ CONFIG -= qt
 SOURCES += main.cpp \
     database.cpp \
     fsingservice.cpp \
-    songlistbroker.cpp \
+    fan.cpp \
     songlist.cpp \
-    songbroker.cpp \
     song.cpp \
-    fsingservice.cpp \
     fanbroker.cpp \
-    fan.cpp
+    songlistbroker.cpp \
+    songbroker.cpp
 LIBS += -lmysqlclient
 
 HEADERS += \
     database.h \
     fsingservice.h \
     macro.h \
-    songlistbroker.h \
-    songlist.h \
-    songbroker.h \
     song.h \
-    relationbroker.h \
-    fsingservice.h \
+    songlist.h \
+    user.h \
+    ralationbroker.h \
+    fan.h \
     fanbroker.h \
-    fan.h
+    songbroker.h \
+    songlistbroker.h
 LIBS += -lpthread -lboost_system -lboost_thread -ljsoncpp
