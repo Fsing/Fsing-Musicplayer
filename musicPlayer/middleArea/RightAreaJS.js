@@ -108,7 +108,7 @@ function popView(n) {
         }
         ;
         break
-    case 9:
+    case -1:
         var lyric = stackView.find(function (item) {
 
             return item.index === n ? true : false
@@ -120,7 +120,7 @@ function popView(n) {
         }
         ;
         break
-    case 10:
+    default:
         var songlist = stackView.find(function (item) {
 
             return item.index === n ? true : false
@@ -132,7 +132,5 @@ function popView(n) {
         }
         ;
         break
-    default:
-
     }
 }

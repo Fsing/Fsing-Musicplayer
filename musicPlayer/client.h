@@ -21,7 +21,6 @@ class Client:public QObject
     Q_PROPERTY(bool logining READ logining WRITE setLogining NOTIFY loginingChanged)
     Q_PROPERTY(QString result READ result WRITE setResult NOTIFY resultChanged)
 
-
 public:
     //构造函数
     Client();
@@ -35,11 +34,12 @@ public:
     //注册账户，服务器数据库查找，并插入信息
     Q_INVOKABLE void myRegister(QString username,QString userpw);
     //创建歌单
-    Q_INVOKABLE void addCreateSongList(QString songlistName);
+    Q_INVOKABLE void addCreateSongList(QString username, QString songlistName, QString time);
     //下载音乐
     Q_INVOKABLE QString songInformation(QString songSource);
     Q_INVOKABLE QString search(QString key);
     Q_INVOKABLE void fileTransfer(QString fileName);
+
 
 //    void downloadMusic();
 
@@ -54,6 +54,8 @@ public:
     Q_INVOKABLE int userID(){return m_userID;}
     Q_INVOKABLE bool logining(){return m_logining;}
     Q_INVOKABLE QString result(){return m_result;}
+    Q_INVOKABLE QList<QString> songlistNames() const{return _songlistNames;}
+
 
 
     //filetransfer
@@ -62,6 +64,7 @@ public:
     void receive_file_content();
     void handle_file(const boost::system::error_code& error);
     void handle_header(const boost::system::error_code& error);
+
 
 signals:
     void userNameChanged();
@@ -74,9 +77,13 @@ private:
     QString m_userName;
     int m_userID;
     bool m_logining;
+    int i;
 
     QString m_result;
     QString m_songName;
+
+    //歌单名
+    QList<QString> _songlistNames;
 
     //for file transfer
     clock_t clock_;

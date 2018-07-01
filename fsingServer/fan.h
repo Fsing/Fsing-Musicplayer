@@ -22,7 +22,7 @@ private:
     bool m_vaild;               //状态变量，用来标志歌曲是否违法，是否可用
     std::map<std::string, std::shared_ptr<SongList>> _collectedSongList;    //已收藏歌单
     std::map<std::string, std::shared_ptr<SongList>> _createdSongList;      //创建歌单
-    std::map<std::string, std::shared_ptr<User>> _attentUsers;               //关注的用户
-    std::map<std::string, std::shared_ptr<User>> _fanUsers;                   //粉丝
+    std::map<std::string, std::shared_ptr<Fan>> _attentUsers;               //关注的用户
+    std::map<std::string, std::shared_ptr<Fan>> _fanUsers;                   //粉丝
 };
 #endif // FAN_H

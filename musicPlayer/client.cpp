@@ -110,8 +110,19 @@ void Client::myLogin(QString username, QString userpw)
     string ret = resultRoot["loginSuccess"].asString();
     m_result = QString::fromStdString(ret);
     cout << "login " << ret<<endl;
+    if (ret == "SUCCESS")
+        m_logining = true;
 
+    m_userName = username;
     emit resultChanged();
+
+    _songlistNames.clear();
+    const Json::Value arrayObj = resultRoot["array"];
+    for (unsigned int i = 0; i < arrayObj.size(); i++)
+    {
+        _songlistNames.append(QString::fromStdString(arrayObj[i].asString()));
+
+    }
     }
 }
 
@@ -327,10 +338,47 @@ void Client::receive_file_content()
   fclose(fp_);
 }
 
-void Client::addCreateSongList(QString songlistName)
+void Client::addCreateSongList(QString username,QString songlistName, QString time)
 {
+    Json::Value root;
+    root["type"] = "CREATESONGLIST";
+    root["username"] = username.toStdString();
+    root["songListName"] = songlistName.toStdString();
+    root["createTime"] = time.toStdString();
+    root.toStyledString();
+    std::string out = root.toStyledString();
 
+    auto s = out.data();
+    boost::system::error_code ec;
+    sock.write_some(buffer(s,strlen(s)),ec);
+    if(ec)
+    {
+        std::cout << boost::system::system_error(ec).what() << std::endl;
+    }
+    std::cout<<"send message to server: " <<out<<endl;
+
+    //读取服务器返回的消息：是否成功记录
+    char data[512];
+    memset(data,0,sizeof(char)*512);//reset 0 to data[]
+    sock.read_some(buffer(data),ec);
+    if(ec)
+    {
+        std::cout << boost::system::system_error(ec).what() << std::endl;
+
+    }
+    cout << "receive from server : " << data<<endl;
+    Json::Reader reader;
+    Json::Value resultRoot;
+    if(!reader.parse(data, resultRoot)){
+      std::cout << "json received faild" <<std::endl;
+      return;
+    }else {
+    string ret = resultRoot["record"].asString();
+    cout << "record create song list " << ret<<endl;
+    return;
+    }
 }
+
 //void Client::run_service()
 //{
 //    service.run();

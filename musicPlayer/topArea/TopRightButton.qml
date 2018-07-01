@@ -10,6 +10,7 @@ Rectangle {
     color: parent.color
 
     signal loginButtonClicked
+    property string loginButtonSource: loginbuttonImage.source
 
     Button {
         id: closebutton
@@ -18,7 +19,7 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
         width: 18
         height: 18
-        MouseArea{
+        MouseArea {
             id: closeButtonMouseArea
             anchors.fill: parent
             hoverEnabled: true
@@ -26,7 +27,7 @@ Rectangle {
         }
 
         background: Image {
-            id:leftButtonImage
+            id: leftButtonImage
             anchors.fill: parent
             opacity: closeButtonMouseArea.containsMouse ? 1.0 : 0.5
             source: "qrc:/images/topArea/close.png"
@@ -39,37 +40,35 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
         width: 18
         height: 18
-        MouseArea{
+        MouseArea {
             id: maxButtonMouseArea
             anchors.fill: parent
             hoverEnabled: true
             onClicked: {
-                if(mainWindow.visibility === Window.FullScreen){
-                    mainWindow.width =1025
-                    mainWindow.height =670
+                if (mainWindow.visibility === Window.FullScreen) {
+                    mainWindow.width = 1025
+                    mainWindow.height = 670
                     mainWindow.setX(xPosition)
                     mainWindow.setY(yPosition)
-                }
-                else {
+                } else {
                     xPosition = mainWindow.x
                     yPosition = mainWindow.y
-                mainWindow.visibility = Window.FullScreen
+                    mainWindow.visibility = Window.FullScreen
                 }
             }
         }
 
-        background:
-            Rectangle{
-                id: maxButton;
-                anchors.centerIn: parent;
-                width: 14;
-                height: 11;
-                border.width: 1;
-                border.color: maxButtonMouseArea.containsMouse ? "#FFFFFF" : "#E29595";
-                color: "#C62F2F";
-                radius: 2;
-            }
+        background: Rectangle {
+            id: maxButton
+            anchors.centerIn: parent
+            width: 14
+            height: 11
+            border.width: 1
+            border.color: maxButtonMouseArea.containsMouse ? "#FFFFFF" : "#E29595"
+            color: "#C62F2F"
+            radius: 2
         }
+    }
     Button {
         id: minbutton
         anchors.right: maxbutton.left
@@ -77,7 +76,7 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
         width: 18
         height: 18
-        MouseArea{
+        MouseArea {
             id: minButtonMouseArea
             anchors.fill: parent
             hoverEnabled: true
@@ -85,14 +84,14 @@ Rectangle {
         }
 
         background: Image {
-            id:minButtonImage
+            id: minButtonImage
             anchors.fill: parent
             opacity: minButtonMouseArea.containsMouse ? 1.0 : 0.5
             source: "qrc:/images/topArea/mini.png"
         }
     }
     Rectangle {
-        id:rec
+        id: rec
         width: 1
         height: 18
         anchors.right: minbutton.left
@@ -107,14 +106,14 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
         width: 16
         height: 16
-        MouseArea{
+        MouseArea {
             id: settingbuttonMouseArea
             anchors.fill: parent
             hoverEnabled: true
         }
 
         background: Image {
-            id:settingbuttonImage
+            id: settingbuttonImage
             anchors.fill: parent
             opacity: settingbuttonMouseArea.containsMouse ? 1.0 : 0.5
             source: "qrc:/images/topArea/setting1.png"
@@ -127,14 +126,14 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
         width: 16
         height: 16
-        MouseArea{
+        MouseArea {
             id: emailbuttonMouseArea
             anchors.fill: parent
             hoverEnabled: true
         }
 
         background: Image {
-            id:emailbuttonImage
+            id: emailbuttonImage
             anchors.fill: parent
             opacity: emailbuttonMouseArea.containsMouse ? 1.0 : 0.5
             source: "qrc:/images/topArea/message.png"
@@ -147,14 +146,14 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
         width: 16
         height: 16
-        MouseArea{
+        MouseArea {
             id: skinbuttonMouseArea
             anchors.fill: parent
             hoverEnabled: true
         }
 
         background: Image {
-            id:skinbuttonImage
+            id: skinbuttonImage
             anchors.fill: parent
             opacity: skinbuttonMouseArea.containsMouse ? 1.0 : 0.5
             source: "qrc:/images/topArea/skin.png"
@@ -167,7 +166,7 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
         width: 16
         height: 16
-        MouseArea{
+        MouseArea {
             id: loginbuttonMouseArea
             anchors.fill: parent
             hoverEnabled: true
@@ -175,10 +174,13 @@ Rectangle {
         }
 
         background: Image {
-            id:loginbuttonImage
+            id: loginbuttonImage
             anchors.fill: parent
-            opacity: loginbuttonMouseArea.containsMouse ? 1.0 : 0.5
+            opacity: loginbuttonMouseArea.containsMouse ? 1.0 : 0.8
             source: "qrc:/images/topArea/skin.png"
         }
+    }
+    onLoginButtonSourceChanged: {
+        loginbuttonImage.source = loginButtonSource
     }
 }

@@ -15,6 +15,28 @@ CommonDialog {
         onOkButtonClicked: {
             createSongListDialog.close()
             inputAccepted()
+            console.log(client.userName + createSongListDialog.inputText + getCurDate(
+                            ))
+            client.addCreateSongList(client.userName,
+                                     createSongListDialog.inputText,
+                                     getCurDate())
         }
+    }
+
+    function getCurDate() {
+        var d = new Date()
+        var years = d.getFullYear()
+        var month = add_zero(d.getMonth() + 1)
+        var days = add_zero(d.getDate())
+
+        var ndate = years + "-" + month + "-" + days
+        return ndate
+    }
+
+    function add_zero(temp) {
+        if (temp < 10)
+            return "0" + temp
+        else
+            return temp
     }
 }

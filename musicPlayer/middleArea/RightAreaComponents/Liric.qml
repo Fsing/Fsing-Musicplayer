@@ -6,19 +6,18 @@ import QtQuick.Controls 1.4
 import QtQuick.Dialogs 1.2
 import LyricObject 1.0
 
-
 Rectangle {
-    id:rec0
+    id: rec0
     anchors.fill: parent
 
-    property int index: 9
+    property int index: -1
 
     LyricObject {
         id: lyric
     }
     Connections {
         target: mainWindow
-        onPositionChange:{
+        onPositionChange: {
             var i = 0
             while (i < lyricview.count) {
                 if (positions > lyricview.model[i].time) {
@@ -33,60 +32,55 @@ Rectangle {
                 }
             }
         }
-        onSongChanged:{
+        onSongChanged: {
 
             lyricview.model = lyric.getLyric(song)
             console.log(song)
         }
     }
 
+    property int current: 0
+    property bool increasing: true
+    ListView {
+        id: lyricview
+        anchors.top: parent.top
+        anchors.topMargin: 50
+        width: parent.width
+        height: parent.height * 0.7
 
-
-
-            property int current: 0
-            property bool increasing: true
-            ListView {
-                id: lyricview
-                anchors.top:parent.top
-                anchors.topMargin: 50
-                width: parent.width
-                height: parent.height * 0.7
-
-                spacing: 10 //每个Rectangle相隔10的单位
-                displayMarginBeginning: 0
-                displayMarginEnd: 0
-                model: lyric.getLyric("./test")
-                delegate: Rectangle {
-                    height: 25
-                    width: parent.width
-                    Text {
-                        color: if (rec0.current === index) {
-                                   "red"
-                               } else {
-                                   "black"
-                               }
-                        anchors.centerIn: parent
-                        text: model.modelData.text
-                    }
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: rec0.current = index
-                    }
-                }
-
-                currentIndex: rec0.current
-                onCurrentIndexChanged: {
-
-                    //                root.current = currentIndex
-                    pausetime.duration = lyricview.model[currentIndex + 1].time
-                            - lyricview.model[currentIndex].time
-                    lyricAnimtion.restart()
-                    if (rec0.current == lyricview.count)
-                        lyricAnimtion.loops = 0
-                }
+        spacing: 10 //每个Rectangle相隔10的单位
+        displayMarginBeginning: 0
+        displayMarginEnd: 0
+        model: lyric.getLyric("./test")
+        delegate: Rectangle {
+            height: 25
+            width: parent.width
+            Text {
+                color: if (rec0.current === index) {
+                           "red"
+                       } else {
+                           "black"
+                       }
+                anchors.centerIn: parent
+                text: model.modelData.text
             }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: rec0.current = index
+            }
+        }
 
+        currentIndex: rec0.current
+        onCurrentIndexChanged: {
 
+            //                root.current = currentIndex
+            pausetime.duration = lyricview.model[currentIndex + 1].time
+                    - lyricview.model[currentIndex].time
+            lyricAnimtion.restart()
+            if (rec0.current == lyricview.count)
+                lyricAnimtion.loops = 0
+        }
+    }
 
     //歌词
     SequentialAnimation {
@@ -108,5 +102,4 @@ Rectangle {
                     }
         }
     }
-
 }

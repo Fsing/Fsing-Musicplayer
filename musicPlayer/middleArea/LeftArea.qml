@@ -20,13 +20,12 @@ Rectangle {
     property bool showAllCreateClicked: false
     property int creatIndex: 9
     property int maxIndex: listModel.count
+    property var listmodel: listModel
     signal leftAreaClicked(int n)
 
-
     //-----
-
     Rectangle {
-        id:lyric
+        id: lyric
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         width: 50
@@ -36,16 +35,14 @@ Rectangle {
             anchors.fill: parent
             onClicked: {
 
-                leftAreaClicked(10)
+                leftAreaClicked(-1)
             }
         }
     }
 
-
-
     ScrollView {
         id: leftItem
-        anchors.top:parent.top
+        anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: lyric.top
@@ -71,11 +68,11 @@ Rectangle {
     Component {
         id: delegates
         LeftItem {
-            id:leftItemDelegates
+            id: leftItemDelegates
             width: parent.width - 10
             height: classfify.visible ? 50 : 25
             onItemClicked: leftAreaClicked(index)
-            onCreateClicked:createSongListDialog.open()
+            onCreateClicked: createSongListDialog.open()
         }
     }
     ListModel {
@@ -172,14 +169,6 @@ Rectangle {
             for (i; i >= creatIndex; i--) {
                 listModel.setProperty(i, "delegate_listVisible", true)
             }
-            //                listModel.append({
-            //                                     recColor: "#F5F5F7",
-            //                                     imagesource: "../images/leftArea/btnmv.png",
-            //                                     tx: "favorite",
-            //                                     opaci: 0.55,
-            //                                     classifyText: "",
-            //                                     delegate_listVisible: false
-            //                                 })
         } else {
             var j = maxIndex - 1
             for (j; j >= creatIndex; j--) {
@@ -190,6 +179,7 @@ Rectangle {
     CreateSongListDialog {
         id: createSongListDialog
         onInputAccepted: {
+
             listModel.append({
                                  recColor: "#F5F5F7",
                                  imagesource: "../images/leftArea/list.png",
@@ -198,7 +188,6 @@ Rectangle {
                                  classifyText: "",
                                  delegate_listVisible: true
                              })
-            //            console.log(listMode /*l*/.count + " " + maxIndex)
         }
     }
 }

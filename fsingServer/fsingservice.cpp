@@ -68,6 +68,9 @@ string Server::dealMessage(string sig,vector<string> str,socket_ptr sock)
         fileSender(str[1],sock);
         res = "fileTransfer";
         return res;
+    }else if(sig == "CREATESONGLIST"){
+        res = database.addCreateSongList(str[1],str[2],str[3]);
+        return res;
     }
     return "nomatch sig";
 }
@@ -148,6 +151,11 @@ vector<string>  jsonParase(char data[]){
         }else if(type == "FILETRANSFER"){
             parameter.push_back(value["type"].asString());
             parameter.push_back(value["fileName"].asString());
+        }else if(type == "CREATESONGLIST"){
+            parameter.push_back(value["type"].asString());
+            parameter.push_back(value["username"].asString());
+            parameter.push_back(value["songListName"].asString());
+            parameter.push_back(value["createTime"].asString());
         }
         }
     return parameter;

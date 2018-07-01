@@ -8,13 +8,12 @@ Rectangle {
     anchors.right: parent.right
     color: "white"
 
+    property var listmodel: leftArea.listmodel
+
     LeftArea {
         id: leftArea
     }
     RightArea {
         id: rightArea
-
     }
-
-
 }

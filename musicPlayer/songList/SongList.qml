@@ -5,7 +5,7 @@ import QtQuick.Controls.Styles 1.4
 
 Rectangle {
     id: songlist
-    property int index: 10
+    property int index: 9
     color: "green"
     ScrollView {
         id: scroll
