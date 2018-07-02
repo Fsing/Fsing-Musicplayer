@@ -8,7 +8,6 @@ import LyricObject 1.0
 
 Rectangle {
     id: rec0
-    anchors.fill: parent
 
     property int index: -1
 

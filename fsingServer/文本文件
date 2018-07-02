@@ -1,4 +1,14 @@
-  mysql创建用户，设置可操作数据库权限：
+ insert into mysql.user(Host,User,Password) values("localhost","fsing",password("fsing"));
+ grant all privileges on Fsing.* to fsing@localhost identified by 'fsing';
+
+create database Fsing;
+use Fsing;
+create table SongInfo(id char(30) not null,name char(30) not null,source char(50) not null);
+insert into SongInfo(id,name,source) values("dukou","dukou_cn","rtsp://192.168.8.79/music/dukou.mp3");
+insert into SongInfo(id,name,source) values("yiluxiangbei","yiluxiangbei_cn","rtsp://192.168.8.79/music/yiluxiangbei.mp3");
+insert into SongInfo(id,name,source) values("zuimei","zuimei_cn","rtsp://192.168.8.79/music/zuimei.mp3");
+
+mysql创建用户，设置可操作数据库权限：
  
  mysql> create user 'mxy'@'localhost' identified by '1234'
  mysql>flush privileges;//一定要这一句

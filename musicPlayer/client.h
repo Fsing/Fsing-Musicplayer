@@ -39,6 +39,7 @@ public:
     Q_INVOKABLE QString songInformation(QString songSource);
     Q_INVOKABLE QString search(QString key);
     Q_INVOKABLE void fileTransfer(QString fileName);
+    Q_INVOKABLE void songList(QString songListName);//get songlist infomation
 
 
 //    void downloadMusic();
@@ -55,6 +56,7 @@ public:
     Q_INVOKABLE bool logining(){return m_logining;}
     Q_INVOKABLE QString result(){return m_result;}
     Q_INVOKABLE QList<QString> songlistNames() const{return _songlistNames;}
+    Q_INVOKABLE QList<QString> getSongList() const{return m_songList;}
 
 
 
@@ -84,6 +86,8 @@ private:
 
     //歌单名
     QList<QString> _songlistNames;
+    //songlist infomation
+    QList<QString> m_songList;
 
     //for file transfer
     clock_t clock_;

@@ -274,6 +274,56 @@ QString Client::search(QString key){
 }
 
 
+void Client::songList(QString songListName){
+    Json::Value root;
+    root["type"] = "SONGLIST";
+    root["songListName"] = songListName.toStdString();
+    root.toStyledString();
+    std::string out = root.toStyledString();
+
+    auto s = out.data();
+    boost::system::error_code ec;
+    sock.write_some(buffer(s,strlen(s)),ec);
+            std::cout<<"send message to server: " <<out<<endl;
+    if(ec)
+    {
+
+        std::cout << boost::system::system_error(ec).what() << std::endl;
+    }
+
+
+    char data[512];
+    memset(data,0,sizeof(char)*512);//reset 0 to data[]
+    sock.read_some(buffer(data),ec);
+    if(ec)
+    {
+        std::cout << boost::system::system_error(ec).what() << std::endl;
+
+    }
+        Json::Reader reader;
+        Json::Value resultRoot;
+
+        if (reader.parse(data, resultRoot))
+        {
+            const Json::Value arrayObj = resultRoot["array"];
+            for (unsigned int i = 0; i < arrayObj.size(); i++)
+            {
+
+                m_songList.append( QString::fromStdString( arrayObj[i]["id"].asString()));
+                m_songList.append( QString::fromStdString( arrayObj[i]["songName"].asString()));
+                m_songList.append( QString::fromStdString( arrayObj[i]["source"].asString()));
+
+            }
+            std::cout <<"receive frome server : "<< data <<std::endl;
+            return;
+        }
+}
+
+
+
+
+//**************************
+
 void Client::fileReceiver(){
     clock_ = clock();
     sock.receive(buffer(reinterpret_cast<char*>(&file_info_), sizeof(file_info_)));

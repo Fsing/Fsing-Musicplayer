@@ -26,6 +26,8 @@ public:
     void hasAccountTable();
     bool hasTable(const char* tableName);
 
+    std::string songList(std::string songListName);
+
 private:
 //    bool m_userNameFlag;
 //    bool m_userPasswordFlag;

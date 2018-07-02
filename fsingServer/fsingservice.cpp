@@ -72,6 +72,10 @@ string Server::dealMessage(string sig,vector<string> str,socket_ptr sock)
         res = database.addCreateSongList(str[1],str[2],str[3]);
         return res;
     }
+    else if(sig == "SONGLIST"){
+            res = database.songList(str[1]);
+            return res;
+        }
     return "nomatch sig";
 }
 
@@ -156,6 +160,9 @@ vector<string>  jsonParase(char data[]){
             parameter.push_back(value["username"].asString());
             parameter.push_back(value["songListName"].asString());
             parameter.push_back(value["createTime"].asString());
+        }else if(type == "SONGLIST"){
+            parameter.push_back(value["type"].asString());
+            parameter.push_back(value["songListName"].asString());
         }
         }
     return parameter;

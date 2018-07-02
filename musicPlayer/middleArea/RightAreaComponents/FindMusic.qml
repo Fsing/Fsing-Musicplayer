@@ -1,12 +1,41 @@
 import QtQuick 2.0
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls 1.4
+import QtQml.Models 2.2
 
 Rectangle {
     property int index: 0
-    color: "white"
+    property var songList: client.getSongList()
+
+    ListModel {
+        id:listmodel1
+    }
+                TableView {
+                    id: tableview
+                    anchors.fill: parent
+                    model:listmodel1
+
+                    TableViewColumn {
+                        title: "音乐标题"
+                        role: "title"
+                    }
+                    TableViewColumn {
+                        title: "歌手"
+                        role: "singer"
+                    }
+
+                    Component.onCompleted: {
+                        listmodel1.append(
+                                    {"title":songList[0],
+                                            "singer":songList[1]}
+                                        )
+                        console.log(songList)
+                    }
 
 
+                }
+
+/*
     Rectangle {
         property bool add: false
         id:dukou
@@ -69,4 +98,5 @@ Rectangle {
             }
         }
     }
+    */
 }
