@@ -11,7 +11,8 @@ SOURCES += main.cpp \
     song.cpp \
     fanbroker.cpp \
     songlistbroker.cpp \
-    songbroker.cpp
+    songbroker.cpp \
+    fanproxy.cpp
 LIBS += -lmysqlclient
 
 HEADERS += \
@@ -25,5 +26,8 @@ HEADERS += \
     fan.h \
     fanbroker.h \
     songbroker.h \
-    songlistbroker.h
+    songlistbroker.h \
+    fanproxy.h \
+    songlistproxy.h \
+    songproxy.h
 LIBS += -lpthread -lboost_system -lboost_thread -ljsoncpp

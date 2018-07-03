@@ -9,16 +9,12 @@
 class SongListBroker:public RalationBroker
 {
 public:
-    static SongListBroker *getInstance();
-//    void findByAuthor();
-//    void findByName();
-//    void selectAll();
-//    void getNext();
-//    void addSongList();
-//    void deleteSongList();
+    static std::shared_ptr<SongListBroker> getInstance();
+
 private:
     SongListBroker();
-    static SongListBroker *_instance;
-    std::map<std::string,std::shared_ptr<SongList>> _songLists;
+    static std::shared_ptr<SongListBroker> _instance;
+    std::multimap<std::string,SongList> _userSongLists;    //以用户名为键
+    std::multimap<std::string,SongList> _SystemSongLists;  //系统歌单，以歌单名为键
 };
 #endif // SONGLISTBROKER_H

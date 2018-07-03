@@ -5,7 +5,6 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include "database.h"
 #include "macro.h"
 #include "json/json.h"
 
@@ -19,7 +18,6 @@ typedef boost::shared_ptr<ip::tcp::socket> socket_ptr;
 io_service service;   //创建调度器
 ip::tcp::endpoint ep(ip::tcp::v4(),2001);  //监听端口
 ip::tcp::acceptor acc(service,ep); //创建连接器
-DatabaseController database;
 
 vector<std::string> jsonParase(char data[]);
 //接受客户端传来的请求事务,并将结果返回给客户端
@@ -59,7 +57,8 @@ string Server::dealMessage(string sig,vector<string> str,socket_ptr sock)
         res = database.myRegister(str[1],str[2]);
         return res;
     }else if(sig == "LOGIN"){
-        res = database.myLogin(str[1],str[2]);
+        cout << "enter dealMessage" << endl;
+        res = _fanProxy->myLogin(str[1],str[2]);
         return res;
     }else if(sig == "SEARCH"){
         res = database.search(str[1]);
@@ -91,13 +90,13 @@ void receiveMessage(socket_ptr sock)
     }
     std::cout<<ep1.address().to_string()<<"连接"<<std::endl;
 
-    Server service;
+    Server service1;
     while(true)
     {
         char data1[512];
         memset(data1,0,sizeof(char)*512);
 
-        DatabaseController database;
+//        DatabaseController database;
         /*auto len = */sock->read_some(buffer(data1), ec);
         if(ec)
         {
@@ -107,7 +106,7 @@ void receiveMessage(socket_ptr sock)
         cout << "receive from client : " << data1<<endl;
 
         auto result1 = jsonParase(data1);
-        auto result2 = service.dealMessage(result1[0],result1,sock);
+        auto result2 = service1.dealMessage(result1[0],result1,sock);
 
         if(result2 == "fileTransfer"){
             cout << "transfer finished" << endl;

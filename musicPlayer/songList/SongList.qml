@@ -61,28 +61,23 @@ Rectangle {
                     }
 
                     RowLayout {
+                        spacing: 10
                         PlayAllBtn {
                             id: addtoPlayListBtn
                         }
 
                         Button {
                             id: collectButton
-                            anchors.left: addtoPlayListBtn.right
-                            anchors.leftMargin: 10
                             text: "收藏"
                         }
 
                         Button {
                             id: shareButton
-                            anchors.left: collectButton.right
-                            anchors.leftMargin: 10
                             text: "分享"
                         }
 
                         Button {
                             id: downloadButton
-                            anchors.left: shareButton.right
-                            anchors.leftMargin: 10
                             text: "下载全部"
                             icon.source: "../images/leftArea/btndownload.png"
                         }
@@ -134,7 +129,6 @@ Rectangle {
                 }
                 Rectangle {
                     id: horline
-                    anchors.top: layout.bottom
                     //模拟线段
                     width: songlist.width //长
                     height: 2 //高

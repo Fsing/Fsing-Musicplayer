@@ -1,12 +1,12 @@
 #include "songlistbroker.h"
 
-SongListBroker *SongListBroker::_instance = new SongListBroker();
-
+std::shared_ptr<SongListBroker> SongListBroker::_instance = std::make_shared<SongListBroker>(SongListBroker());
 SongListBroker::SongListBroker()
 {
 
 }
-SongListBroker *SongListBroker::getInstance()
+std::shared_ptr<SongListBroker> SongListBroker::getInstance()
 {
     return _instance;
 }
+

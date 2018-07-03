@@ -9,16 +9,11 @@
 class SongBroker:public RalationBroker
 {
 public:
-    static SongBroker *getInstance();
-//    void findByName();
-//    void selectAll();
-//    void getNext();
-//    void addSong();
-//    void deleteSong();
+    static std::shared_ptr<SongBroker> getInstance();
 private:
-     SongBroker();
-    static SongBroker *_instance;
-    std::map<std::string,std::shared_ptr<Song>> _songs;
+    SongBroker();
+   static std::shared_ptr<SongBroker> _instance;
+   std::map<std::string,std::shared_ptr<Song>> _songs;
 };
 
 #endif // SONGBROKER_H
