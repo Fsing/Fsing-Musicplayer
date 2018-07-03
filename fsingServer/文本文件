@@ -3,10 +3,13 @@
 
 create database Fsing;
 use Fsing;
-create table SongInfo(id char(30) not null,name char(30) not null,source char(50) not null);
-insert into SongInfo(id,name,source) values("dukou","dukou_cn","rtsp://192.168.8.79/music/dukou.mp3");
-insert into SongInfo(id,name,source) values("yiluxiangbei","yiluxiangbei_cn","rtsp://192.168.8.79/music/yiluxiangbei.mp3");
-insert into SongInfo(id,name,source) values("zuimei","zuimei_cn","rtsp://192.168.8.79/music/zuimei.mp3");
+create table Song(id char(30) not null,name char(30) not null,source char(50) not null,singer char(30) not null,album char(30) not null ,size double not null,playQuantity int not null,downloadQuantity int not null,shareQuantity int not null);
+insert into Song(id,name,source,singer,album,playQuantity,downloadQuantity,shareQuantity) values('dukou',"dukou",'rtsp://192.168.8.79/music/dukou.mp3','caiqin','dukou',0,0,0);
+create table SongList(name char(30) not null,author char(30) not null,createTime date not null,label char(30) not null,info char(200) not null,icon char(50) not null ,collectionQuantity int not null,clickQuantity int not null,shareQuantity int not null);
+insert into SongList(name,author,createTime,label,info,icon,collectionQuantity,clickQuantity,shareQuantity) values('FindMusic',"huang",'2018-7-3 17:00:00','findmusic','the basic songlist of the system','findmusic.png',0,0,0);
+create table FindMusicSong(id char(30) not null,name char(30) not null,source char(50) not null,singer char(30) not null,album char(30) not null ,playQuantity int not null,downloadQuantity int not null,shareQuantity int not null);
+insert into FindMusicSong(id,name,source,singer,album,playQuantity,downloadQuantity,shareQuantity) values('zuimei',"zuimei",'rtsp://192.168.8.79/music/zuimei.mp3','caiqin','dukou',0,0,0);
+
 
 mysql创建用户，设置可操作数据库权限：
  

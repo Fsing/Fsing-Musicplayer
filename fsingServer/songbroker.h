@@ -2,7 +2,7 @@
 #define SONGBROKER_H
 #include "ralationbroker.h"
 #include "song.h"
-#include<map>
+#include <map>
 #include <memory>
 #include <string>
 
@@ -10,8 +10,10 @@ class SongBroker:public RalationBroker
 {
 public:
     static std::shared_ptr<SongBroker> getInstance();
+    std::shared_ptr<Song> findSong(std::string id); //在缓存中查询
+    std::shared_ptr<Song> retrievalSong(std::string id);
 private:
-    SongBroker();
+   SongBroker();
    static std::shared_ptr<SongBroker> _instance;
    std::map<std::string,std::shared_ptr<Song>> _songs;
 };

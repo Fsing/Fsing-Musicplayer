@@ -6,7 +6,7 @@ function popView(n) {
             return item.index === n ? true : false
         })
         if (findMusic === null) {
-            client.songList("SongInfo")
+            client.songList("FindMusic")
             stackView.push(findMusicComponent)
         } else {
             stackView.pop(findMusic)

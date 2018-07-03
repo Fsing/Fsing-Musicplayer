@@ -36,7 +36,7 @@ public:
     //创建歌单
     Q_INVOKABLE void addCreateSongList(QString username, QString songlistName, QString time);
     //下载音乐
-    Q_INVOKABLE QString songInformation(QString songSource);
+    Q_INVOKABLE QString songInformation(QString songId);
     Q_INVOKABLE QString search(QString key);
     Q_INVOKABLE void fileTransfer(QString fileName);
     Q_INVOKABLE void songList(QString songListName);//get songlist infomation

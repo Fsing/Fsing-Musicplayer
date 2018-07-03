@@ -61,6 +61,9 @@ std::string FanProxy::myRegister(std::string username, std::string password)
         if(insertUser(username,password)){
             root["registerSuccess"] = "SUCCESS";
         }
+        //创建用户原创歌单表
+        if(!hasTable(username + "CreatedSongList"))
+            createCreatedSongList(username + "CreatedSongList");
     }else{
         auto fanBroker = FanBroker::getInstance();
         auto res =fanBroker->findUser(username);
@@ -93,7 +96,7 @@ int getMaxid(string tableName)
         return 0;
     }
 
-    char sql[100];
+    char sql[1024];
     std::sprintf(sql,"select max(id) from %s",tableName.data());
     auto length = strlen(sql);
     mysql_real_query(&mysql,sql,length);
@@ -104,9 +107,13 @@ int getMaxid(string tableName)
     result = mysql_store_result(&mysql);
     if(result){
         if(row = mysql_fetch_row(result)){
+            if(row[0] == NULL)
+                maxid = 0;
+            else{
             string str = row[0];
             std::stringstream in(str);
             in >> maxid;
+            }
         }
     }
     return ++maxid;
@@ -120,7 +127,7 @@ bool FanProxy::insertUser(string username,string userpassword)
         return false;
     }
 
-    char sql[100];
+    char sql[1024];
     auto maxid = getMaxid("Account");
     std::sprintf(sql,"insert into Account(id,name,password) values('%d','%s','%s')",maxid,username.data(),userpassword.data());
     auto length = strlen(sql);
@@ -156,9 +163,11 @@ std::string FanProxy::addCreateSongList(std::string username, std::string songLi
         auto lname = songListName.data();
         auto ctime = time.data();
         auto tableName1 = tableName.data();
-        auto maxid = getMaxid(tableName);
-        char sql[100];
-        std::sprintf(sql,"insert into %s(id,username,listname,time) values('%d','%s','%s','%s')",tableName1,maxid,uname,lname,ctime);
+        //auto maxid = getMaxid(tableName);
+        char sql[1024];
+        std::sprintf(sql,"insert into %s"
+                         "(name,author,createTime,label,info,icon,collectionQuantity,clickQuantity,shareQuantity)"
+                         " values('%s','%s','%s','0','0','0',0,0,0)",tableName1,lname,uname,ctime);
         auto length = strlen(sql);
         if(!mysql_real_query(&mysql,sql,length)){
             cout <<"record create song list " << lname << " success " << endl;
@@ -187,7 +196,7 @@ bool FanProxy::hasTable(std::string tableName)
     //查找是否有tableName表
     MYSQL_RES *result;
     MYSQL_ROW row;
-    char sql1[100];
+    char sql1[1024];
     std::sprintf(sql1,"show tables;");
     auto length1 = std::strlen(sql1);
     mysql_real_query(&mysql,sql1,length1);
@@ -212,12 +221,13 @@ void FanProxy::createCreatedSongList(std::string songListName)
     }
 
     auto name = songListName.data();
-    char sql[100];
-    std::sprintf(sql,"CREATE TABLE %s("
-                     "id int NOT NULL AUTO_INCREMENT PRIMARY KEY,"
-                     "username char(20) not null,"
-                     "listname char(20) not null,"
-                     "time char(20) not null);",name);
+    char sql[512];
+    std::sprintf(sql,"create table %s(name char(30) "
+                     "not null,author char(30) not null,createTime"
+                     " date not null,label char(30) not null,"
+                     "info char(200) not null,icon char(50) not null"
+                     " ,collectionQuantity int not null,"
+                     "clickQuantity int not null,shareQuantity int not null);",name);
     auto length = strlen(sql);
     if(!mysql_real_query(&mysql,sql,length)){
         cout <<"create table " <<songListName << "!" << endl;

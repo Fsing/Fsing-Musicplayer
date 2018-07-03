@@ -168,11 +168,10 @@ void Client::myRegister(QString username, QString userpw)
     }
 }
 
-QString Client::songInformation(QString songSource){
+QString Client::songInformation(QString songId){
     Json::Value root;
     root["type"] = "SONGINFO";
-    root["songInfo"] = songSource.toStdString();
-    root.toStyledString();
+    root["songInfo"] = songId.toStdString();
     std::string out = root.toStyledString();
 
     auto s = out.data();
@@ -200,7 +199,7 @@ QString Client::songInformation(QString songSource){
       std::cout << "json received faild" <<std::endl;
       return "json received faild";
     }else {
-    string ret = resultRoot["songName"].asString();;
+    string ret = resultRoot["id"].asString();;
     m_result = QString::fromStdString(ret);
     std::cout <<"receive frome server : "<< m_result.toStdString() <<std::endl;
     return m_result;
@@ -246,8 +245,8 @@ QString Client::search(QString key){
     }
 
 
-    char data[512];
-    memset(data,0,sizeof(char)*512);//reset 0 to data[]
+    char data[1024*5];
+    memset(data,0,sizeof(char)*1024*5);//reset 0 to data[]
     sock.read_some(buffer(data),ec);
     if(ec)
     {
@@ -292,8 +291,8 @@ void Client::songList(QString songListName){
     }
 
 
-    char data[512];
-    memset(data,0,sizeof(char)*512);//reset 0 to data[]
+    char data[1024*5];
+    memset(data,0,sizeof(char)*1024*5);//reset 0 to data[]
     sock.read_some(buffer(data),ec);
     if(ec)
     {

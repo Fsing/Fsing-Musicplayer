@@ -5,8 +5,8 @@ import QtQml.Models 2.2
 
 Rectangle {
     property int index: 0
-    property var songList: client.getSongList()
 
+    /*
     ListModel {
         id:listmodel1
     }

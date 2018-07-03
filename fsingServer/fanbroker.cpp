@@ -74,7 +74,8 @@ std::shared_ptr<Fan> FanBroker::retrievalUser(std::string username)
             result = mysql_store_result(&mysql);
             if(result){
                 while(row = mysql_fetch_row(result)){
-                    songlists.push_back(std::make_shared<SongList>(SongList(row[1],row[2],row[3])));
+                    songlists.push_back(std::make_shared<SongList>(SongList(row[0],row[1],row[2],
+                            row[3],row[4],row[5],atoi(row[6]),atoi(row[7]),atoi(row[8]))));
                 }
             }
         }

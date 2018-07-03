@@ -51,7 +51,7 @@ string Server::dealMessage(string sig,vector<string> str,socket_ptr sock)
 {
     string res;
     if(sig == "SONGINFO"){
-        res = database.songInformation(str[1]);
+        res = _songProxy->songInformation(str[1]);
         return res;
     }else if(sig == "REGISTER"){
         res = _fanProxy->myRegister(str[1],str[2]);
@@ -72,7 +72,7 @@ string Server::dealMessage(string sig,vector<string> str,socket_ptr sock)
         return res;
     }
     else if(sig == "SONGLIST"){
-            res = database.songList(str[1]);
+            res = _songListProxy->songListInformation(str[1]) ;
             return res;
         }
     return "nomatch sig";
@@ -113,8 +113,8 @@ void receiveMessage(socket_ptr sock)
             return;
         }
         //写回客户端
-        char data2[512];
-        memset(data2,0,sizeof(char)*512);
+        char data2[1024*5];
+        memset(data2,0,sizeof(char)*1024*5);
         result2.copy(data2,result2.size(),0);
         sock->write_some(buffer(data2), ec);  //客户输入的消息，重新写到客户端
         if(ec)
