@@ -53,14 +53,14 @@ std::shared_ptr<Fan> FanBroker::retrievalUser(std::string username)
     }else{
         result = mysql_store_result(&mysql);
         if(result){
-            while(row = mysql_fetch_row(result)){
+            if(row = mysql_fetch_row(result)){
                 if(string(row[1]) == username){
                     name = row[1];
                     password = row[2];
                 }
+            }else{
+                return NULL;
             }
-        }else{
-            return NULL;
         }
 
         //查找用户歌单信息

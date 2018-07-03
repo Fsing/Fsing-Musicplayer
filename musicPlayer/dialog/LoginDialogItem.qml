@@ -87,7 +87,7 @@ Rectangle {
                 left: parent.left
                 leftMargin: (parent.width - remindMessage.width)/2.0
             }
-            visible: middleRegisterItemVisible && remindMessageVisible != "" ?true :false
+            visible: !middleItemVisibe && remindMessageVisible != "" ?true :false
         }
 
         //对话框的拖动
@@ -269,7 +269,7 @@ Rectangle {
     }
     function isInputAccept(username,userpassword)
     {
-        if(username != "" && userpassword != "")
+        if(username !== "" && userpassword !== "")
             return true;
         else
             return false;
@@ -284,43 +284,14 @@ Rectangle {
             else
                 remindMessageText = "注册失败，用户名或者密码错误"
         }
+        if(middleLoginItemVisible){
+            remindMessageVisible = result;
+            if(result === "PW_INVALID")
+                remindMessageText = "密码错误，请重新输入"
+            else if(result === "NAME_INVALID")
+                remindMessageText = "用户不存在"
+            else if(result === "SUCCESS")
+                topArea.loginDialog.close();
+        }
     }
-
-    //    Item {
-    //        id: bottomitem
-    //        width: parent.width
-    //        height: parent.height * 0.2
-    //        anchors.top: header.bottom
-    //        anchors.bottom: parent.bottom
-    //        anchors.left: parent.left
-    //        anchors.right: parent.right
-
-    //        ImageButton {
-    //            id: weixin
-    //            width: 50
-    //            height: 60
-    //            radius: 20
-    //            anchors {
-    //                left: parent.left
-    //                leftMargin: 50
-    //                top: parent.top
-    //                topMargin: 10
-    //            }
-    //            source: "../images/cloudMusic.ico"
-    //            text: "微信"
-    //        }
-    //        ImageButton {
-    //            width: 50
-    //            height: 60
-    //            radius: 20
-    //            anchors {
-    //                left: weixin.right
-    //                leftMargin: 20
-    //                top: parent.top
-    //                topMargin: 10
-    //            }
-    //            text: "QQ"
-    //            source: "../images/cloudMusic.ico"
-    //        }
-    //    }
 }

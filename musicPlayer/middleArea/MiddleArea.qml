@@ -9,6 +9,7 @@ Rectangle {
     color: "white"
 
     property var listmodel: leftArea.listmodel
+    property alias leftArea: leftArea
 
     LeftArea {
         id: leftArea

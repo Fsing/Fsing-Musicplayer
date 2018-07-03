@@ -56,11 +56,8 @@ Item {
             }
             onClicked: {
                 createClicked()
-                //                if (!rec_parent.showAllCreateClicked) {
                 rec_parent.showAllCreateClicked = true
-                //                } else {
-                //                    rec_parent.showAllCreateClicked = false
-                //                }
+
             }
         }
 

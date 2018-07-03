@@ -11,6 +11,7 @@ CommonDialog {
         onUserLoginClicked: {
             middleItemVisibe = false
             middleLoginItemVisible = true
+            remindMessageVisible = ""
         }
         onUserRegisterClicked: {
             middleItemVisibe = false
@@ -24,6 +25,7 @@ CommonDialog {
         }
         onLoginClicked: {
             mainWindow.client.myLogin(loginUserNameText, loginUserPasswordText)
+            setRemindMessage(client.result)
             console.log(client.result)
             if (client.logining) {
                 topRightButton.loginButtonSource = "qrc:/images/logo.jpg"
@@ -31,6 +33,7 @@ CommonDialog {
                 console.log("songlistnames" + client.songlistNames()[i])
                 //                var str = client.songliseNames()[i]
                 while (client.songlistNames()[i]) {
+                    if(middleArea.leftArea.showAllCreateClicked){
                     middleArea.listmodel.append({
                                                     recColor: "#F5F5F7",
                                                     imagesource: "../images/leftArea/list.png",
@@ -40,6 +43,18 @@ CommonDialog {
                                                     classifyText: "",
                                                     delegate_listVisible: true
                                                 })
+                    }else{
+                        middleArea.listmodel.append({
+                                                        recColor: "#F5F5F7",
+                                                        imagesource: "../images/leftArea/list.png",
+                                                        tx: client.songlistNames(
+                                                                )[i],
+                                                        opaci: 0.55,
+                                                        classifyText: "",
+                                                        delegate_listVisible: false
+                                                    })
+                    }
+
                     i++
                 }
             }

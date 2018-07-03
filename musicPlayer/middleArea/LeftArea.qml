@@ -179,7 +179,6 @@ Rectangle {
     CreateSongListDialog {
         id: createSongListDialog
         onInputAccepted: {
-
             listModel.append({
                                  recColor: "#F5F5F7",
                                  imagesource: "../images/leftArea/list.png",

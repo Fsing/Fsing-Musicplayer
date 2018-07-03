@@ -4,7 +4,7 @@ import QtQuick.Window 2.0
 import "../dialog"
 
 Rectangle {
-    id: rectangle
+    id: topArea
     width: parent.width
     height: 50
     color: "#C62F2F"
@@ -13,6 +13,7 @@ Rectangle {
 
     property var xPosition: 0.0
     property var yPosition: 0.0
+    property alias loginDialog: loginDialog
 
     //--------------左上角图标
     Image {

@@ -54,7 +54,7 @@ string Server::dealMessage(string sig,vector<string> str,socket_ptr sock)
         res = database.songInformation(str[1]);
         return res;
     }else if(sig == "REGISTER"){
-        res = database.myRegister(str[1],str[2]);
+        res = _fanProxy->myRegister(str[1],str[2]);
         return res;
     }else if(sig == "LOGIN"){
         cout << "enter dealMessage" << endl;
@@ -68,7 +68,7 @@ string Server::dealMessage(string sig,vector<string> str,socket_ptr sock)
         res = "fileTransfer";
         return res;
     }else if(sig == "CREATESONGLIST"){
-        res = database.addCreateSongList(str[1],str[2],str[3]);
+        res = _fanProxy->addCreateSongList(str[1],str[2],str[3]);
         return res;
     }
     else if(sig == "SONGLIST"){
