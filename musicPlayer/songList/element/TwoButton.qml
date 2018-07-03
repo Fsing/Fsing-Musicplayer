@@ -18,7 +18,7 @@ Item {
             id: firstButtonImage
             anchors.fill: parent
             opacity: 1
-            source: "../images/leftArea/list.png"
+            source: "qrc:/images/leftArea/list.png"
         }
     }
 
@@ -38,7 +38,7 @@ Item {
             id: secondButtonImage
             anchors.fill: parent
             opacity: 1
-            source: "../images/leftArea/list.png"
+            source: "qrc:/images/leftArea/list.png"
         }
     }
 }

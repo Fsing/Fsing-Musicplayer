@@ -6,7 +6,7 @@ Item {
     height: playImg.height
     Button {
         id: playImg
-        icon.source: "../images/bottomArea/play.png"
+        icon.source: "qrc:/images/bottomArea/play.png"
         text: "播放全部"
     }
     Rectangle {
@@ -25,6 +25,6 @@ Item {
         width: 30
         anchors.left: playImg.right
         anchors.leftMargin: 1
-        icon.source: "../images/leftArea/creatSongList.png"
+        icon.source: "qrc:/images/leftArea/creatSongList.png"
     }
 }

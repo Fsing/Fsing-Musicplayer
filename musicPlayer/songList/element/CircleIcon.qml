@@ -8,7 +8,7 @@ Item {
 
     Image {
         id: img
-        source: "../images/logo.jpg"
+        source: "qrc:/images/logo.jpg"
         sourceSize: Qt.size(parent.width, parent.height)
         anchors.fill: parent
         smooth: true
