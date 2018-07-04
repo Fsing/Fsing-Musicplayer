@@ -33,15 +33,16 @@ Client::Client()
 void Client::myConnect()
 {
     //    ip::tcp::socket sock(service);
+
     boost::system::error_code e;
     sock.async_connect(ep,[](const error_code &e){
         if(e){
-            cout << e.message() << endl;
+                        cout << e.message() << endl;
             return;
         }
     });
 
-    //    std::thread t(run_service);
+    //std::thread t(run_service);
     //    t.detach();
     //    boost::thread(run_service);
     //    return sock;

@@ -6,7 +6,7 @@
 class Song
 {
 public:
-    Song(std::string id,std::string name,std::string singer,std::string album,std::string source
+    Song(std::string id,std::string name,std::string source,std::string singer,std::string album
          ,int playQuantity,int downloadQuantity,int shareQuantity):
         m_id(id),m_name(name),m_singer(singer),m_album(album),m_source(source),
         m_playQuantity(playQuantity),m_downloadQuantity(downloadQuantity),m_shareQuantity(shareQuantity){}

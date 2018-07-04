@@ -167,7 +167,7 @@ vector<string>  jsonParase(char data[]){
     return parameter;
 }
 void Server::fileSender(string fileName,socket_ptr sock){
-    typedef boost::asio::ip::tcp TCP;
+    //typedef boost::asio::ip::tcp TCP;
 
     auto filename = fileName.data();
     FILE *fp = fopen(filename, "rb");

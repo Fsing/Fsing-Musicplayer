@@ -7,7 +7,7 @@ Rectangle {
     color: "red"
     anchors.right: parent.right
     anchors.bottom: bottomArea.top
-    visible: true
+    visible: false
     width: 300
     height: 500
     ListView {

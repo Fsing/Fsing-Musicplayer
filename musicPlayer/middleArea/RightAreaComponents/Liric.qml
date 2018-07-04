@@ -73,8 +73,9 @@ Rectangle {
         onCurrentIndexChanged: {
 
             //                root.current = currentIndex
-            pausetime.duration = lyricview.model[currentIndex + 1].time
-                    - lyricview.model[currentIndex].time
+            pausetime.duration =
+                    lyricview.model[lyricview.currentIndex + 1].time
+                    - lyricview.model[lyricview.currentIndex ].time
             lyricAnimtion.restart()
             if (rec0.current == lyricview.count)
                 lyricAnimtion.loops = 0
