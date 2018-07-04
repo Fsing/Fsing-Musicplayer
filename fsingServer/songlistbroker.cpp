@@ -13,17 +13,17 @@ std::shared_ptr<SongListBroker> SongListBroker::getInstance()
     return _instance;
 }
 
-std::shared_ptr<SongList> SongListBroker::findSongList(std::string songListName)
+std::shared_ptr<SongList> SongListBroker::findSongList(std::string songId)
 {
-    if(_systemSongList.find(songListName) != _systemSongList.end()){
-        std::cout << "find previous songlist "<< songListName << std::endl;
-        return _systemSongList[songListName];
+    if(_systemSongList.find(songId) != _systemSongList.end()){
+        std::cout << "find previous songlist "<< songId << std::endl;
+        return _systemSongList[songId];
     }else{
-        return retrievalSongList(songListName);
+        return retrievalSongList(songId);
     }
 }
 
-std::shared_ptr<SongList> SongListBroker::retrievalSongList(std::string songListName)
+std::shared_ptr<SongList> SongListBroker::retrievalSongList(std::string songId)
 {
     MYSQL mysql;
     mysql_init(&mysql);
@@ -39,9 +39,9 @@ std::shared_ptr<SongList> SongListBroker::retrievalSongList(std::string songList
 
     char sql[100];
     char sqlSong[100];
-    auto source = songListName.data();
-    auto sourceSong = (songListName + "Song").data();
-    std::sprintf(sql,"select * from SongList WHERE name = '%s'",source);
+    auto source = songId.data();
+    auto sourceSong = (songId + "Song").data();
+    std::sprintf(sql,"select * from SongList WHERE id = '%s'",source);
     std::sprintf(sqlSong,"select * from %s",sourceSong);
 
     size_t length =strlen(sql);
@@ -59,8 +59,8 @@ std::shared_ptr<SongList> SongListBroker::retrievalSongList(std::string songList
         result = mysql_store_result(&mysql);
 
         row = mysql_fetch_row(result);
-        std::shared_ptr<SongList> ret = std::make_shared<SongList>(SongList(row[0],row[1],row[2],
-                row[3],row[4],row[5],atoi(row[6]),atoi(row[7]),atoi(row[8])));
+        std::shared_ptr<SongList> ret = std::make_shared<SongList>(SongList(atoi(row[0]),row[1],row[2],
+                row[3],row[4],row[5],row[6],atoi(row[7]),atoi(row[8]),atoi(row[9])));
 
         _systemSongList.insert(std::make_pair(row[0],ret));
         if(resSong != 0){

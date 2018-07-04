@@ -5,9 +5,9 @@
 #include "json/json.h"
 #include <iostream>
 
-std::string SongListProxy::songListInformation(std::string songListName){
+std::string SongListProxy::songListInformation(std::string songId){
     auto songListBroker = SongListBroker::getInstance();
-    auto res =songListBroker->findSongList(songListName);
+    auto res =songListBroker->findSongList(songId);
 
     Json::Value root;
     Json::Value arryObj;
@@ -16,6 +16,7 @@ std::string SongListProxy::songListInformation(std::string songListName){
         root["hasData"] = "no";
         return root.toStyledString();
     }else{
+        root["id"] = res->getId();
         root["name"] = res->getName();
         root["author"] = res->getAuthor();
         root["createTime"] = res->getCreateTime();

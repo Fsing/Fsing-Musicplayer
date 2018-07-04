@@ -10,8 +10,8 @@ class SongListBroker:public RalationBroker
 {
 public:
     static std::shared_ptr<SongListBroker> getInstance();
-    std::shared_ptr<SongList> findSongList(std::string songListName); //在缓存中查询
-    std::shared_ptr<SongList> retrievalSongList(std::string songListName);
+    std::shared_ptr<SongList> findSongList(std::string songId); //在缓存中查询
+    std::shared_ptr<SongList> retrievalSongList(std::string songId);
 private:
     SongListBroker();
     static std::shared_ptr<SongListBroker> _instance;

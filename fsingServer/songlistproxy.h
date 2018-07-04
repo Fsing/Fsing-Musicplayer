@@ -5,7 +5,7 @@
 class SongListProxy
 {
 public:
-    std::string songListInformation(std::string songListName);
+    std::string songListInformation(std::string songId);
 
 };
 #endif // SONGLISTPROXY_H

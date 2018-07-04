@@ -10,16 +10,17 @@
 class SongList
 {
 public:
-    SongList(std::string name,std::string author, std::string createTime,std::string label,
+    SongList(int id,std::string name,std::string author, std::string createTime,std::string label,
              std::string info,std::string icon,int collectionQuantity,
              int clickQuantity,int shareQuantity)
-        :m_name{name},m_author{author},m_createTime{createTime},m_label{label},
+        :m_id{id},m_name{name},m_author{author},m_createTime{createTime},m_label{label},
           m_info{info},m_icon{icon},m_collectionQuantity{collectionQuantity},
           m_clickQuantity{clickQuantity},m_shareQuantity{shareQuantity}{}
     //insert
     void insertSong(std::string index,std::shared_ptr<Song> ret){_songs.insert(std::make_pair(index,ret));}
 
     //getting
+    int getId(){return m_id;}
     std::string getName(){return m_name;}
     std::string getAuthor(){return m_author;}
     std::string getCreateTime(){return m_createTime;}
@@ -36,6 +37,7 @@ public:
     }
 
 private:
+    int m_id;
     std::string m_name;             //歌单名
     std::string m_author;           //歌单创建者
     std::string m_createTime;       //创建时间

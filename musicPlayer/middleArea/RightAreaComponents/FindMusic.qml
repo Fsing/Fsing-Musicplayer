@@ -8,10 +8,11 @@ Rectangle {
     property int index: 0
 
 
-    RowLayout{
+    ColumnLayout{
         id: layout
         anchors.fill: parent
         spacing: 6
+        RowLayout{
 
         Rectangle {
             Layout.fillWidth: true
@@ -20,9 +21,8 @@ Rectangle {
             Layout.maximumWidth: 300
             Layout.minimumHeight: 200
             SongListRectangle{
-                id: songListRectangle
                 playQuantity: String(50)
-                source: "file:///"+applicationDirPath + "/list1.jpg"
+                source: "file:///"+applicationDirPath + "/image0.jpe"
             }
         }
         Rectangle {
@@ -32,6 +32,8 @@ Rectangle {
             Layout.maximumWidth: 300
             Layout.minimumHeight: 200
             SongListRectangle{
+                playQuantity: String(60)
+                source: "file:///"+applicationDirPath + "/image1.jpe"
             }
         }
         Rectangle {
@@ -41,7 +43,33 @@ Rectangle {
             Layout.maximumWidth: 300
             Layout.minimumHeight: 200
             SongListRectangle{
+                playQuantity: String(70)
+                source: "file:///"+applicationDirPath + "/image2.jpe"
+            }
+        }
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.minimumWidth: 200
+            Layout.maximumHeight: 300
+            Layout.maximumWidth: 300
+            Layout.minimumHeight: 200
+            SongListRectangle{
+                playQuantity: String(80)
+                source: "file:///"+applicationDirPath + "/image3.jpe"
+            }
+        }
+        }
+        RowLayout{
 
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.minimumWidth: 200
+            Layout.maximumHeight: 300
+            Layout.maximumWidth: 300
+            Layout.minimumHeight: 200
+            SongListRectangle{
+                playQuantity: String(50)
+                source: "file:///"+applicationDirPath + "/image4.jpg"
             }
         }
         Rectangle {
@@ -51,8 +79,32 @@ Rectangle {
             Layout.maximumWidth: 300
             Layout.minimumHeight: 200
             SongListRectangle{
-
+                playQuantity: String(60)
+                source: "file:///"+applicationDirPath + "/image5.jpg"
             }
+        }
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.minimumWidth: 200
+            Layout.maximumHeight: 300
+            Layout.maximumWidth: 300
+            Layout.minimumHeight: 200
+            SongListRectangle{
+                playQuantity: String(70)
+                source: "file:///"+applicationDirPath + "/image6.jpg"
+            }
+        }
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.minimumWidth: 200
+            Layout.maximumHeight: 300
+            Layout.maximumWidth: 300
+            Layout.minimumHeight: 200
+            SongListRectangle{
+                playQuantity: String(80)
+                source: "file:///"+applicationDirPath + "/image7.jpg"
+            }
+        }
         }
     }
 

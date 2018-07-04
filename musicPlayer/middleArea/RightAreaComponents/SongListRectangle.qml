@@ -10,7 +10,20 @@ Rectangle {
         height: 200
         anchors.centerIn: parent
         fillMode: Image.PreserveAspectCrop
-        source: "file:///"+applicationDirPath + "/file.jpg"
+    }
+    Text {
+        id: tips
+        width: 164
+        height: 29
+        color: "#060607"
+        visible: backImage.status === Image.Null
+         || backImage.status === Image.Error
+        anchors.centerIn: parent
+        text: qsTr("image is not avilable")
+        font.bold: true
+        font.pointSize: 11
+        verticalAlignment: Text.AlignVCenter
+        styleColor: "#ed1212"
     }
     Rectangle {
         id:playQuantityRectangle
@@ -23,7 +36,7 @@ Rectangle {
         anchors.topMargin: -30
         color: parent.color
         rotation:90
-        visible:!mouseArea.containsMouse
+        visible:!mouseArea.containsMouse && backImage.status === Image.Ready
         gradient: Gradient {
             GradientStop{
                 position: 0.0;
@@ -62,7 +75,7 @@ Rectangle {
         id: playImage
         width: 30
         height: 30
-        visible: mouseArea.containsMouse
+        visible: mouseArea.containsMouse && backImage.status === Image.Ready
         anchors.bottom: backImage.bottom
         anchors.right: backImage.right
         anchors.rightMargin: 20

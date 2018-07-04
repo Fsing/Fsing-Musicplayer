@@ -208,6 +208,13 @@ QString Client::songInformation(QString songId){
 }
 
 void Client::fileTransfer(QString fileName){
+    auto filename = fileName.toStdString().data();
+    FILE *fp = fopen(filename, "rb");
+    if (fp != NULL) {
+      cout << "find previous file" <<fileName.toStdString()<<endl;
+      return;
+    }
+
     Json::Value root;
     root["type"] = "FILETRANSFER";
     root["fileName"] = fileName.toStdString();
@@ -312,6 +319,45 @@ void Client::songList(QString songListName){
                 m_songList.append( QString::fromStdString( arrayObj[i]["songName"].asString()));
                 m_songList.append( QString::fromStdString( arrayObj[i]["source"].asString()));
 
+            }
+            std::cout <<"receive frome server : "<< data <<std::endl;
+            return;
+        }
+}
+void Client::interface(QString interfaceName){
+    Json::Value root;
+    root["type"] = "INTERFACE";
+    root["interfaceName"] = interfaceName.toStdString();
+    root.toStyledString();
+    std::string out = root.toStyledString();
+
+    auto s = out.data();
+    boost::system::error_code ec;
+    sock.write_some(buffer(s,strlen(s)),ec);
+            std::cout<<"send message to server: " <<out<<endl;
+    if(ec)
+    {
+
+        std::cout << boost::system::system_error(ec).what() << std::endl;
+    }
+
+
+    char data[1024*5];
+    memset(data,0,sizeof(char)*1024*5);//reset 0 to data[]
+    sock.read_some(buffer(data),ec);
+    if(ec)
+    {
+        std::cout << boost::system::system_error(ec).what() << std::endl;
+
+    }
+        Json::Reader reader;
+        Json::Value resultRoot;
+        if (reader.parse(data, resultRoot))
+        {
+            const Json::Value arrayObj = resultRoot["array"];
+            for (unsigned int i = 0; i < arrayObj.size(); i++)
+            {
+                //
             }
             std::cout <<"receive frome server : "<< data <<std::endl;
             return;

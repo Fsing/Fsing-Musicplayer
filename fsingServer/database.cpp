@@ -110,7 +110,56 @@ std::string DatabaseController::search(std::string songKey)
     }
     return "null infomation";
 }
+std::string DatabaseController::interface(std::string interfaceName){
 
+    MYSQL mysql;
+    mysql_init(&mysql);
+    if(!mysql_real_connect(&mysql,"localhost","fsing","fsing","Fsing",3306,NULL,0)){
+        cout << "findUser conect MYSQL failed!" << endl;
+        return "FAILD";
+    }
+    char sql[512];
+    memset(sql,0,sizeof(char)*512);
+    std::sprintf(sql,"select * from SongList");
+    size_t length =strlen(sql);
+    int res = mysql_real_query(&mysql,sql,length);
+    if(res != 0){
+        cout <<"songlist has no data" << endl;
+    }else{
+        MYSQL_RES *result;
+        MYSQL_ROW row;
+        //    MYSQL_FIELD *fields;
+
+        result = mysql_store_result(&mysql);
+        if(result){
+            Json::Value root;
+            Json::Value arrayObj;
+            root["type"] = "INTERFACE";
+
+            while(row = mysql_fetch_row(result)){
+
+                Json::Value item;
+                item["type"] = "SONGLIST";
+                item["id"] =row[0];
+                item["name"] = row[1];
+                item["author"] = row[2];
+                item["createTime"] = row[3];
+                item["label"] = row[4];
+                item["info"] = row[5];
+                item["icon"] = row[6];
+                item["collectionQuantity"] = row[7];
+                item["clickQuantity"] = row[8];
+                item["shareQuantity"] = row[9];
+                arrayObj.append(item);
+            }
+            root["array"] = arrayObj;
+            std::string out = root.toStyledString();
+            return out.data();
+        }
+    }
+    return "null infomation";
+
+}
 
 std::string DatabaseController::songList(std::string songListName)
 {

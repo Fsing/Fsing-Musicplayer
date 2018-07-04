@@ -74,7 +74,14 @@ string Server::dealMessage(string sig,vector<string> str,socket_ptr sock)
     else if(sig == "SONGLIST"){
             res = _songListProxy->songListInformation(str[1]) ;
             return res;
-        }
+    }
+    else if(sig == "INTERFACE"){
+            res = database.interface(str[1]);
+            return res;
+    }
+    else if(sig == "wrongParameter"){
+        res = "wrongParameter";
+    }
     return "nomatch sig";
 }
 
@@ -108,9 +115,7 @@ void receiveMessage(socket_ptr sock)
         auto result1 = jsonParase(data1);
         auto result2 = service1.dealMessage(result1[0],result1,sock);
 
-        if(result2 == "fileTransfer"){
-            return;
-        }
+        if(result2 != "fileTransfer"){
         //写回客户端
         char data2[1024*5];
         memset(data2,0,sizeof(char)*1024*5);
@@ -122,6 +127,7 @@ void receiveMessage(socket_ptr sock)
             break;
         }
         cout << "send to client : " << data2<<endl;
+        }
 
     }
     std::cout<<ep1.address().to_string()<<"关闭"<<std::endl;
@@ -161,7 +167,10 @@ vector<string>  jsonParase(char data[]){
         }else if(type == "SONGLIST"){
             parameter.push_back(value["type"].asString());
             parameter.push_back(value["songListName"].asString());
-        }
+        }else if(type == "INTERFACE"){
+            parameter.push_back(value["type"].asString());
+            parameter.push_back(value["interfaceName"].asString());
+        }else parameter.push_back("wrongParameter");
         }
     return parameter;
 }
@@ -221,6 +230,7 @@ void Server::fileSender(string fileName,socket_ptr sock){
     std::cout << "cost time: " << cost_time / (double) CLOCKS_PER_SEC  << " s "
       << "  transferred_bytes: " << total_bytes_read << " bytes\n"
       << "speed: " <<  speed << " MB/s\n\n";
+    return;
 }
 
 void dealResult(socket_ptr sock){}
