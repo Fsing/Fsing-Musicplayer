@@ -63,7 +63,7 @@ public:
     //filetransfer
     void fileReceiver();
     void handle_write(const boost::system::error_code& error, size_t bytes_transferred);
-    void receive_file_content();
+    void receive_file_content(std::string fileName);
     void handle_file(const boost::system::error_code& error);
     void handle_header(const boost::system::error_code& error);
 

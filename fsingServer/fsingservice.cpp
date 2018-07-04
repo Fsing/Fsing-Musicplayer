@@ -109,7 +109,6 @@ void receiveMessage(socket_ptr sock)
         auto result2 = service1.dealMessage(result1[0],result1,sock);
 
         if(result2 == "fileTransfer"){
-            cout << "transfer finished" << endl;
             return;
         }
         //写回客户端
@@ -172,7 +171,11 @@ void Server::fileSender(string fileName,socket_ptr sock){
     auto filename = fileName.data();
     FILE *fp = fopen(filename, "rb");
     if (fp == NULL) {
-      cout << "cannot open file\n" <<endl;;
+      cout << "cannot open file\n" <<endl;
+      File_info file_info;
+      char buffer[32 * 1024];
+      memcpy(buffer, &file_info, sizeof(file_info));
+      sock->send(boost::asio::buffer(buffer, sizeof(buffer)), 0);
       return;
     }
 

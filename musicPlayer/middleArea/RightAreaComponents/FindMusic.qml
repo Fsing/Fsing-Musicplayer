@@ -2,9 +2,59 @@ import QtQuick 2.0
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls 1.4
 import QtQml.Models 2.2
+import QtQuick.Layouts 1.2
 
 Rectangle {
     property int index: 0
+
+
+    RowLayout{
+        id: layout
+        anchors.fill: parent
+        spacing: 6
+
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.minimumWidth: 200
+            Layout.maximumHeight: 300
+            Layout.maximumWidth: 300
+            Layout.minimumHeight: 200
+            SongListRectangle{
+                id: songListRectangle
+                playQuantity: String(50)
+                source: "file:///"+applicationDirPath + "/list1.jpg"
+            }
+        }
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.minimumWidth: 200
+            Layout.maximumHeight: 300
+            Layout.maximumWidth: 300
+            Layout.minimumHeight: 200
+            SongListRectangle{
+            }
+        }
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.minimumWidth: 200
+            Layout.maximumHeight: 300
+            Layout.maximumWidth: 300
+            Layout.minimumHeight: 200
+            SongListRectangle{
+
+            }
+        }
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.minimumWidth: 200
+            Layout.maximumHeight: 300
+            Layout.maximumWidth: 300
+            Layout.minimumHeight: 200
+            SongListRectangle{
+
+            }
+        }
+    }
 
     /*
     ListModel {

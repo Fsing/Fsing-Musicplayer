@@ -225,7 +225,6 @@ void Client::fileTransfer(QString fileName){
     }
 
     fileReceiver();
-    cout << "transfer successful " << fileName.toStdString()<<endl;
 }
 
 QString Client::search(QString key){
@@ -327,6 +326,10 @@ void Client::songList(QString songListName){
 void Client::fileReceiver(){
     clock_ = clock();
     sock.receive(buffer(reinterpret_cast<char*>(&file_info_), sizeof(file_info_)));
+    if(file_info_.filename_size == 0){
+        std::cout<<"file is not exist"<<std::endl;
+        return;
+    }
     boost::system::error_code error;
     handle_header(error);
 }
@@ -354,17 +357,16 @@ void Client::handle_file(const boost::system::error_code& error)
   while (basename >= buffer_ && (*basename != '\\' && *basename != '/')) --basename;
   ++basename;
 
-  std::cout << "Open file: " << basename << " (" << buffer_ << ")\n";
-
   fp_ = fopen(basename, "wb");
   if (fp_ == NULL) {
     std::cerr << "Failed to open file to write\n";
     return;
   }
-  receive_file_content();
+  string fileName = basename;
+  receive_file_content(fileName);
 }
 
-void Client::receive_file_content()
+void Client::receive_file_content(string fileName)
 {
 
   boost::system::error_code error;
@@ -385,7 +387,9 @@ void Client::receive_file_content()
   }
   total_bytes_writen_ += fwrite(buffer_, 1, bytes_transferred, fp_);
   }
+
   fclose(fp_);
+  cout << "transfer successful " << fileName<<endl;
 }
 
 void Client::addCreateSongList(QString username,QString songlistName, QString time)

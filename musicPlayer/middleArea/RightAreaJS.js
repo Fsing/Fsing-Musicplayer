@@ -7,6 +7,7 @@ function popView(n) {
         })
         if (findMusic === null) {
             client.songList("FindMusic")
+            client.fileTransfer("list1.jpg")
             stackView.push(findMusicComponent)
         } else {
             stackView.pop(findMusic)
