@@ -4,6 +4,12 @@ import QtQuick.Controls 2.2
 import "./element"
 
 Item {
+    signal userClick
+    signal collectClick
+    signal shareClick
+    signal downloadClick
+    signal editClick
+
     RowLayout {
         x: 50
         spacing: 30
@@ -18,7 +24,7 @@ Item {
                     text: "歌单"
                 }
                 Text {
-                    text: "歌单名"
+                    text: songlist.listname
                 }
                 Button {
                     id: editbutton
@@ -26,6 +32,7 @@ Item {
                         id: editbuttonMouseArea
                         anchors.fill: parent
                         hoverEnabled: true
+                        onClicked: editClick()
                     }
 
                     background: Image {
@@ -41,12 +48,16 @@ Item {
                 CircleIcon {
                 }
 
-                Button {
-                    text: "用户名"
+                Text {
+                    text: songlist.username
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: userClick()
+                    }
                 }
 
                 Text {
-                    text: "创建时间"
+                    text: songlist.createTime
                 }
             }
 
@@ -59,17 +70,20 @@ Item {
                 Button {
                     id: collectButton
                     text: "收藏"
+                    onClicked: collectClick()
                 }
 
                 Button {
                     id: shareButton
                     text: "分享"
+                    onClicked: shareClick()
                 }
 
                 Button {
                     id: downloadButton
                     text: "下载全部"
                     icon.source: "../images/leftArea/btndownload.png"
+                    onClicked: downloadClick()
                 }
             }
 

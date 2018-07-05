@@ -4,11 +4,10 @@ import QtGraphicalEffects 1.0
 Item {
     width: 30
     height: 30
-    property string source: img.source
 
     Image {
         id: img
-        source: "qrc:/images/logo.jpg"
+        source: songlist.userImg
         sourceSize: Qt.size(parent.width, parent.height)
         anchors.fill: parent
         smooth: true

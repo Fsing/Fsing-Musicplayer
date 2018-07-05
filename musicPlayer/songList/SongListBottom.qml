@@ -5,7 +5,7 @@ import "./element"
 
 Rectangle {
     id: rectangle
-    height: 25 * (listsongs.row + 4)
+
 
     Column {
         RowLayout {

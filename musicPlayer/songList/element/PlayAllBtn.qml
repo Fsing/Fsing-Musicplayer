@@ -4,10 +4,15 @@ import QtQuick.Controls 2.2
 Item {
     width: playImg.width + 1 + textImg.width
     height: playImg.height
+
+    signal allClick
+    signal addClick
+
     Button {
         id: playImg
         icon.source: "qrc:/images/bottomArea/play.png"
         text: "播放全部"
+        onClicked: allClick()
     }
     Rectangle {
         id: line
@@ -26,5 +31,6 @@ Item {
         anchors.left: playImg.right
         anchors.leftMargin: 1
         icon.source: "qrc:/images/leftArea/creatSongList.png"
+        onClicked: addClick()
     }
 }

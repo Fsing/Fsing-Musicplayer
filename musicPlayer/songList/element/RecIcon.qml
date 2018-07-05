@@ -1,7 +1,6 @@
 import QtQuick 2.0
 
 Rectangle {
-    property string source: icon.source
     width: 250
     height: 250
     border.width: 1
@@ -9,7 +8,8 @@ Rectangle {
 
     Image {
         id: icon
-        source: ""
+        anchors.fill: parent
+        source: songlist.listImg
     }
 
     MouseArea {

@@ -3,15 +3,21 @@ import QtQuick.Layouts 1.11
 import QtQuick.Controls 2.4
 
 Item {
-    property bool lineVisible: line.visible
+    anchors.verticalCenter: parent.verticalCenter
     property string firstSource: firstButtonImage.source
     property string secondSource: secondButtonImage.source
+    signal buttonClick
     Button {
         id: firstButton
+        anchors.top: parent.top
         MouseArea {
             id: firstButtonMouseArea
             anchors.fill: parent
             hoverEnabled: true
+            onClicked: {
+                console.log("like")
+                buttonClick()
+            }
         }
 
         background: Image {
@@ -25,13 +31,17 @@ Item {
     Button {
         id: secondButton
         anchors.left: firstButton.right
-        anchors.leftMargin: 1
-        anchors.bottom: firstButton.bottom
+        anchors.leftMargin: 2
+        anchors.top: firstButton.top
 
         MouseArea {
             id: secondButtonMouseArea
             anchors.fill: parent
             hoverEnabled: true
+            onClicked: {
+                console.log("download")
+                buttonClick()
+            }
         }
 
         background: Image {
