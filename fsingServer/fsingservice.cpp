@@ -68,7 +68,7 @@ string Server::dealMessage(string sig,vector<string> str,socket_ptr sock)
         res = "fileTransfer";
         return res;
     }else if(sig == "CREATESONGLIST"){
-        res = _fanProxy->addCreateSongList(str[1],str[2],str[3]);
+        res = res = _songListProxy->addSongList(str[1],str[2],str[3]);
         return res;
     }
     else if(sig == "SONGLIST"){

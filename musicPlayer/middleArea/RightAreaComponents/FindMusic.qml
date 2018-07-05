@@ -6,7 +6,7 @@ import QtQuick.Layouts 1.2
 
 Rectangle {
     property int index: 0
-
+    property var interfaceParamter : client.getinterface()
 
     ColumnLayout{
         id: layout
@@ -22,7 +22,8 @@ Rectangle {
             Layout.minimumHeight: 200
             SongListRectangle{
                 playQuantity: String(50)
-                source: "file:///"+applicationDirPath + "/image0.jpe"
+                source: "file:///"+applicationDirPath + "/" + interfaceParamter[6]
+                songlistId: interfaceParamter[0]
             }
         }
         Rectangle {
@@ -33,7 +34,8 @@ Rectangle {
             Layout.minimumHeight: 200
             SongListRectangle{
                 playQuantity: String(60)
-                source: "file:///"+applicationDirPath + "/image1.jpe"
+                source: "file:///"+applicationDirPath + "/" + interfaceParamter[16]
+                songlistId: interfaceParamter[10]
             }
         }
         Rectangle {
@@ -44,7 +46,8 @@ Rectangle {
             Layout.minimumHeight: 200
             SongListRectangle{
                 playQuantity: String(70)
-                source: "file:///"+applicationDirPath + "/image2.jpe"
+                source: "file:///"+applicationDirPath + "/" + interfaceParamter[26]
+                songlistId: interfaceParamter[20]
             }
         }
         Rectangle {
@@ -55,7 +58,8 @@ Rectangle {
             Layout.minimumHeight: 200
             SongListRectangle{
                 playQuantity: String(80)
-                source: "file:///"+applicationDirPath + "/image3.jpe"
+                source: "file:///"+applicationDirPath + "/" + interfaceParamter[36]
+                songlistId: interfaceParamter[30]
             }
         }
         }
@@ -69,7 +73,8 @@ Rectangle {
             Layout.minimumHeight: 200
             SongListRectangle{
                 playQuantity: String(50)
-                source: "file:///"+applicationDirPath + "/image4.jpg"
+                source: "file:///"+applicationDirPath + "/" + interfaceParamter[46]
+                songlistId: interfaceParamter[40]
             }
         }
         Rectangle {
@@ -80,7 +85,8 @@ Rectangle {
             Layout.minimumHeight: 200
             SongListRectangle{
                 playQuantity: String(60)
-                source: "file:///"+applicationDirPath + "/image5.jpg"
+                source: "file:///"+applicationDirPath + "/" + interfaceParamter[56]
+                songlistId: interfaceParamter[50]
             }
         }
         Rectangle {
@@ -91,7 +97,8 @@ Rectangle {
             Layout.minimumHeight: 200
             SongListRectangle{
                 playQuantity: String(70)
-                source: "file:///"+applicationDirPath + "/image6.jpg"
+                source: "file:///"+applicationDirPath + "/" + interfaceParamter[66]
+                songlistId: interfaceParamter[60]
             }
         }
         Rectangle {
@@ -102,7 +109,8 @@ Rectangle {
             Layout.minimumHeight: 200
             SongListRectangle{
                 playQuantity: String(80)
-                source: "file:///"+applicationDirPath + "/image7.jpg"
+                source: "file:///"+applicationDirPath + "/" + interfaceParamter[76]
+                songlistId: interfaceParamter[70]
             }
         }
         }

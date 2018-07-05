@@ -105,26 +105,48 @@ void Client::myLogin(QString username, QString userpw)
     Json::Reader reader;
     Json::Value resultRoot;
     if(!reader.parse(data, resultRoot)){
-      std::cout << "json received faild" <<std::endl;
-      return;
+        std::cout << "json received faild" <<std::endl;
+        return;
     }else {
-    string ret = resultRoot["loginSuccess"].asString();
-    m_result = QString::fromStdString(ret);
-    cout << "login " << ret<<endl;
-    if (ret == "SUCCESS")
-        m_logining = true;
+        string ret = resultRoot["loginSuccess"].asString();
+        m_result = QString::fromStdString(ret);
+        cout << "login " << ret<<endl;
+        if (ret == "SUCCESS")
+            m_logining = true;
 
-    m_userName = username;
-    emit resultChanged();
+        m_userName = username;
+        emit resultChanged();
 
-    _songlistNames.clear();
-    const Json::Value arrayObj = resultRoot["array"];
-    for (unsigned int i = 0; i < arrayObj.size(); i++)
-    {
-        _songlistNames.append(QString::fromStdString(arrayObj[i].asString()));
+        _songlistNames.clear();
+        const Json::Value arrayObj = resultRoot["array"];
+        for (unsigned int i = 0; i < arrayObj.size(); i++)
+        {
+            string ret = resultRoot["loginSuccess"].asString();
+            if(ret == "")
+                m_result = "FAILD";
+            else
+                m_result = QString::fromStdString(ret);
+            emit resultChanged();
+            cout << "login " << ret<<endl;
+            if (ret == "SUCCESS")
+                m_logining = true;
+            emit loginingChanged();
+
+            m_userName = username;
+            emit userNameChanged();
+
+            _songlistNames.clear();
+            const Json::Value arrayObj = resultRoot["array"];
+            for (unsigned int i = 0; i < arrayObj.size(); i++)
+            {
+                _songlistNames.append(QString::fromStdString(arrayObj[i].asString()));
+
+            }
+        }
+
 
     }
-    }
+
 }
 
 void Client::myRegister(QString username, QString userpw)
@@ -158,14 +180,18 @@ void Client::myRegister(QString username, QString userpw)
     Json::Reader reader;
     Json::Value resultRoot;
     if(!reader.parse(data, resultRoot)){
-      std::cout << "json received faild" <<std::endl;
-      return;
+        std::cout << "json received faild" <<std::endl;
+        return;
     }else {
-    string ret = resultRoot["registerSuccess"].asString();
-    m_result = QString::fromStdString(ret);
-    cout << "register " << ret<<endl;
-    emit resultChanged();
-    return;
+        string ret = resultRoot["registerSuccess"].asString();
+        if(m_result == ""){
+            m_result = "FAILD";
+        }else
+            m_result = QString::fromStdString(ret);
+        cout << "register " << ret<<endl;
+        emit resultChanged();
+        return;
+
     }
 }
 
@@ -357,7 +383,17 @@ void Client::interface(QString interfaceName){
             const Json::Value arrayObj = resultRoot["array"];
             for (unsigned int i = 0; i < arrayObj.size(); i++)
             {
-                //
+                m_interface.append( QString::fromStdString( arrayObj[i]["id"].asString()));
+                m_interface.append( QString::fromStdString( arrayObj[i]["name"].asString()));
+                m_interface.append( QString::fromStdString( arrayObj[i]["author"].asString()));
+                m_interface.append( QString::fromStdString( arrayObj[i]["createTime"].asString()));
+                m_interface.append( QString::fromStdString( arrayObj[i]["label"].asString()));
+                m_interface.append( QString::fromStdString( arrayObj[i]["info"].asString()));
+                m_interface.append( QString::fromStdString( arrayObj[i]["icon"].asString()));
+                m_interface.append( QString::fromStdString( arrayObj[i]["collectionQuantity"].asString()));
+                m_interface.append( QString::fromStdString( arrayObj[i]["clickQuantity"].asString()));
+                m_interface.append( QString::fromStdString( arrayObj[i]["shareQuantity"].asString()));
+
             }
             std::cout <<"receive frome server : "<< data <<std::endl;
             return;

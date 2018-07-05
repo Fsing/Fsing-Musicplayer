@@ -56,7 +56,7 @@ public:
     Q_INVOKABLE int userID(){return m_userID;}
     Q_INVOKABLE bool logining(){return m_logining;}
     Q_INVOKABLE QString result(){return m_result;}
-    Q_INVOKABLE QList<QString> songlistNames() const{return _songlistNames;}
+    Q_INVOKABLE QList<QString> getinterface() const{return m_interface;}
     Q_INVOKABLE QList<QString> getSongList() const{return m_songList;}
 
 
@@ -87,6 +87,7 @@ private:
 
     //歌单名
     QList<QString> _songlistNames;
+    QList<QString> m_interface;
     //songlist infomation
     QList<QString> m_songList;
 

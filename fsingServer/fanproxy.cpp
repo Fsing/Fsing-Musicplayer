@@ -12,7 +12,8 @@ using std::cout;        using std::endl;
 std::string FanProxy::myLogin(std::string username, std::string password)
 {
     Json::Value root;
-    Json::Value arrayObj;
+    Json::Value arrayObj1;
+    Json::Value arrayObj2;
     root["type"] = "LOGIN";
 
     auto fanBroker = FanBroker::getInstance();
@@ -29,12 +30,16 @@ std::string FanProxy::myLogin(std::string username, std::string password)
         }else{
             root["loginSuccess"] = "SUCCESS";
             for(auto l:res->getCreatedSongList()){
-                arrayObj.append(l->getName());
+                arrayObj1.append(l->getName());
+            }
+            for(auto l:res->getCollectedSongList()){
+                arrayObj2.append(l->getName());
             }
         }
     }
 
-    root["array"] = arrayObj;
+    root["array"] = arrayObj1;
+    root["collectedArray"] = arrayObj2;
     root.toStyledString();
     return root.toStyledString();
 }
@@ -52,18 +57,24 @@ std::string FanProxy::myRegister(std::string username, std::string password)
     if(!mysql_real_connect(&mysql,"localhost","fsing","fsing","Fsing",3306,NULL,0)){
         cout << "myRegister conect MYSQL failed!" << endl;
         root["registerSuccess"] = "FAILD";
+        root.toStyledString();
+        return root.toStyledString();
     }
 
     //先查询是否有Account表，如果没有，则说明一个用户也没有，则可以直接创建Account,再往表中添加用户信息，完成注册
     //没有Account表,则创建Account表
     if(!hasTable("Account")){
-        createAccountTable();
+        if(createAccountTable()){
+            root["registerSuccess"] = "FAILD";
+            root.toStyledString();
+            return root.toStyledString();
+        }
         if(insertUser(username,password)){
             root["registerSuccess"] = "SUCCESS";
         }
-        //创建用户原创歌单表
-        if(!hasTable(username + "CreatedSongList"))
-            createCreatedSongList(username + "CreatedSongList");
+
+        //create CollectionRelation table
+        createCollectionRelationTable();
     }else{
         auto fanBroker = FanBroker::getInstance();
         auto res =fanBroker->findUser(username);
@@ -73,12 +84,9 @@ std::string FanProxy::myRegister(std::string username, std::string password)
             if(insertUser(username,password)){
                 root["registerSuccess"] = "SUCCESS";
             }
-            //创建用户原创歌单表
-            if(!hasTable(username + "CreatedSongList"))
-                createCreatedSongList(username + "CreatedSongList");
         }else{
             //用户存在，不可注册
-            root["registerSuccess"] = "USER_VALID";
+            root["registerSuccess"] = "NAME_INVALID";
         }
     }
 
@@ -87,7 +95,7 @@ std::string FanProxy::myRegister(std::string username, std::string password)
 }
 
 //获得指定表最大id
-int getMaxid(string tableName)
+int FanProxy::getMaxid(string tableName)
 {
     MYSQL mysql;
     mysql_init(&mysql);
@@ -138,52 +146,6 @@ bool FanProxy::insertUser(string username,string userpassword)
     return false;
 }
 
-
-std::string FanProxy::addCreateSongList(std::string username, std::string songListName, std::string time)
-{
-    Json::Value root;
-    root["type"] = "CREATESONGLIST";
-    root["username"] = username;
-    root["songListName"] = songListName;   //歌单名
-    root["createTime"] = time;
-
-    if(username.size()){
-        //记录创建歌单成功返回SUCCESS,反之返回FAILD
-        MYSQL mysql;
-        mysql_init(&mysql);
-        if(!mysql_real_connect(&mysql,"localhost","fsing","fsing","Fsing",3306,NULL,0)){
-            cout << "addCreateSongList conect MYSQL failed!" << endl;
-            root["recordSuccess"] = "FAILD";
-        }
-
-        //用户原创歌单表名
-        auto tableName = username + "CreatedSongList";
-        //往歌单表中插入一行歌单信息
-        auto uname = username.data();
-        auto lname = songListName.data();
-        auto ctime = time.data();
-        auto tableName1 = tableName.data();
-        //auto maxid = getMaxid(tableName);
-        char sql[1024];
-        std::sprintf(sql,"insert into %s"
-                         "(name,author,createTime,label,info,icon,collectionQuantity,clickQuantity,shareQuantity)"
-                         " values('%s','%s','%s','0','0','0',0,0,0)",tableName1,lname,uname,ctime);
-        auto length = strlen(sql);
-        if(!mysql_real_query(&mysql,sql,length)){
-            cout <<"record create song list " << lname << " success " << endl;
-            root["recordSuccess"] = "SUCCESS";
-        }else {
-            cout <<"record create song list " << lname << " false" << endl;
-            root["recordSuccess"] = "INSERT_FALSE";
-        }
-    }else{
-        cout <<"record create song list " << " false" << endl;
-        root["recordSuccess"] = "INSERT_FALSE";
-    }
-    root.toStyledString();
-    return root.toStyledString();
-}
-
 bool FanProxy::hasTable(std::string tableName)
 {
     MYSQL mysql;
@@ -211,7 +173,7 @@ bool FanProxy::hasTable(std::string tableName)
     return false;
 }
 
-void FanProxy::createCreatedSongList(std::string songListName)
+void FanProxy::createCollectionRelationTable()
 {
     MYSQL mysql;
     mysql_init(&mysql);
@@ -220,40 +182,53 @@ void FanProxy::createCreatedSongList(std::string songListName)
         return;
     }
 
-    auto name = songListName.data();
     char sql[512];
-    std::sprintf(sql,"create table %s(name char(30) "
-                     "not null,author char(30) not null,createTime"
-                     " date not null,label char(30) not null,"
-                     "info char(200) not null,icon char(50) not null"
-                     " ,collectionQuantity int not null,"
-                     "clickQuantity int not null,shareQuantity int not null);",name);
-    auto length = strlen(sql);
-    if(!mysql_real_query(&mysql,sql,length)){
-        cout <<"create table " <<songListName << "!" << endl;
+    string str{"create table CollectionRelation(songListName char(50) not null,collecteUser char(50) not null);"};
+//    std::sprintf(sql,"create table CollectionRelation(songListName char(50) not null,collecteUser char(50) not null);");
+//    auto length = strlen(sql);
+    if(!mysql_real_query(&mysql,"create table CollectionRelation(songListName char(50) not null,collecteUser char(50) not null);",str.size())){
+        cout <<"create table CollectionRelation!" << endl;
     }
 }
 
-void FanProxy::createAccountTable()
+bool FanProxy::createAccountTable()
 {
     MYSQL mysql;
     mysql_init(&mysql);
     if(!mysql_real_connect(&mysql,"localhost","fsing","fsing","Fsing",3306,NULL,0)){
         cout << "createAccountTable conect MYSQL failed!" << endl;
-        return;
+        return false;
     }
 
     //创建Account表
+//    string str{"CREATE TABLE Account("
+//               "id int NOT NULL AUTO_INCREMENT PRIMARY KEY,"
+//               "name char(20) not null,"
+//               "password char(20) not null);"};
     string str{"CREATE TABLE Account("
-               "id int NOT NULL AUTO_INCREMENT PRIMARY KEY,"
-               "name char(20) not null,"
-               "password char(20) not null);"};
+               "id int not null AUTO_INCREMENT PRIMARY KEY,"
+               "name char(30) not null,"
+               "password char(30) not null,"
+               "label char(50),"
+               "sex char(10),"
+               "birthday date,"
+               "address char(50),"
+               "icon char(100),"
+               "isVaild bool);"};
 
     auto length = str.size();
     if(!mysql_real_query(&mysql,"CREATE TABLE Account("
-                         "id int NOT NULL AUTO_INCREMENT PRIMARY KEY,"
-                         "name char(20) not null,"
-                         "password char(20) not null);",length)){
+                         "id int not null AUTO_INCREMENT PRIMARY KEY,"
+                         "name char(30) not null,"
+                         "password char(30) not null,"
+                         "label char(50),"
+                         "sex char(10),"
+                         "birthday date,"
+                         "address char(50),"
+                         "icon char(100),"
+                         "isVaild bool);",length)){
         cout <<"create table Account!" << endl;
-    }
+        return true;
+    }else
+        return false;
 }

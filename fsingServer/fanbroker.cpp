@@ -6,6 +6,7 @@
 #include <vector>
 #include <memory>
 #include "songlist.h"
+#include "songlistbroker.h"
 
 using std::cout;            using std::endl;
 using std::string;          using std::vector;
@@ -29,18 +30,24 @@ std::shared_ptr<Fan> FanBroker::findUser(std::string username)
 std::shared_ptr<Fan> FanBroker::retrievalUser(std::string username)
 {
     cout << "enter retrievalUser" << endl;
-    vector<std::shared_ptr<SongList>> songlists;
 
     MYSQL mysql;
     mysql_init(&mysql);
     if(!mysql_real_connect(&mysql,"localhost","fsing","fsing","Fsing",3306,NULL,0)){
-        cout << "findUser conect MYSQL failed!" << endl;
-        return NULL;
+        cout << "retrievalUser conect MYSQL failed!" << endl;
+        return nullptr;
     }
 
+    //    string id;
     string name;
     string password;
-    char sql[100];
+    string label;
+    string sex;
+    string birthday;
+    string address;
+    string icon;
+    //    bool idVaild;
+    char sql[512];
     MYSQL_RES *result;
     MYSQL_ROW row;
     //查找账户信息
@@ -48,43 +55,40 @@ std::shared_ptr<Fan> FanBroker::retrievalUser(std::string username)
     size_t length =strlen(sql);
     int res = mysql_real_query(&mysql,sql,length);
     if(res != 0){
-        cout <<"fondUser select * from Account failed" << endl;
-        return NULL;
+        cout <<"retrievalUser select * from Account failed" << endl;
+        return nullptr;
     }else{
         result = mysql_store_result(&mysql);
         if(result){
             if(row = mysql_fetch_row(result)){
                 if(string(row[1]) == username){
+                    //                    id = row[0];
                     name = row[1];
                     password = row[2];
+//                    label = row[3];
+//                    sex = row[4];
+//                    birthday = row[5];
+//                    address = row[6];
+//                    icon = row[7];
                 }
             }else{
-                return NULL;
+                return nullptr;
             }
         }
 
-        //查找用户歌单信息
-        string songlistname = name + "CreatedSongList";
-        std::sprintf(sql,"select * from %s",songlistname.data());
-        size_t length =strlen(sql);
-        int res = mysql_real_query(&mysql,sql,length);
-        if(res != 0){
-            cout <<"select * from " << songlistname << " faild " << endl;
-        }else{
-            result = mysql_store_result(&mysql);
-            if(result){
-                while(row = mysql_fetch_row(result)){
-                    songlists.push_back(std::make_shared<SongList>(SongList(atoi(row[0]),row[1],row[2],
-                            row[3],row[4],row[5],row[6],atoi(row[7]),atoi(row[8]),atoi(row[9]))));
-                }
-            }
-        }
+        //查找用户created歌单信息
+        auto songlistBroker = SongListBroker::getInstance();
+        auto createdSongLists = songlistBroker->findSongListsByUserName(username);
+
+        //查找用户collected歌单信息
+        vector<std::shared_ptr<SongList>> collectedSongLists = songlistBroker->findSongListsByCollectionRelation(username);
+
         //往缓存中添加用户
-        std::shared_ptr<Fan> ret = std::make_shared<Fan>(Fan(name,password,songlists));
-        _fans.insert(std::make_pair(name,ret));
+        std::shared_ptr<Fan> ret = std::make_shared<Fan>(Fan(name,password,icon,createdSongLists,collectedSongLists));
+        _fans.insert(std::make_pair(username,ret));
         return ret;
     }
-    return NULL;
+    return nullptr;
 }
 
 

@@ -25,14 +25,14 @@ std::shared_ptr<Song> SongBroker::retrievalSong(std::string id)
         return nullptr;
     }
 
-    char sql[100];
+    char sql[512];
     auto source = id.data();
 
     std::sprintf(sql,"select * from Song WHERE id = '%s'",source);
     size_t length =strlen(sql);
     int res = mysql_real_query(&mysql,sql,length);
     if(res != 0){
-        std::cout <<"fondUser select * from Account failed" << std::endl;
+        std::cout <<"retrievalSong: select * from Song failed" << std::endl;
         return nullptr;
     }else{
         MYSQL_RES *result;

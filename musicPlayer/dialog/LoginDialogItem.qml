@@ -51,6 +51,7 @@ Rectangle {
                     middleRegisterItemVisible = false
                     middleItemVisibe = true
                     remindMessageVisible = ""
+                    remindMessageText = ""
                 }
             }
         }
@@ -290,8 +291,14 @@ Rectangle {
                 remindMessageText = "密码错误，请重新输入"
             else if(result === "NAME_INVALID")
                 remindMessageText = "用户不存在"
-            else if(result === "SUCCESS")
+            else if(result === "SUCCESS"){
                 topArea.loginDialog.close();
+                middleLoginItemVisible = false
+                middleRegisterItemVisible = false
+                middleItemVisibe = true
+                remindMessageVisible = ""
+                remindMessageText = ""
+            }
         }
     }
 }
