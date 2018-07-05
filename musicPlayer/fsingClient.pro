@@ -38,6 +38,4 @@ HEADERS += \
 
 LIBS += -lpthread -lboost_system -lboost_thread -ljsoncpp
 
-DISTFILES += \
-    dialog/MenuDialog.qml \
-    dialog/MenuDialogItem.qml
+DISTFILES +=

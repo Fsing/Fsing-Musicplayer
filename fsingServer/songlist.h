@@ -6,6 +6,9 @@
 #include <map>
 //#include "fan.h"
 #include "song.h"
+#include <vector>
+
+class Fan;
 
 class SongList
 {
@@ -17,7 +20,7 @@ public:
           m_info{info},m_icon{icon},m_collectionQuantity{collectionQuantity},
           m_clickQuantity{clickQuantity},m_shareQuantity{shareQuantity}{}
     //insert
-    void insertSong(std::string index,std::shared_ptr<Song> ret){_songs.insert(std::make_pair(index,ret));}
+    void insertSong(std::shared_ptr<Song> ret);
 
     //getting
     int getId(){return m_id;}
@@ -32,12 +35,14 @@ public:
     int getClickQuantity(){return m_clickQuantity;}
     int getShareQuantity(){return m_shareQuantity;}
 
-    std::map<std::string,std::shared_ptr<Song>> getSongs(){
+    std::vector<std::shared_ptr<Song>> getSongs(){
         return _songs;
     }
 
+    //setting
+    void setSongs(std::vector<std::shared_ptr<Song>> songs);
 private:
-    int m_id;
+    int m_id;                       //歌单ID，歌单的关键字，标识符
     std::string m_name;             //歌单名
     std::string m_author;           //歌单创建者
     std::string m_createTime;       //创建时间
@@ -50,7 +55,7 @@ private:
     int m_collectionQuantity;       //收藏量
     int m_clickQuantity;            //点击量
     int m_shareQuantity;            //分享量
-    //std::map<std::string,std::shared_ptr<Fan>> _collectionUsers;        //收藏歌单的所有用户
-    std::map<std::string,std::shared_ptr<Song>> _songs;                 //歌单中的歌
+    std::vector<std::shared_ptr<Fan>> _collectionUsers;        //收藏歌单的所有用户
+    std::vector<std::shared_ptr<Song>> _songs;                 //歌单中的歌
 };
 #endif // SONGLIST_H

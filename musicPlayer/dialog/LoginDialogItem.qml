@@ -292,12 +292,12 @@ Rectangle {
             else if(result === "NAME_INVALID")
                 remindMessageText = "用户不存在"
             else if(result === "SUCCESS"){
-                topArea.loginDialog.close();
                 middleLoginItemVisible = false
                 middleRegisterItemVisible = false
                 middleItemVisibe = true
                 remindMessageVisible = ""
                 remindMessageText = ""
+                topArea.loginDialog.close();
             }
         }
     }
