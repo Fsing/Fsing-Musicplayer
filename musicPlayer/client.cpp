@@ -97,7 +97,9 @@ void Client::myLogin(QString username, QString userpw)
     //接受服务器返回的用户信息：基本信息、用户粉丝、关注、收藏歌单、创建歌单
     char data[512];
     memset(data,0,sizeof(char)*512);//reset 0 to data[]
+    while(strlen(data)==0){
     sock.read_some(buffer(data),ec);
+    }
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -170,7 +172,9 @@ void Client::myRegister(QString username, QString userpw)
     //读取服务器返回的消息：是否注册成功
     char data[512];
     memset(data,0,sizeof(char)*512);//reset 0 to data[]
+    while(strlen(data)==0){
     sock.read_some(buffer(data),ec);
+    }
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -214,7 +218,9 @@ QString Client::songInformation(QString songId){
 
     char data[512];
     memset(data,0,sizeof(char)*512);//reset 0 to data[]
+    while(strlen(data)==0){
     sock.read_some(buffer(data),ec);
+    }
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -282,7 +288,9 @@ QString Client::search(QString key){
 
     char data[1024*5];
     memset(data,0,sizeof(char)*1024*5);//reset 0 to data[]
+    while(strlen(data)==0){
     sock.read_some(buffer(data),ec);
+    }
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -328,7 +336,9 @@ void Client::songList(QString songListId){
 
     char data[1024*5];
     memset(data,0,sizeof(char)*1024*5);//reset 0 to data[]
+    while(strlen(data)==0){
     sock.read_some(buffer(data),ec);
+    }
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -390,7 +400,9 @@ void Client::interface(QString interfaceName){
 
     char data[1024*5];
     memset(data,0,sizeof(char)*1024*5);//reset 0 to data[]
+    while(strlen(data)==0){
     sock.read_some(buffer(data),ec);
+    }
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -516,7 +528,9 @@ void Client::addCreateSongList(QString username,QString songlistName, QString ti
     //读取服务器返回的消息：是否成功记录
     char data[512];
     memset(data,0,sizeof(char)*512);//reset 0 to data[]
+    while(strlen(data)==0){
     sock.read_some(buffer(data),ec);
+    }
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
