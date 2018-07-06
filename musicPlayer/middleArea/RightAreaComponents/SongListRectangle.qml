@@ -73,7 +73,7 @@ Rectangle {
         onClicked: {
             if(songlistId != "null"){
             client.songList(songlistId)
-            appendSong()
+                appendSong()
             findMusicstackView.push(songListPage)
 
 

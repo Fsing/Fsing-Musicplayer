@@ -11,8 +11,10 @@ Rectangle {
 
     Connections {
         target: mainWindow
-        onLeftButtonPressed:
+        onLeftButtonPressed:{
             findMusicstackView.pop(findMusicPage)
+        listmodel1.clear()
+        }
     }
 
     StackView {
@@ -162,6 +164,7 @@ Rectangle {
         var list = client.getSongList()
         var count = client.getSongListCount()
         for(var i = 0;i< count;++i){
+
         listmodel1.append(
             {
                      "album" : list[i*8 +3],

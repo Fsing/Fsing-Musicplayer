@@ -337,7 +337,10 @@ void Client::songList(QString songListId){
 
         if (reader.parse(data, resultRoot))
         {
-            const Json::Value arrayObj = resultRoot["array"];          
+            const Json::Value arrayObj = resultRoot["array"];
+            m_songListInformation.clear();
+            m_songList.clear();
+
             m_songListInformation.append( QString::fromStdString( resultRoot["id"].asString()));
             m_songListInformation.append( QString::fromStdString( resultRoot["name"].asString()));
             m_songListInformation.append( QString::fromStdString( resultRoot["author"].asString()));
