@@ -35,7 +35,7 @@ public:
     int getClickQuantity(){return m_clickQuantity;}
     int getShareQuantity(){return m_shareQuantity;}
 
-    std::vector<std::shared_ptr<Song>> getSongs(){
+    std::map<std::string,std::shared_ptr<Song>> getSongs(){
         return _songs;
     }
 
@@ -55,7 +55,7 @@ private:
     int m_collectionQuantity;       //收藏量
     int m_clickQuantity;            //点击量
     int m_shareQuantity;            //分享量
-    std::vector<std::shared_ptr<Fan>> _collectionUsers;        //收藏歌单的所有用户
-    std::vector<std::shared_ptr<Song>> _songs;                 //歌单中的歌
+    std::map<std::string,std::shared_ptr<Fan>> _collectionUsers;        //收藏歌单的所有用户
+    std::map<std::string,std::shared_ptr<Song>> _songs;                 //歌单中的歌
 };
 #endif // SONGLIST_H

@@ -10,7 +10,8 @@
 
 //class SongList;
 
-using std::string;      using std::vector;
+using std::string;      using std::map;
+using std::map;
 
 class Fan:public User
 {
@@ -19,8 +20,8 @@ public:
     Fan(string name,string password,string icon,vector<std::shared_ptr<SongList>> createdSonglists,vector<std::shared_ptr<SongList>> collectedSongList);
 
     //getting
-    vector<std::shared_ptr<SongList>> getCollectedSongList();
-    vector<std::shared_ptr<SongList>> getCreatedSongList();
+    map<string,std::shared_ptr<SongList>> getCollectedSongList();
+    map<string,std::shared_ptr<SongList>> getCreatedSongList();
     string getUserName();
     string getUserPw();
 //    int getUserId();
@@ -42,8 +43,8 @@ private:
     std::string m_address;      //地址
     std::string m_icon;         //头像，保存路径
     bool m_vaild;               //状态变量，用来标志歌曲是否违法，是否可用
-    vector<std::shared_ptr<SongList>> _collectedSongList;    //已收藏歌单
-    vector<std::shared_ptr<Fan>> _attentUsers;               //关注的用户
-    vector<std::shared_ptr<Fan>> _fanUsers;                   //粉丝
+    map<string,std::shared_ptr<SongList>> _collectedSongList;    //已收藏歌单
+    map<string,std::shared_ptr<Fan>> _attentUsers;               //关注的用户
+    map<string,std::shared_ptr<Fan>> _fanUsers;                   //粉丝
 };
 #endif // FAN_H
