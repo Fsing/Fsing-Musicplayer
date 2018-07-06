@@ -18,12 +18,12 @@ Rectangle {
             width: parent.width
             color: currentListRectangle.color
             Text {
-                text: client.songInformation(source)
+                text: client.getSongName()
             }
             MouseArea {
                 anchors.fill: parent
                 onClicked:{
-                    currentPlaylist.currentIndex = index
+                currentPlaylist.currentIndex = index
                 songChanged(currentPlaylist.currentItemSource)
                 }
             }

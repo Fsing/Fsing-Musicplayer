@@ -8,7 +8,6 @@ Item {
 
     Component {
         id: headView
-
         Item {
             width: parent.width
             height: 25
@@ -80,9 +79,16 @@ Item {
                     anchors.fill: parent
 
                     onClicked: {
+
                         wrapper.ListView.view.currentIndex = index
-                        mouse.accepted = false
                     }
+                    onDoubleClicked: {
+                        propagateComposedEvents: true
+                        client.songInformation(listmodel1.get(tableview.currentIndex).id);
+                        mediaPlayer.playlist.addItem(listmodel1.get(tableview.currentIndex).source)
+                        mediaPlayer.play()
+                        mouse.accepted = false
+                        }
                 }
                 Text {
                     text: id
@@ -137,11 +143,11 @@ Item {
         model: songlist.model
         header: headView
         focus: true
-        currentIndex: -1
 
         highlight: Rectangle {
             color: "lightblue"
         }
+
     }
     onTvisibleChanged: {
         if (!tvisible)

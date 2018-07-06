@@ -222,14 +222,16 @@ QString Client::songInformation(QString songId){
     }
     Json::Reader reader;
     Json::Value resultRoot;
+
     if(!reader.parse(data, resultRoot)){
       std::cout << "json received faild" <<std::endl;
       return "json received faild";
     }else {
-    string ret = resultRoot["id"].asString();;
+    string ret = resultRoot["id"].asString();
+    m_songName = QString::fromStdString(resultRoot["name"].asString());
     m_result = QString::fromStdString(ret);
-    std::cout <<"receive frome server : "<< m_result.toStdString() <<std::endl;
-    return m_result;
+    std::cout <<"receive frome server : "<< data <<std::endl;
+    return m_songName;
     }
 }
 
@@ -366,6 +368,7 @@ void Client::songList(QString songListId){
             std::cout <<"receive frome server : "<< data <<std::endl;
             return;
         }
+        cout<<"json receive failed"<<endl;
 }
 void Client::interface(QString interfaceName){
     Json::Value root;

@@ -53,6 +53,7 @@ public:
 
     //getting
     Q_INVOKABLE QString userName(){return m_userName;}
+    Q_INVOKABLE QString getSongName(){return m_songName;}
     Q_INVOKABLE int userID(){return m_userID;}
     Q_INVOKABLE bool logining(){return m_logining;}
     Q_INVOKABLE QString result(){return m_result;}

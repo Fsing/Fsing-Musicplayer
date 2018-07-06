@@ -145,7 +145,6 @@ Rectangle {
                     var songListInformation = client.getSongListInformation()
                     console.log(songListInformation)
                     listname = songListInformation[1]
-
                     listImg = "file:///"+applicationDirPath + "/" + songListInformation[6]
                     label = songListInformation[4]
                     briefInfo = songListInformation[5]
@@ -172,6 +171,7 @@ Rectangle {
                      "name" : list[i*8 +1],
                      "playQuantity" : list[i*8 +5],
                      "singer" : list[i*8 +2],
+                     "source" : list[i*8 +4]
              }
 
             )
