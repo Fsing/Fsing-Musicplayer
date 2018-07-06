@@ -13,7 +13,7 @@ public:
     static std::shared_ptr<SongBroker> getInstance();
     std::shared_ptr<Song> findSong(std::string id); //在缓存中查询
     std::shared_ptr<Song> retrievalSong(std::string id);
-    std::vector<std::shared_ptr<Song>> findSongsBySongListRelation(std::string songlistID);
+    std::map<std::string,std::shared_ptr<Song>> findSongsBySongListRelation(std::string songlistID);
 private:
    SongBroker();
    static std::shared_ptr<SongBroker> _instance;

@@ -3,6 +3,7 @@
 #include "string.h"
 #include <string>
 #include "songbroker.h"
+#include "fsingservice.h"
 
 using std::cout;
 using std::endl;
@@ -45,7 +46,9 @@ std::shared_ptr<SongList> SongListBroker::retrievalSongList(std::string songList
     int res = mysql_real_query(&mysql,sql,length);
 
     //记录歌单信息
-    std::shared_ptr<SongList> ret;
+
+
+    //std::shared_ptr<SongList> ret;
     if(res != 0){
         std::cout <<" select * from SongList failed" << std::endl;
         return nullptr;
@@ -54,18 +57,18 @@ std::shared_ptr<SongList> SongListBroker::retrievalSongList(std::string songList
         MYSQL_ROW row;
         result = mysql_store_result(&mysql);
         if(row = mysql_fetch_row(result)){
-            //使用构造函数，新创建一个歌单对象
-            ret = std::make_shared<SongList>(SongList(atoi(row[0]),row[1],row[2],
+            std::shared_ptr<SongList> ret = std::make_shared<SongList>(SongList(atoi(row[0]),row[1],row[2],
                     row[3],row[4],row[5],row[6],atoi(row[7]),atoi(row[8]),atoi(row[9])));
-        }
+       // }
 
         //查询歌单中的所有歌曲
         auto songBroker = SongBroker::getInstance();
         auto songs = songBroker->findSongsBySongListRelation(songListID);
         ret->setSongs(songs);
-        _songLists.insert(std::make_pair(songListID,ret));
 
+        _songLists.insert(std::make_pair(songListID,ret));
         return ret;
+        }
     }
 }
 std::shared_ptr<SongList> SongListBroker::findSongListBySongListNameAndUserName(std::string songlistname,std::string username)

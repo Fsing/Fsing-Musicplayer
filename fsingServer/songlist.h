@@ -7,6 +7,7 @@
 //#include "fan.h"
 #include "song.h"
 #include <vector>
+#include <string>
 
 class Fan;
 
@@ -20,7 +21,7 @@ public:
           m_info{info},m_icon{icon},m_collectionQuantity{collectionQuantity},
           m_clickQuantity{clickQuantity},m_shareQuantity{shareQuantity}{}
     //insert
-    void insertSong(std::shared_ptr<Song> ret);
+    void insertSong(std::string songlistID, std::shared_ptr<Song> ret);
 
     //getting
     int getId(){return m_id;}
@@ -40,7 +41,7 @@ public:
     }
 
     //setting
-    void setSongs(std::vector<std::shared_ptr<Song>> songs);
+    void setSongs(std::map<std::string,std::shared_ptr<Song>> songs);
 private:
     int m_id;                       //歌单ID，歌单的关键字，标识符
     std::string m_name;             //歌单名

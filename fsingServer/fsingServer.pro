@@ -8,7 +8,6 @@ SOURCES += main.cpp \
     fsingservice.cpp \
     fan.cpp \
     songlist.cpp \
-    song.cpp \
     fanbroker.cpp \
     songlistbroker.cpp \
     songbroker.cpp \

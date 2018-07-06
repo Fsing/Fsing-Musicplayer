@@ -306,10 +306,10 @@ QString Client::search(QString key){
 }
 
 
-void Client::songList(QString songListName){
+void Client::songList(QString songListId){
     Json::Value root;
     root["type"] = "SONGLIST";
-    root["songListName"] = songListName.toStdString();
+    root["songListId"] = songListId.toStdString();
     root.toStyledString();
     std::string out = root.toStyledString();
 

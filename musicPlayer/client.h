@@ -39,7 +39,7 @@ public:
     Q_INVOKABLE QString songInformation(QString songId);
     Q_INVOKABLE QString search(QString key);
     Q_INVOKABLE void fileTransfer(QString fileName);
-    Q_INVOKABLE void songList(QString songListName);//get songlist infomation
+    Q_INVOKABLE void songList(QString songListId);//get songlist infomation
     Q_INVOKABLE void interface(QString interfaceName);//get songlist infomation
 
 

@@ -166,7 +166,7 @@ vector<string>  jsonParase(char data[]){
             parameter.push_back(value["createTime"].asString());
         }else if(type == "SONGLIST"){
             parameter.push_back(value["type"].asString());
-            parameter.push_back(value["songListName"].asString());
+            parameter.push_back(value["songListId"].asString());
         }else if(type == "INTERFACE"){
             parameter.push_back(value["type"].asString());
             parameter.push_back(value["interfaceName"].asString());

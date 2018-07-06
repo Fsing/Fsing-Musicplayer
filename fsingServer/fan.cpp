@@ -6,7 +6,7 @@ Fan::Fan()
 }
 
 Fan::Fan(std::string name, std::string password, std::string icon, vector<std::shared_ptr<SongList> > createdSonglists, vector<std::shared_ptr<SongList> > collectedSongList)
-    :m_name{name},m_password{password},_createdSongList{createdSonglists},_collectedSongList{collectedSongList}
+    :m_name{name},m_password{password},m_icon{icon}, _createdSongList{createdSonglists},_collectedSongList{collectedSongList}
 {
 
 }

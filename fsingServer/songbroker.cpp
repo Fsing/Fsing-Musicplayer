@@ -51,9 +51,9 @@ std::shared_ptr<Song> SongBroker::retrievalSong(std::string id)
     }
 }
 
-std::vector<std::shared_ptr<Song> > SongBroker::findSongsBySongListRelation(std::string songlistID)
+std::map<std::string,std::shared_ptr<Song>> SongBroker::findSongsBySongListRelation(std::string songlistID)
 {
-    std::vector<std::shared_ptr<Song>> ret;
+    std::map<std::string,std::shared_ptr<Song>> ret;
     MYSQL mysql;
     mysql_init(&mysql);
     if(!mysql_real_connect(&mysql,"localhost","fsing","fsing","Fsing",3306,NULL,0)){
@@ -74,10 +74,27 @@ std::vector<std::shared_ptr<Song> > SongBroker::findSongsBySongListRelation(std:
         result = mysql_store_result(&mysql);
         if(result){
             while(row = mysql_fetch_row(result)){
-                //查找歌单中的所有歌曲,并push进vector
-                ret.push_back(std::make_shared<Song>(Song(atoi(row[0]),row[1],row[2],row[3],row[4],atoi(row[5]),atoi(row[6]),atoi(row[7]))));
+                char sqlSong[512];
+                MYSQL_RES *resultSong;
+                MYSQL_ROW rowSong;
+                std::sprintf(sqlSong,"select * from Song WHERE id = '%s'",row[1]);
+                auto lengthSong =strlen(sqlSong);
+                int resSong = mysql_real_query(&mysql,sqlSong,lengthSong);
+                if(resSong != 0){
+                    std::cout <<"findSong: select * from Song failed" << std::endl;
+                    return ret;
+                }else{
+                    resultSong = mysql_store_result(&mysql);
+                    if(resultSong){
+                        while(rowSong = mysql_fetch_row(resultSong)){
+                            ret.insert(std::make_pair(rowSong[0],
+                                       std::make_shared<Song>(Song(atoi(rowSong[0]),rowSong[1],
+                                       rowSong[2],rowSong[3],rowSong[4],atoi(rowSong[5]),atoi(rowSong[6]),atoi(rowSong[7])))));
+                        }
+                }
             }
         }
+    }
     }
     return ret;
 }
