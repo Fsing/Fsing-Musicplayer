@@ -1,10 +1,13 @@
 import QtQuick 2.0
+import "../../songList/"
 
 Rectangle {
     anchors.fill: parent;
     property alias source: backImage.source
     property alias playQuantity: playQuantityText.text
     property string songlistId : "null"
+
+
     Image {
         id: backImage
         width: 200
@@ -68,8 +71,13 @@ Rectangle {
         anchors.fill: parent
         hoverEnabled: true
         onClicked: {
-            if(songlistId != "null")
+            if(songlistId != "null"){
             client.songList(songlistId)
+            appendSong()
+            findMusicstackView.push(songListPage)
+
+
+            }
         }
 
     }

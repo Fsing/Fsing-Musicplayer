@@ -26,6 +26,8 @@ Window {
 
     signal positionChange(int positions)
     signal songChanged(string song)
+    signal leftButtonPressed
+    signal rightButtonPressed
 
     //---------------------top栏
     TopArea {

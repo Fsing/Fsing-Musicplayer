@@ -337,14 +337,28 @@ void Client::songList(QString songListId){
 
         if (reader.parse(data, resultRoot))
         {
-            const Json::Value arrayObj = resultRoot["array"];
+            const Json::Value arrayObj = resultRoot["array"];          
+            m_songListInformation.append( QString::fromStdString( resultRoot["id"].asString()));
+            m_songListInformation.append( QString::fromStdString( resultRoot["name"].asString()));
+            m_songListInformation.append( QString::fromStdString( resultRoot["author"].asString()));
+            m_songListInformation.append( QString::fromStdString( resultRoot["createTime"].asString()));
+            m_songListInformation.append( QString::fromStdString( resultRoot["label"].asString()));
+            m_songListInformation.append( QString::fromStdString( resultRoot["info"].asString()));
+            m_songListInformation.append( QString::fromStdString( resultRoot["icon"].asString()));
+            m_songListInformation.append( QString::fromStdString( resultRoot["collectionQuantity"].asString()));
+            m_songListInformation.append( QString::fromStdString( resultRoot["clickQuantity"].asString()));
+            m_songListInformation.append( QString::fromStdString( resultRoot["shareQuantity"].asString()));
+
             for (unsigned int i = 0; i < arrayObj.size(); i++)
             {
-
                 m_songList.append( QString::fromStdString( arrayObj[i]["id"].asString()));
-                m_songList.append( QString::fromStdString( arrayObj[i]["songName"].asString()));
+                m_songList.append( QString::fromStdString( arrayObj[i]["name"].asString()));
+                m_songList.append( QString::fromStdString( arrayObj[i]["singer"].asString()));
+                m_songList.append( QString::fromStdString( arrayObj[i]["album"].asString()));
                 m_songList.append( QString::fromStdString( arrayObj[i]["source"].asString()));
-
+                m_songList.append( QString::fromStdString( arrayObj[i]["playQuantity"].asString()));
+                m_songList.append( QString::fromStdString( arrayObj[i]["shareQuantity"].asString()));
+                m_songList.append( QString::fromStdString( arrayObj[i]["downloadQuantity"].asString()));
             }
             std::cout <<"receive frome server : "<< data <<std::endl;
             return;

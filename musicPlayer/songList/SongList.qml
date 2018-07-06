@@ -24,16 +24,7 @@ Rectangle {
     //歌单简介
     property var briefInfo
 
-    ListModel {
-        id: listmodel
-        ListElement {
-            number: "01"
-            title: "一路向北"
-            singer: "周杰伦"
-            songlist: "zjl"
-            time: "03:48"
-        }
-    }
+
 
     ScrollView {
         id: scroll
@@ -58,7 +49,7 @@ Rectangle {
             SongListBottom {
                 id: songListBottom
                 width: songlist.width
-                height: 25 * (listmodel.count + 8)
+                height: 1500
             }
         }
     }

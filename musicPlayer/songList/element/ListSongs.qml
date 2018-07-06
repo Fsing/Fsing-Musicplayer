@@ -19,7 +19,7 @@ Item {
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: 8
                     Text {
-                        text: " "
+                        text: "id"
                         font.pixelSize: 15
                         Layout.preferredWidth: 120
                     }
@@ -30,7 +30,7 @@ Item {
                     }
 
                     Text {
-                        text: "音乐标题"
+                        text: "标题"
                         font.pixelSize: 15
                         Layout.preferredWidth: 120
                     }
@@ -85,8 +85,7 @@ Item {
                     }
                 }
                 Text {
-                    id: coll
-                    text: number
+                    text: id
                     color: wrapper.ListView.isCurrentItem ? "red" : "black"
                     font.pixelSize: wrapper.ListView.isCurrentItem ? 15 : 14
                     Layout.preferredWidth: 120
@@ -102,53 +101,8 @@ Item {
                         wrapper.ListView.view.currentIndex = index
                     }
                 }
-
-                //                Button {
-                //                    id: firstButton
-                //                    anchors.top: parent.top
-                //                    MouseArea {
-                //                        id: firstButtonMouseArea
-                //                        anchors.fill: parent
-                //                        hoverEnabled: true
-                //                        onClicked: {
-                //                            console.log("like")
-                //                            buttonClick()
-                //                        }
-                //                    }
-
-                //                    background: Image {
-                //                        id: firstButtonImage
-                //                        anchors.fill: parent
-                //                        opacity: 1
-                //                        source: "qrc:/images/leftArea/list.png"
-                //                    }
-                //                }
-
-                //                Button {
-                //                    id: secondButton
-                //                    anchors.left: firstButton.right
-                //                    anchors.leftMargin: 2
-                //                    anchors.top: firstButton.top
-
-                //                    MouseArea {
-                //                        id: secondButtonMouseArea
-                //                        anchors.fill: parent
-                //                        hoverEnabled: true
-                //                        onClicked: {
-                //                            console.log("download")
-                //                            buttonClick()
-                //                        }
-                //                    }
-
-                //                    background: Image {
-                //                        id: secondButtonImage
-                //                        anchors.fill: parent
-                //                        opacity: 1
-                //                        source: "qrc:/images/leftArea/list.png"
-                //                    }
-                //                }
                 Text {
-                    text: title
+                    text: name
                     color: wrapper.ListView.isCurrentItem ? "red" : "black"
                     font.pixelSize: wrapper.ListView.isCurrentItem ? 15 : 14
                     Layout.preferredWidth: 120
@@ -160,14 +114,14 @@ Item {
                     Layout.preferredWidth: 120
                 }
                 Text {
-                    text: songlist
+                    text: album
                     color: wrapper.ListView.isCurrentItem ? "red" : "black"
                     font.pixelSize: wrapper.ListView.isCurrentItem ? 15 : 14
                     Layout.preferredWidth: 120
                 }
 
                 Text {
-                    text: time
+                    text: playQuantity
                     color: wrapper.ListView.isCurrentItem ? "red" : "black"
                     font.pixelSize: wrapper.ListView.isCurrentItem ? 15 : 14
                     Layout.fillWidth: true
@@ -184,6 +138,7 @@ Item {
         header: headView
         focus: true
         currentIndex: -1
+
         highlight: Rectangle {
             color: "lightblue"
         }

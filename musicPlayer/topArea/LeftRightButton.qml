@@ -20,6 +20,9 @@ Rectangle {
             id: leftButtonMouseArea;
             anchors.fill: parent;
             hoverEnabled: true;
+            onClicked: {
+                leftButtonPressed()
+            }
         }
 
         background: Image {
@@ -49,6 +52,8 @@ Rectangle {
             id: rightButtonMouseArea;
             anchors.fill: parent;
             hoverEnabled: true;
+            onClicked:
+                rightButtonPressed()
         }
         background: Image {
             mirror: true

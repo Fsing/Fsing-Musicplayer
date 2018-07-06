@@ -57,7 +57,9 @@ public:
     Q_INVOKABLE bool logining(){return m_logining;}
     Q_INVOKABLE QString result(){return m_result;}
     Q_INVOKABLE QList<QString> getinterface() const{return m_interface;}
+    Q_INVOKABLE QList<QString> getSongListInformation() const {return m_songListInformation;}
     Q_INVOKABLE QList<QString> getSongList() const{return m_songList;}
+    Q_INVOKABLE int getSongListCount() const{return m_songList.size()/8;}
 
 
 
@@ -89,7 +91,9 @@ private:
     QList<QString> _songlistNames;
     QList<QString> m_interface;
     //songlist infomation
+    QList<QString> m_songListInformation;
     QList<QString> m_songList;
+    int m_songListCount;
 
     //for file transfer
     clock_t clock_;
