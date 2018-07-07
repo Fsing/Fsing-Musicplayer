@@ -112,16 +112,20 @@ std::string FanProxy::myRegister(std::string username, std::string password)
     //先查询是否有Account表，如果没有，则说明一个用户也没有，则可以直接创建Account,再往表中添加用户信息，完成注册
     //没有Account表,则创建Account表
     if(!hasTable("Account")){
-        if(createAccountTable()){
+        if(!createAccountTable()){
             root["registerSuccess"] = "FAILD";
             root.toStyledString();
             return root.toStyledString();
         }
         if(insertUser(username,password,"","","","","")){
             root["registerSuccess"] = "SUCCESS";
+        }else{
+            root["registerSuccess"] = "FAILD";
+            root.toStyledString();
+            return root.toStyledString();
         }
 
-        //create CollectionRelation table
+        //创建 CollectionRelation表
         createCollectionRelationTable();
     }else{
         auto fanBroker = FanBroker::getInstance();
@@ -131,10 +135,16 @@ std::string FanProxy::myRegister(std::string username, std::string password)
         if(res == NULL){
             if(insertUser(username,password,"","","","","")){
                 root["registerSuccess"] = "SUCCESS";
+            }else{
+                root["registerSuccess"] = "FAILD";
+                root.toStyledString();
+                return root.toStyledString();
             }
         }else{
             //用户存在，不可注册
             root["registerSuccess"] = "NAME_INVALID";
+            root.toStyledString();
+            return root.toStyledString();
         }
     }
 

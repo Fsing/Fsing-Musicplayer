@@ -37,7 +37,7 @@ void Client::myConnect()
     boost::system::error_code e;
     sock.async_connect(ep,[](const error_code &e){
         if(e){
-                        cout << e.message() << endl;
+            cout << e.message() << endl;
             return;
         }
     });
@@ -157,7 +157,7 @@ void Client::myRegister(QString username, QString userpw)
     char data[512];
     memset(data,0,sizeof(char)*512);//reset 0 to data[]
     while(strlen(data)==0){
-    sock.read_some(buffer(data),ec);
+        sock.read_some(buffer(data),ec);
     }
     if(ec)
     {
@@ -192,7 +192,7 @@ QString Client::songInformation(QString songId){
     auto s = out.data();
     boost::system::error_code ec;
     sock.write_some(buffer(s,strlen(s)),ec);
-            std::cout<<"send message to server: " <<out<<endl;
+    std::cout<<"send message to server: " <<out<<endl;
     if(ec)
     {
 
@@ -203,7 +203,7 @@ QString Client::songInformation(QString songId){
     char data[512];
     memset(data,0,sizeof(char)*512);//reset 0 to data[]
     while(strlen(data)==0){
-    sock.read_some(buffer(data),ec);
+        sock.read_some(buffer(data),ec);
     }
     if(ec)
     {
@@ -214,14 +214,14 @@ QString Client::songInformation(QString songId){
     Json::Value resultRoot;
 
     if(!reader.parse(data, resultRoot)){
-      std::cout << "json received faild" <<std::endl;
-      return "json received faild";
+        std::cout << "json received faild" <<std::endl;
+        return "json received faild";
     }else {
-    string ret = resultRoot["id"].asString();
-    m_songName = QString::fromStdString(resultRoot["name"].asString());
-    m_result = QString::fromStdString(ret);
-    std::cout <<"receive frome server : "<< data <<std::endl;
-    return m_songName;
+        string ret = resultRoot["id"].asString();
+        m_songName = QString::fromStdString(resultRoot["name"].asString());
+        m_result = QString::fromStdString(ret);
+        std::cout <<"receive frome server : "<< data <<std::endl;
+        return m_songName;
     }
 }
 
@@ -229,8 +229,8 @@ void Client::fileTransfer(QString fileName){
     auto filename = fileName.toStdString().data();
     FILE *fp = fopen(filename, "rb");
     if (fp != NULL) {
-      cout << "find previous file" <<fileName.toStdString()<<endl;
-      return;
+        cout << "find previous file" <<fileName.toStdString()<<endl;
+        return;
     }
 
     Json::Value root;
@@ -242,7 +242,7 @@ void Client::fileTransfer(QString fileName){
 
     boost::system::error_code ec;
     sock.write_some(buffer(s,strlen(s)),ec);
-            std::cout<<"send message to server: " <<out<<endl;
+    std::cout<<"send message to server: " <<out<<endl;
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -261,7 +261,7 @@ QString Client::search(QString key){
     auto s = out.data();
     boost::system::error_code ec;
     sock.write_some(buffer(s,strlen(s)),ec);
-            std::cout<<"send message to server: " <<out<<endl;
+    std::cout<<"send message to server: " <<out<<endl;
     if(ec)
     {
 
@@ -273,12 +273,12 @@ QString Client::search(QString key){
     char data[1024*5];
     memset(data,0,sizeof(char)*1024*5);//reset 0 to data[]
     while(strlen(data)==0){
-    sock.read_some(buffer(data),ec);
+        sock.read_some(buffer(data),ec);
     }
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
-                return "ERROR";
+        return "ERROR";
     }
 
 
@@ -310,7 +310,7 @@ void Client::songList(QString songListId){
     auto s = out.data();
     boost::system::error_code ec;
     sock.write_some(buffer(s,strlen(s)),ec);
-            std::cout<<"send message to server: " <<out<<endl;
+    std::cout<<"send message to server: " <<out<<endl;
     if(ec)
     {
 
@@ -321,48 +321,48 @@ void Client::songList(QString songListId){
     char data[1024*5];
     memset(data,0,sizeof(char)*1024*5);//reset 0 to data[]
     while(strlen(data)==0){
-    sock.read_some(buffer(data),ec);
+        sock.read_some(buffer(data),ec);
     }
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
 
     }
-        Json::Reader reader;
-        Json::Value resultRoot;
+    Json::Reader reader;
+    Json::Value resultRoot;
 
-        if (reader.parse(data, resultRoot))
+    if (reader.parse(data, resultRoot))
+    {
+        const Json::Value arrayObj = resultRoot["array"];
+        m_songListInformation.clear();
+        m_songList.clear();
+
+        m_songListInformation.append( QString::fromStdString( resultRoot["id"].asString()));
+        m_songListInformation.append( QString::fromStdString( resultRoot["name"].asString()));
+        m_songListInformation.append( QString::fromStdString( resultRoot["author"].asString()));
+        m_songListInformation.append( QString::fromStdString( resultRoot["createTime"].asString()));
+        m_songListInformation.append( QString::fromStdString( resultRoot["label"].asString()));
+        m_songListInformation.append( QString::fromStdString( resultRoot["info"].asString()));
+        m_songListInformation.append( QString::fromStdString( resultRoot["icon"].asString()));
+        m_songListInformation.append( QString::fromStdString( resultRoot["collectionQuantity"].asString()));
+        m_songListInformation.append( QString::fromStdString( resultRoot["clickQuantity"].asString()));
+        m_songListInformation.append( QString::fromStdString( resultRoot["shareQuantity"].asString()));
+
+        for (unsigned int i = 0; i < arrayObj.size(); i++)
         {
-            const Json::Value arrayObj = resultRoot["array"];
-            m_songListInformation.clear();
-            m_songList.clear();
-
-            m_songListInformation.append( QString::fromStdString( resultRoot["id"].asString()));
-            m_songListInformation.append( QString::fromStdString( resultRoot["name"].asString()));
-            m_songListInformation.append( QString::fromStdString( resultRoot["author"].asString()));
-            m_songListInformation.append( QString::fromStdString( resultRoot["createTime"].asString()));
-            m_songListInformation.append( QString::fromStdString( resultRoot["label"].asString()));
-            m_songListInformation.append( QString::fromStdString( resultRoot["info"].asString()));
-            m_songListInformation.append( QString::fromStdString( resultRoot["icon"].asString()));
-            m_songListInformation.append( QString::fromStdString( resultRoot["collectionQuantity"].asString()));
-            m_songListInformation.append( QString::fromStdString( resultRoot["clickQuantity"].asString()));
-            m_songListInformation.append( QString::fromStdString( resultRoot["shareQuantity"].asString()));
-
-            for (unsigned int i = 0; i < arrayObj.size(); i++)
-            {
-                m_songList.append( QString::fromStdString( arrayObj[i]["id"].asString()));
-                m_songList.append( QString::fromStdString( arrayObj[i]["name"].asString()));
-                m_songList.append( QString::fromStdString( arrayObj[i]["singer"].asString()));
-                m_songList.append( QString::fromStdString( arrayObj[i]["album"].asString()));
-                m_songList.append( QString::fromStdString( arrayObj[i]["source"].asString()));
-                m_songList.append( QString::fromStdString( arrayObj[i]["playQuantity"].asString()));
-                m_songList.append( QString::fromStdString( arrayObj[i]["shareQuantity"].asString()));
-                m_songList.append( QString::fromStdString( arrayObj[i]["downloadQuantity"].asString()));
-            }
-            std::cout <<"receive frome server : "<< data <<std::endl;
-            return;
+            m_songList.append( QString::fromStdString( arrayObj[i]["id"].asString()));
+            m_songList.append( QString::fromStdString( arrayObj[i]["name"].asString()));
+            m_songList.append( QString::fromStdString( arrayObj[i]["singer"].asString()));
+            m_songList.append( QString::fromStdString( arrayObj[i]["album"].asString()));
+            m_songList.append( QString::fromStdString( arrayObj[i]["source"].asString()));
+            m_songList.append( QString::fromStdString( arrayObj[i]["playQuantity"].asString()));
+            m_songList.append( QString::fromStdString( arrayObj[i]["shareQuantity"].asString()));
+            m_songList.append( QString::fromStdString( arrayObj[i]["downloadQuantity"].asString()));
         }
-        cout<<"json receive failed"<<endl;
+        std::cout <<"receive frome server : "<< data <<std::endl;
+        return;
+    }
+    cout<<"json receive failed"<<endl;
 }
 void Client::interface(QString interfaceName){
     Json::Value root;
@@ -374,7 +374,7 @@ void Client::interface(QString interfaceName){
     auto s = out.data();
     boost::system::error_code ec;
     sock.write_some(buffer(s,strlen(s)),ec);
-            std::cout<<"send message to server: " <<out<<endl;
+    std::cout<<"send message to server: " <<out<<endl;
     if(ec)
     {
 
@@ -385,35 +385,35 @@ void Client::interface(QString interfaceName){
     char data[1024*5];
     memset(data,0,sizeof(char)*1024*5);//reset 0 to data[]
     while(strlen(data)==0){
-    sock.read_some(buffer(data),ec);
+        sock.read_some(buffer(data),ec);
     }
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
 
     }
-        Json::Reader reader;
-        Json::Value resultRoot;
-        if (reader.parse(data, resultRoot))
+    Json::Reader reader;
+    Json::Value resultRoot;
+    if (reader.parse(data, resultRoot))
+    {
+        const Json::Value arrayObj = resultRoot["array"];
+        for (unsigned int i = 0; i < arrayObj.size(); i++)
         {
-            const Json::Value arrayObj = resultRoot["array"];
-            for (unsigned int i = 0; i < arrayObj.size(); i++)
-            {
-                m_interface.append( QString::fromStdString( arrayObj[i]["id"].asString()));
-                m_interface.append( QString::fromStdString( arrayObj[i]["name"].asString()));
-                m_interface.append( QString::fromStdString( arrayObj[i]["author"].asString()));
-                m_interface.append( QString::fromStdString( arrayObj[i]["createTime"].asString()));
-                m_interface.append( QString::fromStdString( arrayObj[i]["label"].asString()));
-                m_interface.append( QString::fromStdString( arrayObj[i]["info"].asString()));
-                m_interface.append( QString::fromStdString( arrayObj[i]["icon"].asString()));
-                m_interface.append( QString::fromStdString( arrayObj[i]["collectionQuantity"].asString()));
-                m_interface.append( QString::fromStdString( arrayObj[i]["clickQuantity"].asString()));
-                m_interface.append( QString::fromStdString( arrayObj[i]["shareQuantity"].asString()));
+            m_interface.append( QString::fromStdString( arrayObj[i]["id"].asString()));
+            m_interface.append( QString::fromStdString( arrayObj[i]["name"].asString()));
+            m_interface.append( QString::fromStdString( arrayObj[i]["author"].asString()));
+            m_interface.append( QString::fromStdString( arrayObj[i]["createTime"].asString()));
+            m_interface.append( QString::fromStdString( arrayObj[i]["label"].asString()));
+            m_interface.append( QString::fromStdString( arrayObj[i]["info"].asString()));
+            m_interface.append( QString::fromStdString( arrayObj[i]["icon"].asString()));
+            m_interface.append( QString::fromStdString( arrayObj[i]["collectionQuantity"].asString()));
+            m_interface.append( QString::fromStdString( arrayObj[i]["clickQuantity"].asString()));
+            m_interface.append( QString::fromStdString( arrayObj[i]["shareQuantity"].asString()));
 
-            }
-            std::cout <<"receive frome server : "<< data <<std::endl;
-            return;
         }
+        std::cout <<"receive frome server : "<< data <<std::endl;
+        return;
+    }
 }
 
 
@@ -434,14 +434,14 @@ void Client::fileReceiver(){
 void Client::handle_header(const boost::system::error_code& error)
 {
     if (error) {
-      std::cout << boost::system::system_error(error).what() << std::endl;
+        std::cout << boost::system::system_error(error).what() << std::endl;
     };
-  size_t filename_size = file_info_.filename_size;
-  if (filename_size > k_buffer_size) {
-    std::cerr << "Path name is too long!\n";
-    return;
-  }
-  //得用async_read, 不能用async_read_some，防止路径名超长时，一次接收不完
+    size_t filename_size = file_info_.filename_size;
+    if (filename_size > k_buffer_size) {
+        std::cerr << "Path name is too long!\n";
+        return;
+    }
+    //得用async_read, 不能用async_read_some，防止路径名超长时，一次接收不完
     read(sock, buffer(buffer_, file_info_.filename_size));
     handle_file(error);
 }
@@ -449,45 +449,45 @@ void Client::handle_header(const boost::system::error_code& error)
 void Client::handle_file(const boost::system::error_code& error)
 {
     if (error) {
-      std::cout << boost::system::system_error(error).what() << std::endl;
+        std::cout << boost::system::system_error(error).what() << std::endl;
     };
-  const char *basename = buffer_ + file_info_.filename_size - 1;
-  while (basename >= buffer_ && (*basename != '\\' && *basename != '/')) --basename;
-  ++basename;
+    const char *basename = buffer_ + file_info_.filename_size - 1;
+    while (basename >= buffer_ && (*basename != '\\' && *basename != '/')) --basename;
+    ++basename;
 
-  fp_ = fopen(basename, "wb");
-  if (fp_ == NULL) {
-    std::cerr << "Failed to open file to write\n";
-    return;
-  }
-  string fileName = basename;
-  receive_file_content(fileName);
+    fp_ = fopen(basename, "wb");
+    if (fp_ == NULL) {
+        std::cerr << "Failed to open file to write\n";
+        return;
+    }
+    string fileName = basename;
+    receive_file_content(fileName);
 }
 
 void Client::receive_file_content(string fileName)
 {
 
-  boost::system::error_code error;
-  size_t bytes_transferred = 0;
-  total_bytes_writen_ = 0;
+    boost::system::error_code error;
+    size_t bytes_transferred = 0;
+    total_bytes_writen_ = 0;
 
-  while(total_bytes_writen_ != file_info_.filesize){
-      bytes_transferred = sock.receive(buffer(buffer_, k_buffer_size));
-      //bytes_transferred = strlen(buffer_);
-  if (error) {
-    if (error != error::eof)
-        return;
-    File_info::Size_type filesize = file_info_.filesize;
-    if (total_bytes_writen_ != filesize)
-        std::cerr <<  "Filesize not matched! " << total_bytes_writen_
-          << "/" << filesize << "\n";
-    return;
-  }
-  total_bytes_writen_ += fwrite(buffer_, 1, bytes_transferred, fp_);
-  }
+    while(total_bytes_writen_ != file_info_.filesize){
+        bytes_transferred = sock.receive(buffer(buffer_, k_buffer_size));
+        //bytes_transferred = strlen(buffer_);
+        if (error) {
+            if (error != error::eof)
+                return;
+            File_info::Size_type filesize = file_info_.filesize;
+            if (total_bytes_writen_ != filesize)
+                std::cerr <<  "Filesize not matched! " << total_bytes_writen_
+                           << "/" << filesize << "\n";
+            return;
+        }
+        total_bytes_writen_ += fwrite(buffer_, 1, bytes_transferred, fp_);
+    }
 
-  fclose(fp_);
-  cout << "transfer successful " << fileName<<endl;
+    fclose(fp_);
+    cout << "transfer successful " << fileName<<endl;
 }
 
 void Client::addCreateSongList(QString username,QString songlistName, QString time)
@@ -513,7 +513,7 @@ void Client::addCreateSongList(QString username,QString songlistName, QString ti
     char data[512];
     memset(data,0,sizeof(char)*512);//reset 0 to data[]
     while(strlen(data)==0){
-    sock.read_some(buffer(data),ec);
+        sock.read_some(buffer(data),ec);
     }
     if(ec)
     {
@@ -524,12 +524,12 @@ void Client::addCreateSongList(QString username,QString songlistName, QString ti
     Json::Reader reader;
     Json::Value resultRoot;
     if(!reader.parse(data, resultRoot)){
-      std::cout << "json received faild" <<std::endl;
-      return;
+        std::cout << "json received faild" <<std::endl;
+        return;
     }else {
-    string ret = resultRoot["record"].asString();
-    cout << "record create song list " << ret<<endl;
-    return;
+        string ret = resultRoot["record"].asString();
+        cout << "record create song list " << ret<<endl;
+        return;
     }
 }
 
