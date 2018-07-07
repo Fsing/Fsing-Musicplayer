@@ -4,6 +4,7 @@
 #include <QObject>
 #include <boost/asio.hpp>
 #include <boost/shared_ptr.hpp>
+#include "fan.h"
 
 struct File_info {
     typedef unsigned long long Size_type;
@@ -20,7 +21,7 @@ class Client:public QObject
     Q_PROPERTY(int userID READ userID WRITE setUserID NOTIFY userIDChanged)
     Q_PROPERTY(bool logining READ logining WRITE setLogining NOTIFY loginingChanged)
     Q_PROPERTY(QString result READ result WRITE setResult NOTIFY resultChanged)
-    Q_PROPERTY(QList<QString> createdSongLists READ createdSongLists NOTIFY createdSongListsChanged)
+//    Q_PROPERTY(QList<QString> createdSongLists READ createdSongLists NOTIFY createdSongListsChanged)
 
 public:
     //构造函数
@@ -91,6 +92,7 @@ private:
     QString m_result;
     QString m_songName;
 
+   Fan _fan;
     //歌单名
     QList<QString> _songlistNames;
     QList<QString> m_interface;

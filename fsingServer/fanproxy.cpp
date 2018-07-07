@@ -62,7 +62,7 @@ std::string FanProxy::myLogin(std::string username, std::string password)
             for(auto l:res->getAttenedFans()){
                 Json::Value item;
                 item["name"] = l.second->getUserName();
-                item["passsword"] = l.second->getUserPw();
+                item["password"] = l.second->getUserPw();
                 item["label"] = l.second->getlabel();
                 item["sex"] = l.second->getSex();
                 item["birthday"] = l.second->getBirthday();
@@ -73,7 +73,7 @@ std::string FanProxy::myLogin(std::string username, std::string password)
             for(auto l:res->getFanusers()){
                 Json::Value item;
                 item["name"] = l.second->getUserName();
-                item["passsword"] = l.second->getUserPw();
+                item["password"] = l.second->getUserPw();
                 item["label"] = l.second->getlabel();
                 item["sex"] = l.second->getSex();
                 item["birthday"] = l.second->getBirthday();

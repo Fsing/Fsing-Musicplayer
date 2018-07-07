@@ -1,54 +1,83 @@
 #ifndef FAN_H
 #define FAN_H
 
-#include <string>
-#include <map>
-#include <memory>
-#include <string>
-#include <vector>
+#include <QObject>
+#include "songlist.h"
 
 using std::string;      using std::vector;
 using std::map;
 
-class Fan:public User
+class Fan:QObject
 {
+    Q_OBJECT
+    Q_PROPERTY(QString username READ username WRITE setUsername NOTIFY usernameChanged)
+    Q_PROPERTY(QString password READ password WRITE setPassword NOTIFY passwordChanged)
+    Q_PROPERTY(QString label READ label WRITE setLabel NOTIFY labelChanged)
+    Q_PROPERTY(QString sex READ sex WRITE setSex NOTIFY sexChanged)
+    Q_PROPERTY(QString birthday READ birthday WRITE setBirthday NOTIFY birthdayChanged)
+    Q_PROPERTY(QString address READ address WRITE setAddress NOTIFY addressChanged)
+    Q_PROPERTY(QString icon READ icon WRITE setIcon NOTIFY iconChanged)
 public:
-    Fan();
-    Fan(string name,string password,string label,string sex,string birthday,string address,string icon);
+    //构造函数
+    Fan(){}
+    Fan(QString name,QString password,QString label,QString sex,QString birthday,QString address,QString icon);
 
     //getting
-    std::map<std::string, std::shared_ptr<SongList>> getCollectedSongList();
-    std::map<std::string, std::shared_ptr<SongList> > getCreatedSongList();
-    std::map<string ,std::shared_ptr<Fan>> getAttenedFans();
-    std::map<string ,std::shared_ptr<Fan>> getFanusers();
-    string getUserName();
-    string getUserPw();
-//    int getUserId();
-    string getlabel(){return m_label;}
-    string getSex(){return m_sex;}
-    string getBirthday(){return m_birthday;}
-    string getAddress(){return m_address;}
-    string getIcon(){return m_icon;}
+    QString username();
+    QString password();
+    QString label();
+    QString sex();
+    QString birthday();
+    QString address();
+    QString icon();
+    //getting
+    QList<QList<QString>> createdSongLists();
+    QList<QList<QString>> collectedSongLists();
+    QList<QList<QString>> attentedUsers();
+    QList<QList<QString>> fanUsers();
 
     //setting
-    void setAttentedUsers(std::map<string ,std::shared_ptr<Fan>> attentedUsers);
-    void setFanUsers(std::map<string,std::shared_ptr<Fan>> fanUsers);
-    void setCollectedSongLists(std::map<string,std::shared_ptr<SongList>> collectedSongList);
-    void setCreatedSongLists(std::map<std::string, std::shared_ptr<SongList> > createdSongList);
+    void setUsername(QString username);
+    void setPassword(QString password);
+    void setLabel(QString label);
+    void setSex(QString sex);
+    void setBirthday(QString birthday);
+    void setAddress(QString address);
+    void setIcon(QString icon);
 
+    //adding
+    void addCreatedSongList(QList<QString> s){_createdSongList.append(s);}
+    void addCollectedSongLists(QList<QString> s){_collectedSongList.append(s);}
+    void addAttentedUsers(QList<QString> s){_attentedUsers.append(s);}
+    void addFanUsers(QList<QString> s){_fanUsers.append(s);}
+
+    //deleting
+//    void deleteAttentedUsers(Fan attentedUsers);
+//    void deleteFanUsers(Fan fanUsers);
+//    void deleteCollectedSongLists(SongList collectedSongList);
+//    void deleteCreatedSongLists(SongList createdSongList);
+
+signals:
+    void usernameChanged();
+    void passwordChanged();
+    void labelChanged();
+    void sexChanged();
+    void birthdayChanged();
+    void addressChanged();
+    void iconChanged();
 private:
-//    int m_userID;               //用户id
-    std::string m_name;         //用户名
-    std::string m_password;     //用户密码
-    std::string m_label;        //用户标签
-    std::string m_sex;          //性别
-    std::string m_birthday;     //生日
-    std::string m_address;      //地址
-    std::string m_icon;         //头像，保存路径
+    QString m_name;         //用户名
+    QString m_password;     //用户密码
+    QString m_label;        //用户标签
+    QString m_sex;          //性别
+    QString m_birthday;     //生日
+    QString m_address;      //地址
+    QString m_icon;         //头像，保存路径
 //    bool m_vaild;               //状态变量，用来标志歌曲是否违法，是否可用
-    std::map<string,std::shared_ptr<SongList>> _collectedSongList;    //已收藏歌单
-    std::map<string,std::shared_ptr<SongList>> _createdSongList;      //创建歌单
-    std::map<string ,std::shared_ptr<Fan>> _attentedUsers;               //关注的用户
-    std::map<string,std::shared_ptr<Fan>> _fanUsers;                   //粉丝
+
+    QList<QList<QString>> _collectedSongList;              //已收藏歌单
+    QList<QList<QString>> _createdSongList;                //创建歌单
+    QList<QList<QString>> _attentedUsers;                  //关注的用户
+    QList<QList<QString>> _fanUsers;                       //粉丝
 };
 #endif // FAN_H

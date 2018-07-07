@@ -15,6 +15,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp \
     lyric.cpp \
     client.cpp \
+    fan.cpp \
+    songlist.cpp \
+    song.cpp
 
 RESOURCES += qml.qrc \
 
@@ -34,6 +37,10 @@ HEADERS += \
     lyric.h \
     client.h \
     macro.h \
+    fan.h \
+    songlist.h \
+    song.h \
+    fanproxy.h
 
 LIBS += -lpthread -lboost_system -lboost_thread -ljsoncpp
 

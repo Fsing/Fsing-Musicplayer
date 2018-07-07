@@ -128,10 +128,94 @@ void Client::myLogin(QString username, QString userpw)
                 Json::Value value;
                 value = arrayObj[i];
                 _songlistNames.append(QString::fromStdString(value["name"].asString()));
+
+                QList<QString> ret;
+                ret.append(QString::fromStdString(value["id"].asString()));
+                ret.append(QString::fromStdString(value["name"].asString()));
+                ret.append(QString::fromStdString(value["author"].asString()));
+                ret.append(QString::fromStdString(value["createTime"].asString()));
+                ret.append(QString::fromStdString(value["label"].asString()));
+                ret.append(QString::fromStdString(value["info"].asString()));
+                ret.append(QString::fromStdString(value["icon"].asString()));
+                ret.append(QString::fromStdString(value["collectionQuantity"].asString()));
+                ret.append(QString::fromStdString(value["clickQuantity"].asString()));
+                ret.append(QString::fromStdString(value["shareQuantity"].asString()));
+
+                _fan.addCreatedSongList(ret);
+                for(int k = 0; k < _fan.createdSongLists()[i].size();k++)
+                    cout << (_fan.createdSongLists()[i].at(k)).toStdString() << endl;
+            }
+            //收藏歌单信息
+            const Json::Value arrayObj1 = resultRoot["collectedArray"];
+            for (unsigned int i = 0; i < arrayObj1.size(); i++)
+            {
+                Json::Value value;
+                value = arrayObj1[i];
+
+                QList<QString> ret;
+                ret.append(QString::fromStdString(value["id"].asString()));
+                ret.append(QString::fromStdString(value["name"].asString()));
+                ret.append(QString::fromStdString(value["author"].asString()));
+                ret.append(QString::fromStdString(value["createTime"].asString()));
+                ret.append(QString::fromStdString(value["label"].asString()));
+                ret.append(QString::fromStdString(value["info"].asString()));
+                ret.append(QString::fromStdString(value["icon"].asString()));
+                ret.append(QString::fromStdString(value["collectionQuantity"].asString()));
+                ret.append(QString::fromStdString(value["clickQuantity"].asString()));
+                ret.append(QString::fromStdString(value["shareQuantity"].asString()));
+
+                _fan.addCollectedSongLists(ret);
+                for(int k = 0; k < _fan.collectedSongLists()[i].size();k++)
+                    cout << (_fan.collectedSongLists()[i].at(k)).toStdString() << endl;
+            }
+            //关注用户信息
+            const Json::Value arrayObj2 = resultRoot["attentedUsers"];
+            for (unsigned int i = 0; i < arrayObj2.size(); i++)
+            {
+                Json::Value value;
+                value = arrayObj2[i];
+
+                QList<QString> ret;
+                ret.append(QString::fromStdString(value["name"].asString()));
+                ret.append(QString::fromStdString(value["password"].asString()));
+                ret.append(QString::fromStdString(value["label"].asString()));
+                ret.append(QString::fromStdString(value["sex"].asString()));
+                ret.append(QString::fromStdString(value["birthday"].asString()));
+                ret.append(QString::fromStdString(value["address"].asString()));
+                ret.append(QString::fromStdString(value["icon"].asString()));
+
+                _fan.addAttentedUsers(ret);
+                for(int k = 0; k < _fan.attentedUsers()[i].size();k++)
+                    cout << (_fan.attentedUsers()[i].at(k)).toStdString() << endl;
+            }
+            //粉丝信息
+            const Json::Value arrayObj3 = resultRoot["fanUsers"];
+            for (unsigned int i = 0; i < arrayObj3.size(); i++)
+            {
+                Json::Value value;
+                value = arrayObj3[i];
+
+                QList<QString> ret;
+                ret.append(QString::fromStdString(value["name"].asString()));
+                ret.append(QString::fromStdString(value["password"].asString()));
+                ret.append(QString::fromStdString(value["label"].asString()));
+                ret.append(QString::fromStdString(value["sex"].asString()));
+                ret.append(QString::fromStdString(value["birthday"].asString()));
+                ret.append(QString::fromStdString(value["address"].asString()));
+                ret.append(QString::fromStdString(value["icon"].asString()));
+
+                _fan.addFanUsers(ret);
+                for(int k = 0; k < _fan.fanUsers()[i].size();k++)
+                    cout << (_fan.fanUsers()[i].at(k)).toStdString() << endl;
+            }
+//            if(_songlistNames.size() != 0)
+//                emit createdSongListsChanged();
+            for (unsigned int i = 0; i < _songlistNames.size(); i++)
+            {
+                cout << _songlistNames.at(i).toStdString() << endl;
             }
         }
     }
-
 }
 
 
@@ -172,10 +256,7 @@ void Client::myRegister(QString username, QString userpw)
         return;
     }else {
         string ret = resultRoot["registerSuccess"].asString();
-        if(m_result == ""){
-            m_result = "FAILD";
-        }else
-            m_result = QString::fromStdString(ret);
+        m_result = QString::fromStdString(ret);
         cout << "register " << ret<<endl;
         emit resultChanged();
         return;

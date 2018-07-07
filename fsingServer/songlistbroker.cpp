@@ -117,7 +117,7 @@ std::map<string,std::shared_ptr<SongList>> SongListBroker::findSongListsByCollec
     char sql[512];
     MYSQL_RES *result;
     MYSQL_ROW row;
-    std::sprintf(sql,"select * from CollectionRelation where collecteUser='%s'",username.data());
+    std::sprintf(sql,"select * from CollectionRelation where collectedUser='%s'",username.data());
     size_t length = strlen(sql);
     int res = mysql_real_query(&mysql,sql,length);
     if(res != 0){

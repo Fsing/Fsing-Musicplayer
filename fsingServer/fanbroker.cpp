@@ -146,7 +146,7 @@ std::shared_ptr<Fan> FanBroker::findUserByUserName(string username)
     size_t length = strlen(sql);
     int res = mysql_real_query(&mysql,sql,length);
     if(res != 0){
-        cout <<"findUserByUserName:select * from FanRelation faild " << endl;
+        cout <<"findUserByUserName:select * from Account faild " << endl;
     }else{
         result = mysql_store_result(&mysql);
         if(result){
