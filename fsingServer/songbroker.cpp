@@ -32,6 +32,8 @@ std::shared_ptr<Song> SongBroker::retrievalSong(std::string id)
     std::sprintf(sql,"select * from Song WHERE id = '%s'",source);
     size_t length =strlen(sql);
     int res = mysql_real_query(&mysql,sql,length);
+    std::shared_ptr<Song> ret;
+
     if(res != 0){
         std::cout <<"retrievalSong: select * from Song failed" << std::endl;
         return nullptr;
@@ -40,15 +42,15 @@ std::shared_ptr<Song> SongBroker::retrievalSong(std::string id)
         MYSQL_ROW row;
         result = mysql_store_result(&mysql);
         if(result){
-            while(row = mysql_fetch_row(result)){
+            while((row = mysql_fetch_row(result))){
                 //往缓存中添加歌曲
-                std::shared_ptr<Song> ret = std::make_shared<Song>(Song(atoi(row[0]),row[1],row[2],
+                ret = std::make_shared<Song>(Song(atoi(row[0]),row[1],row[2],
                         row[3],row[4],atoi(row[5]),atoi(row[6]),atoi(row[7])));
                 _songs.insert(std::make_pair(row[0],ret));
-                return ret;
             }
         }
     }
+    return ret;
 }
 
 std::map<std::string,std::shared_ptr<Song>> SongBroker::findSongsBySongListRelation(std::string songlistID)
@@ -73,7 +75,7 @@ std::map<std::string,std::shared_ptr<Song>> SongBroker::findSongsBySongListRelat
     }else{
         result = mysql_store_result(&mysql);
         if(result){
-            while(row = mysql_fetch_row(result)){
+            while((row = mysql_fetch_row(result))){
                 MYSQL mysql1;
                 mysql_init(&mysql1);
                 if(!mysql_real_connect(&mysql1,"localhost","fsing","fsing","Fsing",3306,NULL,0)){
@@ -92,7 +94,7 @@ std::map<std::string,std::shared_ptr<Song>> SongBroker::findSongsBySongListRelat
                 }else{
                     resultSong = mysql_store_result(&mysql1);
                     if(resultSong){
-                        while(rowSong = mysql_fetch_row(resultSong)){
+                        while((rowSong = mysql_fetch_row(resultSong))){
                             ret.insert(std::make_pair(rowSong[0],
                                        std::make_shared<Song>(Song(atoi(rowSong[0]),rowSong[1],
                                        rowSong[2],rowSong[3],rowSong[4],atoi(rowSong[5]),atoi(rowSong[6]),atoi(rowSong[7])))));

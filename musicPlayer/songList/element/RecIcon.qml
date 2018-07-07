@@ -10,6 +10,7 @@ Rectangle {
         id: icon
         anchors.fill: parent
         source: songlist.listImg
+        fillMode: Image.PreserveAspectCrop
     }
 
     MouseArea {

@@ -84,11 +84,16 @@ Item {
                     }
                     onDoubleClicked: {
                         propagateComposedEvents: true
-                        client.songInformation(listmodel1.get(tableview.currentIndex).id);
+                        client.songInformation(listmodel1.get(tableview.currentIndex).id)
+                        if(!client.currentPlayListSong(listmodel1.get(tableview.currentIndex).id)){
                         mediaPlayer.playlist.addItem(listmodel1.get(tableview.currentIndex).source)
                         mediaPlayer.play()
-                        mouse.accepted = false
+                            listmodel1.get(tableview.currentIndex).id = 10
                         }
+
+                        mouse.accepted = false
+                    }
+
                 }
                 Text {
                     text: id

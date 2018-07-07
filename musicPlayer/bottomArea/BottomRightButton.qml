@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.0
 import QtQuick.Controls.Styles 1.4
+import QtMultimedia 5.8
 
 Rectangle {
     width: 290
@@ -95,12 +96,16 @@ Rectangle {
                 console.log(parent.state)
                 if(parent.state === "sequence"){
                     parent.state = "circle"
+                    currentPlaylist.playbackMode = Playlist.Loop
                 }else if(parent.state === "circle"){
                    parent.state = "single"
+                    currentPlaylist.playbackMode = Playlist.CurrentItemInLoop
                 }else if(parent.state === "single"){
                     parent.state = "random"
+                    currentPlaylist.playbackMode = Playlist.Random
                 }else if(parent.state === "random"){
                     parent.state = "sequence"
+                    currentPlaylist.playbackMode = Playlist.CurrentItemOnce
                 }
             }
         }

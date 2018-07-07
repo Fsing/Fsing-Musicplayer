@@ -6,6 +6,7 @@ import QtQuick.Layouts 1.2
 import "../../songList"
 
 Rectangle {
+    id:findMusicRetangle
     property int index: 0
     property var interfaceParamter: client.getinterface()
 
@@ -16,124 +17,144 @@ Rectangle {
             listmodel1.clear()
         }
     }
-
     StackView {
         id: findMusicstackView
-        anchors.fill: parent
+        anchors{
+            top:parent.top
+            bottom: parent.bottom
+            horizontalCenter: parent.horizontalCenter
+        }
+        width: 825
+
         visible: true
         initialItem: findMusicPage
         Component {
             id: findMusicPage
-            ColumnLayout {
-                id: layout
+            ScrollView{
+                id:scrollView
                 anchors.fill: parent
-                spacing: 6
+                verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+                horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+                ColumnLayout{
+                    Advert {
+                        id:advert
+                        Layout.fillWidth: true
+                        onWidthChanged: console.log(parent.width)
+                    }
 
-                Advert {
-                }
-                RowLayout {
+                    GridLayout{
+                        columns: 4
+                        anchors.top: advert.bottom
+                        anchors.left: advert.left
+                        Rectangle {
+                            Layout.fillWidth: true
+                            Layout.minimumWidth: 200
+                            Layout.maximumHeight: 300
+                            Layout.maximumWidth: 300
+                            Layout.minimumHeight: 200
+                            SongListRectangle {
+                                playQuantity: String(50)
+                                source: "file:///" + applicationDirPath + "/" + interfaceParamter[6]
+                                songlistId: interfaceParamter[0]
+                                songlistName: interfaceParamter[1]
+                            }
+                        }
+                        Rectangle {
+                            Layout.fillWidth: true
+                            Layout.minimumWidth: 200
+                            Layout.maximumHeight: 300
+                            Layout.maximumWidth: 300
+                            Layout.minimumHeight: 200
+                            SongListRectangle {
+                                playQuantity: String(60)
+                                source: "file:///" + applicationDirPath + "/" + interfaceParamter[16]
+                                songlistId: interfaceParamter[10]
+                                songlistName: interfaceParamter[11]
+                            }
+                        }
+                        Rectangle {
+                            Layout.fillWidth: true
+                            Layout.minimumWidth: 200
+                            Layout.maximumHeight: 300
+                            Layout.maximumWidth: 300
+                            Layout.minimumHeight: 200
+                            SongListRectangle {
+                                playQuantity: String(70)
+                                source: "file:///" + applicationDirPath + "/" + interfaceParamter[26]
+                                songlistId: interfaceParamter[20]
+                                songlistName: interfaceParamter[21]
+                            }
+                        }
+                        Rectangle {
+                            Layout.fillWidth: true
+                            Layout.minimumWidth: 200
+                            Layout.maximumHeight: 300
+                            Layout.maximumWidth: 300
+                            Layout.minimumHeight: 200
+                            SongListRectangle {
+                                playQuantity: String(80)
+                                source: "file:///" + applicationDirPath + "/" + interfaceParamter[36]
+                                songlistId: interfaceParamter[30]
+                                songlistName: interfaceParamter[31]
+                            }
+                        }
+                        Rectangle {
+                            Layout.fillWidth: true
+                            Layout.minimumWidth: 200
+                            Layout.maximumHeight: 300
+                            Layout.maximumWidth: 300
+                            Layout.minimumHeight: 200
+                            SongListRectangle {
+                                playQuantity: String(50)
+                                source: "file:///" + applicationDirPath + "/" + interfaceParamter[46]
+                                songlistId: interfaceParamter[40]
+                                songlistName: interfaceParamter[41]
+                            }
+                        }
+                        Rectangle {
+                            Layout.fillWidth: true
+                            Layout.minimumWidth: 200
+                            Layout.maximumHeight: 300
+                            Layout.maximumWidth: 300
+                            Layout.minimumHeight: 200
+                            SongListRectangle {
+                                playQuantity: String(60)
+                                source: "file:///" + applicationDirPath + "/" + interfaceParamter[56]
+                                songlistId: interfaceParamter[50]
+                                songlistName: interfaceParamter[51]
+                            }
+                        }
+                        Rectangle {
+                            Layout.fillWidth: true
+                            Layout.minimumWidth: 200
+                            Layout.maximumHeight: 300
+                            Layout.maximumWidth: 300
+                            Layout.minimumHeight: 200
+                            SongListRectangle {
+                                playQuantity: String(70)
+                                source: "file:///" + applicationDirPath + "/" + interfaceParamter[66]
+                                songlistId: interfaceParamter[60]
+                                songlistName: interfaceParamter[61]
+                            }
+                        }
+                        Rectangle {
+                            Layout.fillWidth: true
+                            Layout.minimumWidth: 200
+                            Layout.maximumHeight: 300
+                            Layout.maximumWidth: 300
+                            Layout.minimumHeight: 200
+                            SongListRectangle {
+                                playQuantity: String(80)
+                                source: "file:///" + applicationDirPath + "/" + interfaceParamter[76]
+                                songlistId: interfaceParamter[70]
+                                songlistName: interfaceParamter[71]
+                            }
+                        }
 
-                    Rectangle {
-                        Layout.fillWidth: true
-                        Layout.minimumWidth: 200
-                        Layout.maximumHeight: 300
-                        Layout.maximumWidth: 300
-                        Layout.minimumHeight: 200
-                        SongListRectangle {
-                            playQuantity: String(50)
-                            source: "file:///" + applicationDirPath + "/" + interfaceParamter[6]
-                            songlistId: interfaceParamter[0]
-                        }
-                    }
-                    Rectangle {
-                        Layout.fillWidth: true
-                        Layout.minimumWidth: 200
-                        Layout.maximumHeight: 300
-                        Layout.maximumWidth: 300
-                        Layout.minimumHeight: 200
-                        SongListRectangle {
-                            playQuantity: String(60)
-                            source: "file:///" + applicationDirPath + "/" + interfaceParamter[16]
-                            songlistId: interfaceParamter[10]
-                        }
-                    }
-                    Rectangle {
-                        Layout.fillWidth: true
-                        Layout.minimumWidth: 200
-                        Layout.maximumHeight: 300
-                        Layout.maximumWidth: 300
-                        Layout.minimumHeight: 200
-                        SongListRectangle {
-                            playQuantity: String(70)
-                            source: "file:///" + applicationDirPath + "/" + interfaceParamter[26]
-                            songlistId: interfaceParamter[20]
-                        }
-                    }
-                    Rectangle {
-                        Layout.fillWidth: true
-                        Layout.minimumWidth: 200
-                        Layout.maximumHeight: 300
-                        Layout.maximumWidth: 300
-                        Layout.minimumHeight: 200
-                        SongListRectangle {
-                            playQuantity: String(80)
-                            source: "file:///" + applicationDirPath + "/" + interfaceParamter[36]
-                            songlistId: interfaceParamter[30]
-                        }
-                    }
-                }
-                RowLayout {
-
-                    Rectangle {
-                        Layout.fillWidth: true
-                        Layout.minimumWidth: 200
-                        Layout.maximumHeight: 300
-                        Layout.maximumWidth: 300
-                        Layout.minimumHeight: 200
-                        SongListRectangle {
-                            playQuantity: String(50)
-                            source: "file:///" + applicationDirPath + "/" + interfaceParamter[46]
-                            songlistId: interfaceParamter[40]
-                        }
-                    }
-                    Rectangle {
-                        Layout.fillWidth: true
-                        Layout.minimumWidth: 200
-                        Layout.maximumHeight: 300
-                        Layout.maximumWidth: 300
-                        Layout.minimumHeight: 200
-                        SongListRectangle {
-                            playQuantity: String(60)
-                            source: "file:///" + applicationDirPath + "/" + interfaceParamter[56]
-                            songlistId: interfaceParamter[50]
-                        }
-                    }
-                    Rectangle {
-                        Layout.fillWidth: true
-                        Layout.minimumWidth: 200
-                        Layout.maximumHeight: 300
-                        Layout.maximumWidth: 300
-                        Layout.minimumHeight: 200
-                        SongListRectangle {
-                            playQuantity: String(70)
-                            source: "file:///" + applicationDirPath + "/" + interfaceParamter[66]
-                            songlistId: interfaceParamter[60]
-                        }
-                    }
-                    Rectangle {
-                        Layout.fillWidth: true
-                        Layout.minimumWidth: 200
-                        Layout.maximumHeight: 300
-                        Layout.maximumWidth: 300
-                        Layout.minimumHeight: 200
-                        SongListRectangle {
-                            playQuantity: String(80)
-                            source: "file:///" + applicationDirPath + "/" + interfaceParamter[76]
-                            songlistId: interfaceParamter[70]
-                        }
                     }
                 }
             }
+
         }
         Component {
             id: songListPage

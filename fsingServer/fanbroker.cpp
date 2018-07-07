@@ -84,7 +84,7 @@ std::map<std::string, std::shared_ptr<Fan> > FanBroker::findAttentedFanByRelatio
     }else{
         result = mysql_store_result(&mysql);
         if(result){
-            while(row = mysql_fetch_row(result)){
+            while((row = mysql_fetch_row(result))){
                 attentedFans.insert(std::make_pair(row[0],findUserByUserName(row[0])));
             }
         }
@@ -114,7 +114,7 @@ std::map<string,std::shared_ptr<Fan>> FanBroker::findFansByRelation(string usern
     }else{
         result = mysql_store_result(&mysql);
         if(result){
-            while(row = mysql_fetch_row(result)){
+            while((row = mysql_fetch_row(result))){
                 fans.insert(std::make_pair(row[1],findUserByUserName(row[1])));
             }
         }
@@ -150,7 +150,7 @@ std::shared_ptr<Fan> FanBroker::findUserByUserName(string username)
     }else{
         result = mysql_store_result(&mysql);
         if(result){
-            while(row = mysql_fetch_row(result)){
+            while((row = mysql_fetch_row(result))){
                 name = row[1];
                 password = row[2];
                 label = row[3];
@@ -186,7 +186,7 @@ std::map<string,std::shared_ptr<Fan>> FanBroker::findUserBySongListName(std::str
     }else{
         result = mysql_store_result(&mysql);
         if(result){
-            while(row = mysql_fetch_row(result)){
+            while((row = mysql_fetch_row(result))){
                 users.insert(std::make_pair(row[0],findUser(row[0])));
             }
         }

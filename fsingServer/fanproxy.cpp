@@ -172,7 +172,7 @@ int FanProxy::getMaxid(string tableName)
     MYSQL_ROW row;
     result = mysql_store_result(&mysql);
     if(result){
-        if(row = mysql_fetch_row(result)){
+        if((row = mysql_fetch_row(result))){
             if(row[0] == NULL)
                 maxid = 0;
             else{
@@ -224,7 +224,7 @@ bool FanProxy::hasTable(std::string tableName)
     mysql_real_query(&mysql,sql1,length1);
     result = mysql_store_result(&mysql);
     if(result){
-        while(row = mysql_fetch_row(result)){
+        while((row = mysql_fetch_row(result))){
             if(row[0] == tableName){
                 return true;
             }
@@ -242,7 +242,7 @@ void FanProxy::createCollectionRelationTable()
         return;
     }
 
-    char sql[512];
+    //char sql[512];
     string str{"create table CollectionRelation(songListID char(50) not null,collectedUser char(50) not null);"};
 //    std::sprintf(sql,"create table CollectionRelation(songListName char(50) not null,collecteUser char(50) not null);");
 //    auto length = strlen(sql);

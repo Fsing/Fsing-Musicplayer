@@ -74,7 +74,7 @@ std::string SongListProxy::addSongList(std::string username, std::string songLis
         if(!mysql_real_query(&mysql,sql,strlen(sql))){
             result = mysql_store_result(&mysql);
             if(result){
-                while(row = mysql_fetch_row(result)){
+                while((row = mysql_fetch_row(result))){
                     root["recordSuccess"] = "NAME_INVAILD";
                     root.toStyledString();
                     return root.toStyledString();

@@ -22,8 +22,6 @@ ip::tcp::acceptor acc(service,ep); //创建连接器
 vector<std::string> jsonParase(char data[]);
 //接受客户端传来的请求事务,并将结果返回给客户端
 void receiveMessage(socket_ptr sock);
-//返回处理信息给客户端
-void dealResult(socket_ptr sock);
 
 
 Server::Server()
@@ -233,4 +231,3 @@ void Server::fileSender(string fileName,socket_ptr sock){
     return;
 }
 
-void dealResult(socket_ptr sock){}

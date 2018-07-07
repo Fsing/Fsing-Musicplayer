@@ -53,7 +53,7 @@ std::shared_ptr<SongList> SongListBroker::retrievalSongList(std::string songList
         MYSQL_RES *result;
         MYSQL_ROW row;
         result = mysql_store_result(&mysql);
-        if(row = mysql_fetch_row(result)){
+        if((row = mysql_fetch_row(result))){
             //创建新的歌单对象，记录歌单基本信息
             std::shared_ptr<SongList> ret = std::make_shared<SongList>(SongList(atoi(row[0]),row[1],row[2],
                     row[3],row[4],row[5],row[6],atoi(row[7]),atoi(row[8]),atoi(row[9])));
@@ -94,7 +94,7 @@ std::shared_ptr<SongList> SongListBroker::findSongListBySongListNameAndUserName(
     }else{
         result = mysql_store_result(&mysql);
         if(result){
-            if(row = mysql_fetch_row(result)){
+            if((row = mysql_fetch_row(result))){
                 ret = std::make_shared<SongList>(SongList(atoi(row[0]),row[1],row[2],
                         row[3],row[4],row[5],row[6],atoi(row[7]),atoi(row[8]),atoi(row[9])));
             }
@@ -125,7 +125,7 @@ std::map<string,std::shared_ptr<SongList>> SongListBroker::findSongListsByCollec
     }else{
         result = mysql_store_result(&mysql);
         if(result){
-            while(row = mysql_fetch_row(result)){
+            while((row = mysql_fetch_row(result))){
                 auto tmp = findSongListsBySongListID(row[0]);
                 collectedSongLists.insert(std::make_pair(row[0],tmp));
                 //                collectedSongLists.insert(std::make_pair(row[0],findSongListBySongListNameAndUserName(std::string(row[0]),username)));
@@ -156,7 +156,7 @@ std::shared_ptr<SongList> SongListBroker::findSongListsBySongListID(std::string 
     }else{
         result = mysql_store_result(&mysql);
         if(result){
-            while(row = mysql_fetch_row(result)){
+            while((row = mysql_fetch_row(result))){
                 songlist = std::make_shared<SongList>(SongList(atoi(row[0]),row[1],row[2],
                         row[3],row[4],row[5],row[6],atoi(row[7]),atoi(row[8]),atoi(row[9])));
                 //                collectedSongLists.insert(std::make_pair(row[0],findSongListBySongListNameAndUserName(std::string(row[0]),username)));
@@ -186,7 +186,7 @@ std::map<string,std::shared_ptr<SongList>> SongListBroker::findSongListsByUserNa
     }else{
         result = mysql_store_result(&mysql);
         if(result){
-            while(row = mysql_fetch_row(result)){
+            while((row = mysql_fetch_row(result))){
                 //                auto tmp = std::make_shared<SongList>(SongList(atoi(row[0]),row[1],row[2],
                 //                        row[3],row[4],row[5],row[6],atoi(row[7]),atoi(row[8]),atoi(row[9])));
                 auto tmp = findSongListsBySongListID(row[0]);
