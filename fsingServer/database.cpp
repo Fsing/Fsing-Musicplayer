@@ -38,11 +38,12 @@ std::string DatabaseController::songInformation(std::string songSource)
     }else{
         MYSQL_RES *result;
         MYSQL_ROW row;
+
         //    MYSQL_FIELD *fields;
 
         result = mysql_store_result(&mysql);
         if(result){
-            while(row = mysql_fetch_row(result)){
+            while((row = mysql_fetch_row(result))){
                 //                m_userNameFlag = true;
                 if(string(row[1]) == source){
 
@@ -90,7 +91,7 @@ std::string DatabaseController::search(std::string songKey)
             root["type"] = "SEARCH";
             int resultRow = 0;
 
-            while(row = mysql_fetch_row(result)){
+            while((row = mysql_fetch_row(result))){
                 //                m_userNameFlag = true;
                 Json::Value item;
 
@@ -112,6 +113,7 @@ std::string DatabaseController::search(std::string songKey)
 }
 std::string DatabaseController::interface(std::string interfaceName){
 
+    cout<<interfaceName<<endl;
     MYSQL mysql;
     mysql_init(&mysql);
     if(!mysql_real_connect(&mysql,"localhost","fsing","fsing","Fsing",3306,NULL,0)){
@@ -136,7 +138,7 @@ std::string DatabaseController::interface(std::string interfaceName){
             Json::Value arrayObj;
             root["type"] = "INTERFACE";
 
-            while(row = mysql_fetch_row(result)){
+            while((row = mysql_fetch_row(result))){
 
                 Json::Value item;
                 item["type"] = "SONGLIST";
@@ -190,7 +192,7 @@ std::string DatabaseController::songList(std::string songListName)
             root["type"] = "SONGLIST";
             int resultRow = 0;
 
-            while(row = mysql_fetch_row(result)){
+            while((row = mysql_fetch_row(result))){
                 //                m_userNameFlag = true;
                 Json::Value item;
 
