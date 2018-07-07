@@ -86,5 +86,15 @@
         <file>images/advert/2.jpg</file>
         <file>images/advert/1.jpg</file>
         <file>middleArea/RightAreaComponents/Advert.qml</file>
+        <file>images/common/user.png</file>
+        <file>images/common/setting.png</file>
+        <file>images/common/right_arrow.png</file>
+        <file>images/common/like.png</file>
+        <file>images/common/download.png</file>
+        <file>images/common/tringle.png</file>
+        <file>dialog/common/ButtonItem.qml</file>
+        <file>dialog/LogoutDialog.qml</file>
+        <file>dialog/LogoutDialogItem.qml</file>
+        <file>images/common/ac0.png</file>
     </qresource>
 </RCC>

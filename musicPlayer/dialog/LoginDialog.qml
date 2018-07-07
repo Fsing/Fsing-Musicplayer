@@ -29,23 +29,26 @@ CommonDialog {
             console.log(client.result)
             if (client.logining) {
                 topRightButton.loginButtonSource = "qrc:/images/logo.jpg"
+                topRightButton.fanName = client.userName
                 var i = 0
-//                console.log(client.createdSongLists()[i])
+                //                console.log(client.createdSongLists()[i])
                 while (client.createdSongLists()[i]) {
-                    if(middleArea.leftArea.showAllCreateClicked){
+                    if (middleArea.leftArea.showAllCreateClicked) {
                         middleArea.listmodel.append({
                                                         recColor: "#F5F5F7",
                                                         imagesource: "../images/leftArea/list.png",
-                                                        tx: client.createdSongLists()[i],
+                                                        tx: client.createdSongLists(
+                                                                )[i],
                                                         opaci: 0.55,
                                                         classifyText: "",
                                                         delegate_listVisible: true
                                                     })
-                    }else{
+                    } else {
                         middleArea.listmodel.append({
                                                         recColor: "#F5F5F7",
                                                         imagesource: "../images/leftArea/list.png",
-                                                        tx: client.createdSongLists()[i],
+                                                        tx: client.createdSongLists(
+                                                                )[i],
                                                         opaci: 0.55,
                                                         classifyText: "",
                                                         delegate_listVisible: false

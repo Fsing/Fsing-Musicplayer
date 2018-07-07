@@ -37,10 +37,25 @@ Rectangle {
     //-----------------右上角功能组件
     TopRightButton {
         id: topRightButton
-        onLoginButtonClicked: loginDialog.open()
+        onLoginButtonClicked: {
+            if (!client.logining) {
+                loginDialog.open()
+            } else {
+                logoutDialog.y = topRightButton.height
+                logoutDialog.x = (mainWindow.width - topRightButton.userx - logoutDialog.width / 2)
+                if (logoutDialog.opened)
+                    logoutDialog.close()
+                else
+                    logoutDialog.open()
+            }
+        }
     }
     LoginDialog {
         id: loginDialog
+    }
+
+    LogoutDialog {
+        id: logoutDialog
     }
 
     //-----------------------------
