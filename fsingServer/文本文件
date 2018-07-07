@@ -5,7 +5,8 @@ create database Fsing;
 use Fsing;
 //创建歌单表
 create table Song(id int not null AUTO_INCREMENT PRIMARY KEY,name char(30) not null,source char(50) not null,singer char(30) not null,album char(30) not null,playQuantity int not null,downloadQuantity int not null,shareQuantity int not null);
-
+创建用户表
+CREATE TABLE Account(id int not null AUTO_INCREMENT PRIMARY KEY,name char(30) not null,password char(30) not null,label char(50) not null,sex char(10) not null,birthday date not null,address char(50) not null,icon char(100) not null,isVaild bool);
 //插入
 insert into Song(id,name,source,singer,album,playQuantity,downloadQuantity,shareQuantity) values(1,'dukou','rtsp://192.168.8.79/music/dukou.mp3','caiqin','dukou',0,0,0);
 //创建SongList表
@@ -18,8 +19,11 @@ insert into FindMusicSong(id,name,source,singer,album,playQuantity,downloadQuant
 
 //创建歌单与歌曲关联的表：
 create table SongListRelation(songlistID int null null,songID int not null);
+//创建歌单与用户收藏关系表
+create table CollectionRelation(songlistID int not null,collectedUser char(50) not null);
 
-
+//创建用户的多对对自关联表
+create table FanRelation(userName char(50) not null,fanName char(50) not null);
 
 mysql创建用户，设置可操作数据库权限：
  

@@ -1,14 +1,11 @@
 #ifndef FAN_H
 #define FAN_H
-#include "user.h"
-#include "songlist.h"
+
 #include <string>
 #include <map>
 #include <memory>
 #include <string>
 #include <vector>
-
-//class SongList;
 
 using std::string;      using std::vector;
 using std::map;
@@ -48,7 +45,7 @@ private:
     std::string m_birthday;     //生日
     std::string m_address;      //地址
     std::string m_icon;         //头像，保存路径
-    bool m_vaild;               //状态变量，用来标志歌曲是否违法，是否可用
+//    bool m_vaild;               //状态变量，用来标志歌曲是否违法，是否可用
     std::map<string,std::shared_ptr<SongList>> _collectedSongList;    //已收藏歌单
     std::map<string,std::shared_ptr<SongList>> _createdSongList;      //创建歌单
     std::map<string ,std::shared_ptr<Fan>> _attentedUsers;               //关注的用户

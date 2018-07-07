@@ -88,6 +88,7 @@ void Client::myLogin(QString username, QString userpw)
 
     auto s = out.data();
     boost::system::error_code ec;
+    //传输到服务器
     sock.write_some(buffer(s,strlen(s)),ec);
     if(ec)
     {
@@ -95,10 +96,10 @@ void Client::myLogin(QString username, QString userpw)
     }
 
     //接受服务器返回的用户信息：基本信息、用户粉丝、关注、收藏歌单、创建歌单
-    char data[512];
-    memset(data,0,sizeof(char)*512);//reset 0 to data[]
+    char data[1024 * 5];
+    memset(data,0,sizeof(char)*1024 * 5);//reset 0 to data[]
     while(strlen(data)==0){
-    sock.read_some(buffer(data),ec);
+        sock.read_some(buffer(data),ec);
     }
     if(ec)
     {
@@ -106,6 +107,7 @@ void Client::myLogin(QString username, QString userpw)
     }
     Json::Reader reader;
     Json::Value resultRoot;
+    cout << strlen(data) << endl;
     if(!reader.parse(data, resultRoot)){
         std::cout << "json received faild" <<std::endl;
         return;
@@ -113,43 +115,25 @@ void Client::myLogin(QString username, QString userpw)
         string ret = resultRoot["loginSuccess"].asString();
         m_result = QString::fromStdString(ret);
         cout << "login " << ret<<endl;
-        if (ret == "SUCCESS")
+        if (ret == "SUCCESS"){
             m_logining = true;
-
-        m_userName = username;
-        emit resultChanged();
-
-        _songlistNames.clear();
-        const Json::Value arrayObj = resultRoot["array"];
-        for (unsigned int i = 0; i < arrayObj.size(); i++)
-        {
-            string ret = resultRoot["loginSuccess"].asString();
-            if(ret == "")
-                m_result = "FAILD";
-            else
-                m_result = QString::fromStdString(ret);
-            emit resultChanged();
-            cout << "login " << ret<<endl;
-            if (ret == "SUCCESS")
-                m_logining = true;
-            emit loginingChanged();
-
             m_userName = username;
-            emit userNameChanged();
-
+            emit resultChanged();
             _songlistNames.clear();
+
+            //创建歌单信息
             const Json::Value arrayObj = resultRoot["array"];
             for (unsigned int i = 0; i < arrayObj.size(); i++)
             {
-                _songlistNames.append(QString::fromStdString(arrayObj[i].asString()));
-
+                Json::Value value;
+                value = arrayObj[i];
+                _songlistNames.append(QString::fromStdString(value["name"].asString()));
             }
         }
-
-
     }
 
 }
+
 
 void Client::myRegister(QString username, QString userpw)
 {

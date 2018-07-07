@@ -20,6 +20,7 @@ class Client:public QObject
     Q_PROPERTY(int userID READ userID WRITE setUserID NOTIFY userIDChanged)
     Q_PROPERTY(bool logining READ logining WRITE setLogining NOTIFY loginingChanged)
     Q_PROPERTY(QString result READ result WRITE setResult NOTIFY resultChanged)
+    Q_PROPERTY(QList<QString> createdSongLists READ createdSongLists NOTIFY createdSongListsChanged)
 
 public:
     //构造函数
@@ -61,6 +62,7 @@ public:
     Q_INVOKABLE QList<QString> getSongListInformation() const {return m_songListInformation;}
     Q_INVOKABLE QList<QString> getSongList() const{return m_songList;}
     Q_INVOKABLE int getSongListCount() const{return m_songList.size()/8;}
+    Q_INVOKABLE QList<QString> createdSongLists() const{return _songlistNames;}
 
 
 
@@ -77,6 +79,7 @@ signals:
     void userIDChanged();
     void loginingChanged();
     void resultChanged();
+    void createdSongListsChanged();
 
 private:
     //用户信息

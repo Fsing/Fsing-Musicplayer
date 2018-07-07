@@ -30,15 +30,14 @@ CommonDialog {
             if (client.logining) {
                 topRightButton.loginButtonSource = "qrc:/images/logo.jpg"
                 var i = 0
-                console.log("songlistnames" + client.songlistNames()[i])
+                console.log("songlistnames" + client.createdSongLists[i])
                 //                var str = client.songliseNames()[i]
-                while (client.songlistNames()[i]) {
+                while (client.createdSongLists[i]) {
                     if(middleArea.leftArea.showAllCreateClicked){
                     middleArea.listmodel.append({
                                                     recColor: "#F5F5F7",
                                                     imagesource: "../images/leftArea/list.png",
-                                                    tx: client.songlistNames(
-                                                            )[i],
+                                                    tx: client.createdSongLists[i],
                                                     opaci: 0.55,
                                                     classifyText: "",
                                                     delegate_listVisible: true
@@ -47,8 +46,7 @@ CommonDialog {
                         middleArea.listmodel.append({
                                                         recColor: "#F5F5F7",
                                                         imagesource: "../images/leftArea/list.png",
-                                                        tx: client.songlistNames(
-                                                                )[i],
+                                                        tx: client.createdSongLists[i],
                                                         opaci: 0.55,
                                                         classifyText: "",
                                                         delegate_listVisible: false
