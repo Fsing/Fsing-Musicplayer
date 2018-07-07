@@ -28,6 +28,14 @@ CommonDialog {
             setRemindMessage(client.result)
             console.log(client.result)
             if (client.logining) {
+                console.log(middleArea.leftArea.listmodel.count)
+                var j = middleArea.leftArea.listmodel.count - 10
+                while (j) {
+                    middleArea.listmodel.remove(middleArea.listmodel.count - 1)
+                    j--
+                }
+                console.log(middleArea.leftArea.listmodel.count)
+
                 topRightButton.loginButtonSource = "qrc:/images/logo.jpg"
                 topRightButton.fanName = client.userName
                 var i = 0

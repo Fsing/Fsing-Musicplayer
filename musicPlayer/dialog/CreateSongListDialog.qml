@@ -17,10 +17,11 @@ CommonDialog {
             inputAccepted()
             console.log(client.userName + createSongListDialog.inputText + getCurDate(
                             ))
-            if(client.logining)
+            if(client.logining){
                 client.addCreateSongList(client.userName,
                                          createSongListDialog.inputText,
                                          getCurDate())
+            }
         }
     }
 
