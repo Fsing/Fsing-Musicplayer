@@ -93,6 +93,7 @@ void Client::myLogin(QString username, QString userpw)
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
+        return;
     }
 
     //接受服务器返回的用户信息：基本信息、用户粉丝、关注、收藏歌单、创建歌单
@@ -104,6 +105,7 @@ void Client::myLogin(QString username, QString userpw)
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
+        return;
     }
     Json::Reader reader;
     Json::Value resultRoot;
@@ -150,6 +152,7 @@ void Client::myRegister(QString username, QString userpw)
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
+        return;
     }
     std::cout<<"send message to server: " <<out<<endl;
 
@@ -162,6 +165,7 @@ void Client::myRegister(QString username, QString userpw)
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
+        return;
 
     }
     cout << "receive from server : " << data<<endl;
@@ -197,6 +201,7 @@ QString Client::songInformation(QString songId){
     {
 
         std::cout << boost::system::system_error(ec).what() << std::endl;
+        return "ERROR";
     }
 
 
@@ -208,6 +213,7 @@ QString Client::songInformation(QString songId){
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
+        return "ERROR";
 
     }
     Json::Reader reader;
@@ -220,6 +226,16 @@ QString Client::songInformation(QString songId){
         string ret = resultRoot["id"].asString();
         m_songName = QString::fromStdString(resultRoot["name"].asString());
         m_result = QString::fromStdString(ret);
+
+        m_songInformation.append(QString::fromStdString(resultRoot["id"].asString()));
+        m_songInformation.append(QString::fromStdString(resultRoot["name"].asString()));
+        m_songInformation.append(QString::fromStdString(resultRoot["singer"].asString()));
+        m_songInformation.append(QString::fromStdString(resultRoot["album"].asString()));
+        m_songInformation.append(QString::fromStdString(resultRoot["source"].asString()));
+        m_songInformation.append(QString::fromStdString(resultRoot["playQuantity"].asString()));
+        m_songInformation.append(QString::fromStdString(resultRoot["downloadQuantity"].asString()));
+        m_songInformation.append(QString::fromStdString(resultRoot["shareQuantity"].asString()));
+
         std::cout <<"receive frome server : "<< data <<std::endl;
         return m_songName;
     }
@@ -315,6 +331,7 @@ void Client::songList(QString songListId){
     {
 
         std::cout << boost::system::system_error(ec).what() << std::endl;
+        return;
     }
 
 
@@ -326,6 +343,7 @@ void Client::songList(QString songListId){
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
+        return;
 
     }
     Json::Reader reader;
@@ -379,6 +397,7 @@ void Client::interface(QString interfaceName){
     {
 
         std::cout << boost::system::system_error(ec).what() << std::endl;
+        return;
     }
 
 
@@ -390,7 +409,7 @@ void Client::interface(QString interfaceName){
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
-
+        return;
     }
     Json::Reader reader;
     Json::Value resultRoot;
@@ -506,6 +525,7 @@ void Client::addCreateSongList(QString username,QString songlistName, QString ti
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
+        return;
     }
     std::cout<<"send message to server: " <<out<<endl;
 
@@ -518,6 +538,7 @@ void Client::addCreateSongList(QString username,QString songlistName, QString ti
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
+        return;
 
     }
     cout << "receive from server : " << data<<endl;

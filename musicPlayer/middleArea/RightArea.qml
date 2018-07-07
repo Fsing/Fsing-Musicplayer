@@ -20,7 +20,7 @@ Rectangle {
                 properties: "opacity"
                 from: 0
                 to: 1
-                duration: 2000
+                duration: 1000
             }
         }
 
@@ -30,7 +30,7 @@ Rectangle {
                 properties: "opacity"
                 from: 1
                 to: 0
-                duration: 2000
+                duration: 1000
             }
         }
         pushEnter: Transition {
@@ -39,7 +39,7 @@ Rectangle {
                 properties: "opacity"
                 from: 0
                 to: 1
-                duration: 2000
+                duration: 1000
             }
         }
 
@@ -49,7 +49,7 @@ Rectangle {
                 properties: "opacity"
                 from: 1
                 to: 0
-                duration: 2000
+                duration: 1000
             }
         }
     }

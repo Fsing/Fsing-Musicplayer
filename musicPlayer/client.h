@@ -62,9 +62,17 @@ public:
     Q_INVOKABLE QList<QString> getSongListInformation() const {return m_songListInformation;}
     Q_INVOKABLE QList<QString> getSongList() const{return m_songList;}
     Q_INVOKABLE int getSongListCount() const{return m_songList.size()/8;}
+    Q_INVOKABLE QList<QString> getSongInformation() const{return m_songInformation;}
     Q_INVOKABLE QList<QString> createdSongLists() const{return _songlistNames;}
 
-
+    Q_INVOKABLE bool currentPlayListSong(const QString id) {
+        if(m_currentPlayListSong.contains(id))
+            return true;
+        else {
+            m_currentPlayListSong.append(id);
+            return false;
+        }
+}
 
     //filetransfer
     void fileReceiver();
@@ -91,12 +99,14 @@ private:
     QString m_result;
     QString m_songName;
 
+    QList<QString> m_currentPlayListSong;//playlist song id
     //歌单名
     QList<QString> _songlistNames;
     QList<QString> m_interface;
     //songlist infomation
     QList<QString> m_songListInformation;
     QList<QString> m_songList;
+    QList<QString> m_songInformation;
     int m_songListCount;
 
     //for file transfer

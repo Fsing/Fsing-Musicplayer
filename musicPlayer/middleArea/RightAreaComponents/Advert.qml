@@ -7,6 +7,13 @@ Rectangle {
     height: 300
     clip: true
 
+    Timer {
+        interval: 3000
+        running: true
+        repeat: true
+        onTriggered: pathView.incrementCurrentIndex()
+    }
+
     ListModel {
         id: model
         ListElement {
@@ -99,8 +106,8 @@ Rectangle {
         model: model
         delegate: Item {
             id: delegateItem
-            width: 500
-            height: 240
+            width: 380
+            height: 180
             z: PathView.iconZ
             scale: PathView.iconScale
             opacity: PathView.iconOpacity

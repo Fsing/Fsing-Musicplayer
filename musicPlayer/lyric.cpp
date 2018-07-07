@@ -4,6 +4,7 @@
 #include <QTextStream>
 #include <QString>
 #include <QTextCodec>
+#include <iostream>
 
 Lyric::Lyric(QObject *parent):QObject(parent)
 {
