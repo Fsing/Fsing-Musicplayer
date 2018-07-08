@@ -108,6 +108,5 @@
         <file>dialog/LogoutDialog.qml</file>
         <file>dialog/LogoutDialogItem.qml</file>
         <file>images/common/ac0.png</file>
->>>>>>> f1d343c664da7d7eaed3bab8e1cb7ff30811a205
     </qresource>
 </RCC>
