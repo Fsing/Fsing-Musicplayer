@@ -98,5 +98,16 @@
         <file>personalinfo/UserBaseInfo.qml</file>
         <file>personalinfo/UserCollectedSongList.qml</file>
         <file>personalinfo/UserCreatedSongList.qml</file>
+        <file>images/common/user.png</file>
+        <file>images/common/setting.png</file>
+        <file>images/common/right_arrow.png</file>
+        <file>images/common/like.png</file>
+        <file>images/common/download.png</file>
+        <file>images/common/tringle.png</file>
+        <file>dialog/common/ButtonItem.qml</file>
+        <file>dialog/LogoutDialog.qml</file>
+        <file>dialog/LogoutDialogItem.qml</file>
+        <file>images/common/ac0.png</file>
+>>>>>>> f1d343c664da7d7eaed3bab8e1cb7ff30811a205
     </qresource>
 </RCC>

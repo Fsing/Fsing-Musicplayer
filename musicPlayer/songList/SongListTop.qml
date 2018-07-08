@@ -46,6 +46,7 @@ Item {
 
             RowLayout {
                 CircleIcon {
+                    userImage: songlist.userImg
                 }
 
                 Text {

@@ -5,9 +5,10 @@ Item {
     width: 30
     height: 30
 
+    property var userImage
     Image {
         id: img
-        source: songlist.userImg
+        source: userImage
         sourceSize: Qt.size(parent.width, parent.height)
         anchors.fill: parent
         smooth: true

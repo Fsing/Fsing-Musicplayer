@@ -1,8 +1,10 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.0
 import QtQuick.Window 2.0
+import "../songList/element"
 
 Rectangle {
+    id: topright
     width: 250
     height: parent.height
     anchors.right: parent.right
@@ -10,7 +12,9 @@ Rectangle {
     color: parent.color
 
     signal loginButtonClicked
-    property string loginButtonSource: loginbuttonImage.source
+    property string loginButtonSource: "qrc:/images/common/ac0.png"
+    property string fanName: "未登录"
+    property int userx: 263
 
     Button {
         id: closebutton
@@ -159,13 +163,58 @@ Rectangle {
             source: "qrc:/images/topArea/skin.png"
         }
     }
-    Button {
-        id: loginbutton
+
+    Rectangle {
+        id: loginButton
         anchors.right: skinbutton.left
         anchors.rightMargin: 20
         anchors.verticalCenter: parent.verticalCenter
-        width: 16
+        opacity: 0.5
+        width: 50
         height: 16
+        color: topright.color
+        MouseArea {
+            anchors.fill: parent
+            hoverEnabled: true
+            onEntered: {
+                loginButton.opacity = 1
+            }
+            onExited: {
+                loginButton.opacity = 0.5
+            }
+            onClicked: {
+                loginButtonClicked()
+            }
+        }
+        Text {
+            id: name
+            anchors.right: userlabel.left
+            anchors.rightMargin: 5
+            anchors.verticalCenter: parent.verticalCenter
+            width: 40
+            height: 16
+            color: "#e0abab"
+            text: fanName
+        }
+        Image {
+            id: userlabel
+            width: 5
+            height: 10
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: loginButton.right
+            anchors.rightMargin: 2
+            rotation: 90
+            source: "qrc:/images/common/right_arrow.png"
+        }
+    }
+
+    Button {
+        id: userImageButton
+        anchors.right: loginButton.left
+        anchors.rightMargin: 10
+        anchors.verticalCenter: parent.verticalCenter
+        width: 25
+        height: 25
         MouseArea {
             id: loginbuttonMouseArea
             anchors.fill: parent
@@ -173,14 +222,11 @@ Rectangle {
             onClicked: loginButtonClicked()
         }
 
-        background: Image {
+        background: CircleIcon {
             id: loginbuttonImage
             anchors.fill: parent
-            opacity: loginbuttonMouseArea.containsMouse ? 1.0 : 0.8
-            source: "qrc:/images/topArea/skin.png"
+            opacity: 1
+            userImage: loginButtonSource
         }
-    }
-    onLoginButtonSourceChanged: {
-        loginbuttonImage.source = loginButtonSource
     }
 }
