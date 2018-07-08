@@ -6,12 +6,8 @@
 #include <boost/shared_ptr.hpp>
 #include <string>
 #include "fan.h"
-<<<<<<< HEAD
 #include "songlist.h"
 #include "song.h"
-=======
-//#include "fanproxy.h"
->>>>>>> 217fcccb3994788d953e8a404d2b5849e4b82ead
 
 struct File_info {
     typedef unsigned long long Size_type;
@@ -90,12 +86,8 @@ public:
                 fileTransfer(QString::fromStdString(l));
                 m_currentPlayListSong.append(id);
             return false;
-<<<<<<< HEAD
-        }}
-=======
         }
-    }
->>>>>>> 217fcccb3994788d953e8a404d2b5849e4b82ead
+}
 
     //filetransfer
     void fileReceiver();
