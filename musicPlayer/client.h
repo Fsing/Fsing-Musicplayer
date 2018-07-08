@@ -4,7 +4,10 @@
 #include <QObject>
 #include <boost/asio.hpp>
 #include <boost/shared_ptr.hpp>
+#include <string>
 #include "fan.h"
+#include "songlist.h"
+#include "song.h"
 
 struct File_info {
     typedef unsigned long long Size_type;
@@ -59,21 +62,28 @@ public:
     Q_INVOKABLE int userID(){return m_userID;}
     Q_INVOKABLE bool logining(){return m_logining;}
     Q_INVOKABLE QString result(){return m_result;}
+    //
     Q_INVOKABLE QList<QString> getinterface() const{return m_interface;}
-    Q_INVOKABLE QList<QString> getSongListInformation() const {return m_songListInformation;}
-    Q_INVOKABLE QList<QString> getSongList() const{return m_songList;}
-    Q_INVOKABLE int getSongListCount() const{return m_songList.size()/8;}
+    Q_INVOKABLE QList<QString> getSongListInformation(QString songListId);
+    Q_INVOKABLE QList<QString> getSongListSongs(QString songListId);
+    Q_INVOKABLE int getSongListCount() const{return m_songListCount;}
+
     Q_INVOKABLE QList<QString> getSongInformation() const{return m_songInformation;}
     Q_INVOKABLE QList<QString> createdSongLists() const{return _songlistNames;}
 
+
+    //check the song id is added to the playlist
     Q_INVOKABLE bool currentPlayListSong(const QString id) {
         if(m_currentPlayListSong.contains(id))
             return true;
         else {
-            m_currentPlayListSong.append(id);
+                auto song = m_songsMap[id.toInt()];
+                  auto l =song->getName();
+                l = l.substr(0,sizeof(l)-4) + ".lrc";
+                fileTransfer(QString::fromStdString(l));
+                m_currentPlayListSong.append(id);
             return false;
-        }
-}
+        }}
 
     //filetransfer
     void fileReceiver();
@@ -91,6 +101,11 @@ signals:
     void createdSongListsChanged();
 
 private:
+    //cache pool
+    std::map<int,std::shared_ptr<SongList>> m_songlistsMap;
+    std::map<int,std::shared_ptr<Song>> m_songsMap;
+
+
     //用户信息
     QString m_userName;
     int m_userID;
@@ -109,8 +124,8 @@ private:
     //songlist infomation
     QList<QString> m_songListInformation;
     QList<QString> m_songList;
-    QList<QString> m_songInformation;
     int m_songListCount;
+    QList<QString> m_songInformation;
 
     //for file transfer
     clock_t clock_;

@@ -269,6 +269,22 @@ void Client::myRegister(QString username, QString userpw)
 }
 
 QString Client::songInformation(QString songId){
+    m_songInformation.clear();
+    auto iter = m_songsMap.find(songId.toInt());
+    if(iter != m_songsMap.end()){
+        std::cout << "find previous song in song cache pool " << std::endl;
+        auto song = iter->second;
+        m_songInformation.append(QString::number(song->getId()));
+        m_songInformation.append(QString::fromStdString(song->getName()));
+        m_songInformation.append(QString::fromStdString(song->getSinger()));
+        m_songInformation.append(QString::fromStdString(song->getAlbum()));
+        m_songInformation.append(QString::fromStdString(song->getSource()));
+        m_songInformation.append(QString::number(song->getPlayQuantity()));
+        m_songInformation.append(QString::number(song->getDownloadQuantity()));
+        m_songInformation.append(QString::number(song->getShareQuantity()));
+        return QString::fromStdString(song->getName());
+    }else{
+
     Json::Value root;
     root["type"] = "SONGINFO";
     root["songInfo"] = songId.toStdString();
@@ -280,12 +296,9 @@ QString Client::songInformation(QString songId){
     std::cout<<"send message to server: " <<out<<endl;
     if(ec)
     {
-
         std::cout << boost::system::system_error(ec).what() << std::endl;
         return "ERROR";
     }
-
-
     char data[512];
     memset(data,0,sizeof(char)*512);//reset 0 to data[]
     while(strlen(data)==0){
@@ -308,18 +321,34 @@ QString Client::songInformation(QString songId){
         m_songName = QString::fromStdString(resultRoot["name"].asString());
         m_result = QString::fromStdString(ret);
 
-        m_songInformation.append(QString::fromStdString(resultRoot["id"].asString()));
+        m_songInformation.append(QString::number(resultRoot["id"].asInt()));
         m_songInformation.append(QString::fromStdString(resultRoot["name"].asString()));
         m_songInformation.append(QString::fromStdString(resultRoot["singer"].asString()));
         m_songInformation.append(QString::fromStdString(resultRoot["album"].asString()));
         m_songInformation.append(QString::fromStdString(resultRoot["source"].asString()));
-        m_songInformation.append(QString::fromStdString(resultRoot["playQuantity"].asString()));
-        m_songInformation.append(QString::fromStdString(resultRoot["downloadQuantity"].asString()));
-        m_songInformation.append(QString::fromStdString(resultRoot["shareQuantity"].asString()));
+        m_songInformation.append(QString::number(resultRoot["playQuantity"].asInt()));
+        m_songInformation.append(QString::number(resultRoot["downloadQuantity"].asInt()));
+        m_songInformation.append(QString::number(resultRoot["shareQuantity"].asInt()));
+
+//add to song cache pool
+        std::shared_ptr<Song> retSong = std::make_shared<Song>(
+                Song(resultRoot["id"].asInt(),
+                resultRoot["name"].asString(),
+                resultRoot["singer"].asString(),
+                resultRoot["album"].asString(),
+                resultRoot["source"].asString(),
+                resultRoot["playQuantity"].asInt(),
+                resultRoot["shareQuantity"].asInt(),
+                resultRoot["downloadQuantity"].asInt()));
+        m_songsMap.insert(std::make_pair(resultRoot["id"].asInt(),retSong));
+
+
 
         std::cout <<"receive frome server : "<< data <<std::endl;
         return m_songName;
     }
+    }
+
 }
 
 void Client::fileTransfer(QString fileName){
@@ -398,6 +427,9 @@ QString Client::search(QString key){
 
 
 void Client::songList(QString songListId){
+    if(m_songlistsMap.find(songListId.toInt()) != m_songlistsMap.end()){
+        std::cout << "find previous songlist "<< songListId.toStdString() << std::endl;
+    }else{
     Json::Value root;
     root["type"] = "SONGLIST";
     root["songListId"] = songListId.toStdString();
@@ -414,8 +446,6 @@ void Client::songList(QString songListId){
         std::cout << boost::system::system_error(ec).what() << std::endl;
         return;
     }
-
-
     char data[1024*5];
     memset(data,0,sizeof(char)*1024*5);//reset 0 to data[]
     while(strlen(data)==0){
@@ -425,43 +455,47 @@ void Client::songList(QString songListId){
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
         return;
-
     }
     Json::Reader reader;
     Json::Value resultRoot;
-
-    if (reader.parse(data, resultRoot))
-    {
+    if (reader.parse(data, resultRoot)){
         const Json::Value arrayObj = resultRoot["array"];
-        m_songListInformation.clear();
-        m_songList.clear();
 
-        m_songListInformation.append( QString::fromStdString( resultRoot["id"].asString()));
-        m_songListInformation.append( QString::fromStdString( resultRoot["name"].asString()));
-        m_songListInformation.append( QString::fromStdString( resultRoot["author"].asString()));
-        m_songListInformation.append( QString::fromStdString( resultRoot["createTime"].asString()));
-        m_songListInformation.append( QString::fromStdString( resultRoot["label"].asString()));
-        m_songListInformation.append( QString::fromStdString( resultRoot["info"].asString()));
-        m_songListInformation.append( QString::fromStdString( resultRoot["icon"].asString()));
-        m_songListInformation.append( QString::fromStdString( resultRoot["collectionQuantity"].asString()));
-        m_songListInformation.append( QString::fromStdString( resultRoot["clickQuantity"].asString()));
-        m_songListInformation.append( QString::fromStdString( resultRoot["shareQuantity"].asString()));
+        std::shared_ptr<SongList> ret = std::make_shared<SongList>(SongList(resultRoot["id"].asInt(),
+                resultRoot["name"].asString(),
+                resultRoot["author"].asString(),
+                resultRoot["createTime"].asString(),
+                resultRoot["label"].asString(),
+                resultRoot["info"].asString(),
+                 resultRoot["icon"].asString(),
+                resultRoot["collectionQuantity"].asInt(),
+                resultRoot["clickQuantity"].asInt(),
+                resultRoot["shareQuantity"].asInt()));
+            std::map<int,std::shared_ptr<Song>> songs;
+            for (unsigned int i = 0; i < arrayObj.size(); i++)
+            {
+                std::shared_ptr<Song> retSong = std::make_shared<Song>(
+                        Song(arrayObj[i]["id"].asInt(),
+                         arrayObj[i]["name"].asString(),
+                        arrayObj[i]["singer"].asString(),
+                        arrayObj[i]["album"].asString(),
+                        arrayObj[i]["source"].asString(),
+                        arrayObj[i]["playQuantity"].asInt(),
+                        arrayObj[i]["shareQuantity"].asInt(),
+                        arrayObj[i]["downloadQuantity"].asInt()));
+                songs.insert(std::make_pair(arrayObj[i]["id"].asInt(),retSong));
 
-        for (unsigned int i = 0; i < arrayObj.size(); i++)
-        {
-            m_songList.append( QString::fromStdString( arrayObj[i]["id"].asString()));
-            m_songList.append( QString::fromStdString( arrayObj[i]["name"].asString()));
-            m_songList.append( QString::fromStdString( arrayObj[i]["singer"].asString()));
-            m_songList.append( QString::fromStdString( arrayObj[i]["album"].asString()));
-            m_songList.append( QString::fromStdString( arrayObj[i]["source"].asString()));
-            m_songList.append( QString::fromStdString( arrayObj[i]["playQuantity"].asString()));
-            m_songList.append( QString::fromStdString( arrayObj[i]["shareQuantity"].asString()));
-            m_songList.append( QString::fromStdString( arrayObj[i]["downloadQuantity"].asString()));
-        }
+                //add to song cache pool
+                m_songsMap.insert(std::make_pair(arrayObj[i]["id"].asInt(),retSong));
+            }
+         ret->setSongs(songs);
+        m_songlistsMap.insert(std::make_pair(resultRoot["id"].asInt(),ret)) ;
         std::cout <<"receive frome server : "<< data <<std::endl;
         return;
     }
+    }
     cout<<"json receive failed"<<endl;
+    return;
 }
 void Client::interface(QString interfaceName){
     Json::Value root;
@@ -639,4 +673,43 @@ void Client::addCreateSongList(QString username,QString songlistName, QString ti
 //{
 //    service.run();
 //}
+//--------------get--------------
+QList<QString> Client::getSongListInformation(QString songListId){
+    if(songListId != ""){
+        auto songList = m_songlistsMap[songListId.toInt()];
+        QList<QString> ret;
 
+        ret.append(QString::number(songList->getId()));
+        ret.append(QString::fromStdString(songList->getName()));
+        ret.append(QString::fromStdString(songList->getAuthor()));
+        ret.append(QString::fromStdString(songList->getCreateTime()));
+        ret.append(QString::fromStdString(songList->getLabel()));
+        ret.append(QString::fromStdString(songList->getInfo()));
+        ret.append(QString::fromStdString(songList->getIcon()));
+        ret.append(QString::number(songList->getCollectionQuantity()));
+        ret.append(QString::number(songList->getClickQuantity()));
+        ret.append(QString::number(songList->getShareQuantity()));
+        return ret;
+    }
+}
+QList<QString> Client::getSongListSongs(QString songListId){
+    if(songListId != ""){
+    std::shared_ptr<SongList> songlist = m_songlistsMap[songListId.toInt()];
+    QList<QString> ret;
+
+    auto songs = songlist->getSongs();
+    for(auto &l : songs){
+        auto song = l.second;
+        ret.append(QString::number(song->getId()));
+        ret.append(QString::fromStdString(song->getName()));
+        ret.append(QString::fromStdString(song->getSinger()));
+        ret.append(QString::fromStdString(song->getAlbum()));
+        ret.append(QString::fromStdString(song->getSource()));
+        ret.append(QString::number(song->getPlayQuantity()));
+        ret.append(QString::number(song->getDownloadQuantity()));
+        ret.append(QString::number(song->getShareQuantity()));
+    }
+    m_songListCount = ret.size()/8;
+        return ret;
+    }
+}

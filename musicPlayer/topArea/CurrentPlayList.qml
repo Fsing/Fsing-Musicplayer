@@ -22,7 +22,7 @@ Rectangle {
             width: parent.width
             color: currentListRectangle.color
             Text {
-                text: client.getSongName()
+                text: client.getSongInformation()[1]
             }
             MouseArea {
                 anchors.fill: parent

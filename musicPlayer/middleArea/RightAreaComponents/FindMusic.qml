@@ -9,12 +9,21 @@ Rectangle {
     id:findMusicRetangle
     property int index: 0
     property var interfaceParamter: client.getinterface()
+    property var songListInformation
+    signal clickedSongList(var clickedSongListId)
 
     Connections {
         target: mainWindow
         onLeftButtonPressed: {
             findMusicstackView.pop(findMusicPage)
             listmodel1.clear()
+        }
+    }
+    Connections{
+        target: findMusicRetangle
+        onClickedSongList:{
+            songListInformation = client.getSongListInformation(clickedSongListId)
+            findMusicstackView.push(songListPage)
         }
     }
     StackView {
@@ -39,7 +48,6 @@ Rectangle {
                     Advert {
                         id:advert
                         Layout.fillWidth: true
-                        onWidthChanged: console.log(parent.width)
                     }
 
                     GridLayout{
@@ -159,22 +167,18 @@ Rectangle {
         Component {
             id: songListPage
             SongList {
-                id: songlist
+                id: songlists
                 width: parent.width
                 height: parent.height
                 model: listmodel1
                 userImg: "qrc:/images/logo.jpg"
-                username: "zhy"
-                createTime: "2018-09-01"
-                Component.onCompleted: {
-                    var songListInformation = client.getSongListInformation()
-                    console.log(songListInformation)
-                    listname = songListInformation[1]
-                    listImg = "file:///" + applicationDirPath + "/" + songListInformation[6]
-                    label = songListInformation[4]
-                    briefInfo = songListInformation[5]
-                    username = songListInformation[2]
-                }
+                createTime: songListInformation[3]
+
+                listname: songListInformation[1]
+                listImg : "file:///" + applicationDirPath + "/" + songListInformation[6]
+                label : songListInformation[4]
+                briefInfo : songListInformation[5]
+                username : songListInformation[2]
             }
         }
     }
@@ -183,8 +187,8 @@ Rectangle {
         id: listmodel1
     }
 
-    function appendSong() {
-        var list = client.getSongList()
+    function appendSong(id) {
+        var list = client.getSongListSongs(id)
         var count = client.getSongListCount()
         for (var i = 0; i < count; ++i) {
 
