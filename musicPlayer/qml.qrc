@@ -86,5 +86,17 @@
         <file>images/advert/2.jpg</file>
         <file>images/advert/1.jpg</file>
         <file>middleArea/RightAreaComponents/Advert.qml</file>
+        <file>personalinfo/element/NumberText.qml</file>
+        <file>personalinfo/element/TextText.qml</file>
+        <file>personalinfo/element/UserIcon.qml</file>
+        <file>personalinfo/FriendInfo.qml</file>
+        <file>personalinfo/FriendRightBaseInfo.qml</file>
+        <file>personalinfo/PersonalCollectedSongLists.qml</file>
+        <file>personalinfo/PersonalCreatedSongLists.qml</file>
+        <file>personalinfo/PersonalInformation.qml</file>
+        <file>personalinfo/RightBaseInfo.qml</file>
+        <file>personalinfo/UserBaseInfo.qml</file>
+        <file>personalinfo/UserCollectedSongList.qml</file>
+        <file>personalinfo/UserCreatedSongList.qml</file>
     </qresource>
 </RCC>

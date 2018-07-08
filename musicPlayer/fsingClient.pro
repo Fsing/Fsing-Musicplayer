@@ -17,7 +17,8 @@ SOURCES += main.cpp \
     client.cpp \
     fan.cpp \
     songlist.cpp \
-    song.cpp
+    song.cpp \
+    fanproxy.cpp
 
 RESOURCES += qml.qrc \
 

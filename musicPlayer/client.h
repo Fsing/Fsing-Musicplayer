@@ -5,6 +5,7 @@
 #include <boost/asio.hpp>
 #include <boost/shared_ptr.hpp>
 #include "fan.h"
+//#include "fanproxy.h"
 
 struct File_info {
     typedef unsigned long long Size_type;
@@ -21,7 +22,6 @@ class Client:public QObject
     Q_PROPERTY(int userID READ userID WRITE setUserID NOTIFY userIDChanged)
     Q_PROPERTY(bool logining READ logining WRITE setLogining NOTIFY loginingChanged)
     Q_PROPERTY(QString result READ result WRITE setResult NOTIFY resultChanged)
-//    Q_PROPERTY(QList<QString> createdSongLists READ createdSongLists NOTIFY createdSongListsChanged)
 
 public:
     //构造函数
@@ -44,8 +44,12 @@ public:
     Q_INVOKABLE void songList(QString songListId);//get songlist infomation
     Q_INVOKABLE void interface(QString interfaceName);//get songlist infomation
 
+    //关注、粉丝个数、用户名
+    Q_INVOKABLE int attentionUserCount(){return _fan.attentionUserCount();}
+    Q_INVOKABLE int fanUserCount(){return _fan.fanUserCount();}
+    Q_INVOKABLE int createdSongListCount(){return _fan.createdSongListCount();}
+    Q_INVOKABLE int collectedSongListCount(){return _fan.collectedSongListCount();}
 
-//    void downloadMusic();
 
     //setting
     Q_INVOKABLE void setUserName(QString name){m_userName = name;}
@@ -73,7 +77,7 @@ public:
             m_currentPlayListSong.append(id);
             return false;
         }
-}
+    }
 
     //filetransfer
     void fileReceiver();
@@ -97,13 +101,16 @@ private:
     bool m_logining;
     int i;
 
+    //用户代理
+//    FanProxy _fanProxy;
+
     QString m_result;
     QString m_songName;
 
-   Fan _fan;
+    Fan _fan;
     QList<QString> m_currentPlayListSong;//playlist song id
 
-    //歌单名
+    //用户原创歌单名
     QList<QString> _songlistNames;
     QList<QString> m_interface;
     //songlist infomation

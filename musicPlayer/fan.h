@@ -1,8 +1,12 @@
 #ifndef FAN_H
 #define FAN_H
 
+/*
+ * 用户登录时，服务器会返回用户所有的信息：基本信息、收藏歌单（只有歌单基本信息）、创建的歌单（只有歌单基本信息）、关注用户（只有用户基本信息）、粉丝只有（用户基本信息）
+ */
 #include <QObject>
 #include "songlist.h"
+#include <QMap>
 
 using std::string;      using std::vector;
 using std::map;
@@ -22,6 +26,11 @@ public:
     Fan(){}
     Fan(QString name,QString password,QString label,QString sex,QString birthday,QString address,QString icon);
 
+    //methods
+    int attentionUserCount();
+    int fanUserCount();
+    int createdSongListCount();
+    int collectedSongListCount();
     //getting
     QString username();
     QString password();
@@ -31,10 +40,10 @@ public:
     QString address();
     QString icon();
     //getting
-    QList<QList<QString>> createdSongLists();
-    QList<QList<QString>> collectedSongLists();
-    QList<QList<QString>> attentedUsers();
-    QList<QList<QString>> fanUsers();
+    QMap<QString, QList<QString> > createdSongLists();
+    QMap<QString, QList<QString>> collectedSongLists();
+    QMap<QString, QList<QString> > attentedUsers();
+    QMap<QString, QList<QString> > fanUsers();
 
     //setting
     void setUsername(QString username);
@@ -46,10 +55,10 @@ public:
     void setIcon(QString icon);
 
     //adding
-    void addCreatedSongList(QList<QString> s){_createdSongList.append(s);}
-    void addCollectedSongLists(QList<QString> s){_collectedSongList.append(s);}
-    void addAttentedUsers(QList<QString> s){_attentedUsers.append(s);}
-    void addFanUsers(QList<QString> s){_fanUsers.append(s);}
+    void addCreatedSongList(QString key,QList<QString> s){_createdSongList.insert(key,s);}
+    void addCollectedSongLists(QString key,QList<QString> s){_collectedSongList.insert(key,s);}
+    void addAttentedUsers(QString key,QList<QString> s){_attentedUsers.insert(key,s);}
+    void addFanUsers(QString key,QList<QString> s){_fanUsers.insert(key,s);}
 
     //deleting
 //    void deleteAttentedUsers(Fan attentedUsers);
@@ -75,9 +84,9 @@ private:
     QString m_icon;         //头像，保存路径
 //    bool m_vaild;               //状态变量，用来标志歌曲是否违法，是否可用
 
-    QList<QList<QString>> _collectedSongList;              //已收藏歌单
-    QList<QList<QString>> _createdSongList;                //创建歌单
-    QList<QList<QString>> _attentedUsers;                  //关注的用户
-    QList<QList<QString>> _fanUsers;                       //粉丝
+    QMap<QString,QList<QString>> _collectedSongList;              //已收藏歌单
+    QMap<QString,QList<QString>> _createdSongList;                //创建歌单
+    QMap<QString,QList<QString>> _attentedUsers;                  //关注的用户
+    QMap<QString,QList<QString>> _fanUsers;                       //粉丝
 };
 #endif // FAN_H

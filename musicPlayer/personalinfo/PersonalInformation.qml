@@ -10,8 +10,8 @@ Rectangle{
     //    width: 700
     //    height: 500
 
-    property string createdSongListNumber: "0"
-    property string collectedSongListNumber: "1"
+    property int createdSongListNumber: 0
+    property int collectedSongListNumber: 0
 
     ScrollView {
         id: leftItem

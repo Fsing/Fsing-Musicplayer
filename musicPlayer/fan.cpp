@@ -5,23 +5,42 @@ Fan::Fan(QString name, QString password, QString label, QString sex, QString bir
 
 }
 
+int Fan::attentionUserCount()
+{
+    return _attentedUsers.count();
+}
+
+int Fan::fanUserCount()
+{
+    return _fanUsers.count();
+}
+
+int Fan::createdSongListCount()
+{
+    return _createdSongList.count();
+}
+
+int Fan::collectedSongListCount()
+{
+    return _collectedSongList.count();
+}
+
 //getting
-QList<QList<QString> > Fan::createdSongLists()
+QMap<QString,QList<QString>> Fan::createdSongLists()
 {
     return _createdSongList;
 }
-
-QList<QList<QString> > Fan::collectedSongLists()
+QMap<QString,QList<QString>> Fan::collectedSongLists()
 {
     return _collectedSongList;
 }
 
-QList<QList<QString> > Fan::attentedUsers()
+QMap<QString,QList<QString>> Fan::attentedUsers()
 {
     return _attentedUsers;
 }
 
-QList<QList<QString> > Fan::fanUsers()
+QMap<QString,QList<QString>>Fan::fanUsers()
 {
     return _fanUsers;
 }
