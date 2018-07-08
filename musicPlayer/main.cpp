@@ -4,6 +4,7 @@
 #include <QQmlContext>
 #include "lyric.h"
 #include "client.h"
+//#include "fanproxy.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,6 +13,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     qmlRegisterType<Lyric>("LyricObject", 1, 0, "LyricObject");
     qmlRegisterType<Client>("Client",1,0,"Client");
+//    qmlRegisterType<FanProxy>("FanProxy",1,0,"FanProxy");
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("applicationDirPath",
