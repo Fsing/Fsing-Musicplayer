@@ -10,6 +10,14 @@ Rectangle {
     anchors.top: parent.top
     anchors.bottom: parent.bottom
 
+    Connections {
+        target: mainWindow
+        onStartSearch:{
+            console.log("search")
+            stackView.push(searchComponent)
+        }
+    }
+
     StackView {
         id: stackView
         anchors.fill: parent
@@ -126,11 +134,10 @@ Rectangle {
             id: mymv
         }
     }
-
     Component {
-        id: mySonglistComponent
-        SongList {
-            id: songlist
+        id: searchComponent
+        Search{
+            id:search
         }
     }
     Component.onCompleted: {
@@ -145,6 +152,13 @@ Rectangle {
         client.fileTransfer(interfaceParamter[56])
         client.fileTransfer(interfaceParamter[66])
         client.fileTransfer(interfaceParamter[76])
+
+        client.fileTransfer(interfaceParamter[80])
+        client.fileTransfer(interfaceParamter[81])
+        client.fileTransfer(interfaceParamter[82])
+        client.fileTransfer(interfaceParamter[83])
+        client.fileTransfer(interfaceParamter[84])
+        client.fileTransfer(interfaceParamter[85])
         stackView.push(findMusicComponent)
 
     }

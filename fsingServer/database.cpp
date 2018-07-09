@@ -62,7 +62,6 @@ std::string DatabaseController::songInformation(std::string songSource)
 }
 std::string DatabaseController::search(std::string songKey)
 {
-
     MYSQL mysql;
     mysql_init(&mysql);
     if(!mysql_real_connect(&mysql,"localhost","fsing","fsing","Fsing",3306,NULL,0)){
@@ -74,11 +73,11 @@ std::string DatabaseController::search(std::string songKey)
     memset(sql,0,sizeof(char)*512);
     auto key = songKey.data();
     //    auto pw = password.data();
-    std::sprintf(sql,"select * from songinfo WHERE source like '%%%s%%' or songname like '%%%s%%'",key,key);
+    std::sprintf(sql,"select * from Song WHERE name like '%%%s%%' or singer like '%%%s%%'",key,key);
     size_t length =strlen(sql);
     int res = mysql_real_query(&mysql,sql,length);
     if(res != 0){
-        cout <<"fondUser select * from Account failed" << endl;
+        cout <<"fondUser select * from Song failed" << endl;
     }else{
         MYSQL_RES *result;
         MYSQL_ROW row;
@@ -89,20 +88,23 @@ std::string DatabaseController::search(std::string songKey)
             Json::Value root;
             Json::Value arrayObj;
             root["type"] = "SEARCH";
-            int resultRow = 0;
 
             while((row = mysql_fetch_row(result))){
                 //                m_userNameFlag = true;
                 Json::Value item;
 
-                item["songName"] = row[0];
+                item["id"] = row[0];
                 item["type"] = "SONGINFO";
-                item["source"] = row[1];
+                item["name"] = row[1];
+                item["source"] = row[2];
+                item["singer"] = row[3];
+                item["album"] = row[4];
+                item["playQuantity"] = row[5];
+                item["shareQuantity"] = row[6];
+                item["downloadQuantity"] = row[7];
                 arrayObj.append(item);
-                ++resultRow;
             }
             root["array"] = arrayObj;
-            root["row"] = resultRow;
 
             root.toStyledString();
             std::string out = root.toStyledString();
@@ -136,9 +138,11 @@ std::string DatabaseController::interface(std::string interfaceName){
         if(result){
             Json::Value root;
             Json::Value arrayObj;
+            Json::Value advertArrayObj;
             root["type"] = "INTERFACE";
 
-            while((row = mysql_fetch_row(result))){
+            int i = 0;
+           while((row = mysql_fetch_row(result)) && (i < 8)){
 
                 Json::Value item;
                 item["type"] = "SONGLIST";
@@ -153,8 +157,32 @@ std::string DatabaseController::interface(std::string interfaceName){
                 item["clickQuantity"] = row[8];
                 item["shareQuantity"] = row[9];
                 arrayObj.append(item);
+                //only transfer 6 songlist
+                ++i;
             }
+
+                 Json::Value item1;
+                 Json::Value item2;
+                 Json::Value item3;
+                 Json::Value item4;
+                 Json::Value item5;
+                 Json::Value item6;
+                 item1["source"] = "1.jpg";
+                 item2["source"] = "2.jpg";
+                 item3["source"] = "3.jpg";
+                 item4["source"] = "4.jpg";
+                 item5["source"] = "5.jpg";
+                 item6["source"] = "6.jpg";
+                 advertArrayObj.append(item1);
+                 advertArrayObj.append(item2);
+                 advertArrayObj.append(item3);
+                 advertArrayObj.append(item4);
+                 advertArrayObj.append(item5);
+                 advertArrayObj.append(item6);
+
+
             root["array"] = arrayObj;
+            root["advertArray"] = advertArrayObj;
             std::string out = root.toStyledString();
             return out.data();
         }

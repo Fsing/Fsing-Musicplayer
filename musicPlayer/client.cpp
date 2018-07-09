@@ -303,7 +303,14 @@ void Client::myRegister(QString username, QString userpw)
 
     }
 }
-
+QString Client::songInformationBySource(QString source){
+        for(auto &l:m_songsMap){
+            auto song = l.second;
+            if(song->getSource() == source.toStdString()){
+                return QString::fromStdString( song->getName());
+            }
+        }
+}
 QString Client::songInformation(QString songId){
     m_songInformation.clear();
     auto iter = m_songsMap.find(songId.toInt());
@@ -414,7 +421,7 @@ void Client::fileTransfer(QString fileName){
     fileReceiver();
 }
 
-QString Client::search(QString key){
+QList<QString> Client::search(QString key){
     Json::Value root;
     root["type"] = "SEARCH";
     root["songKey"] = key.toStdString();
@@ -424,41 +431,81 @@ QString Client::search(QString key){
     boost::system::error_code ec;
     sock.write_some(buffer(s,strlen(s)),ec);
     std::cout<<"send message to server: " <<out<<endl;
+    QList<QString> ret;
     if(ec)
     {
 
         std::cout << boost::system::system_error(ec).what() << std::endl;
-        return "ERROR";
+        return ret;
     }
 
 
     char data[1024*5];
     memset(data,0,sizeof(char)*1024*5);//reset 0 to data[]
-    while(strlen(data)==0){
+    //-----------------------
+   boost::posix_time::ptime time_now,time_now1;
+   boost::posix_time::millisec_posix_time_system_config::time_duration_type time_elapse;
+   time_now = boost::posix_time::second_clock::universal_time();
+
+   // 得到两个时间间隔的秒数;
+    int sec = 0;
+    while(strlen(data)==0 && sec <= 2){
         sock.read_some(buffer(data),ec);
+        time_now1 = boost::posix_time::second_clock::universal_time();
+        time_elapse = time_now1 - time_now;
+        sec = time_elapse.total_seconds();
+        cout <<sec<<endl;
     }
+    if(strlen(data) == 0){
+        return ret;
+    }
+
+   //---------------------------
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
-        return "ERROR";
+        return ret;
     }
 
 
     Json::Reader reader;
     Json::Value resultRoot;
 
+
     if (reader.parse(data, resultRoot))
     {
         const Json::Value arrayObj = resultRoot["array"];
         for (unsigned int i = 0; i < arrayObj.size(); i++)
         {
+            //add to song cache pool
+            if(arrayObj[i]["type"] == "SONGINFO"){
+                std::shared_ptr<Song> retSong = std::make_shared<Song>(
+                        Song(std::stoi(arrayObj[i]["id"].asString()),
+                        arrayObj[i]["name"].asString(),
+                        arrayObj[i]["singer"].asString(),
+                        arrayObj[i]["album"].asString(),
+                        arrayObj[i]["source"].asString(),
+                        std::stoi(arrayObj[i]["playQuantity"].asString()),
+                        std::stoi(arrayObj[i]["shareQuantity"].asString()),
+                        std::stoi(arrayObj[i]["downloadQuantity"].asString())));
+                m_songsMap.insert(std::make_pair(std::stoi(arrayObj[i]["id"].asString()),retSong));
+                //add to Qlist
+                ret.append(QString::fromStdString(arrayObj[i]["id"].asString()));
+                ret.append(QString::fromStdString(arrayObj[i]["name"].asString()));
+                ret.append(QString::fromStdString(arrayObj[i]["singer"].asString()));
+                ret.append(QString::fromStdString(arrayObj[i]["album"].asString()));
+                ret.append(QString::fromStdString(arrayObj[i]["source"].asString()));
+                ret.append(QString::fromStdString(arrayObj[i]["playQuantity"].asString()));
+                ret.append(QString::fromStdString(arrayObj[i]["shareQuantity"].asString()));
+                ret.append(QString::fromStdString(arrayObj[i]["downloadQuantity"].asString()));
+            }
             //------------------------------
         }
         std::cout <<"receive frome server : "<< data <<std::endl;
-        return QString::number(arrayObj.size());
+        m_searchCount = arrayObj.size();
+        return ret;
     }
-
-    return "ERROR";
+   return ret;
 }
 
 
@@ -580,6 +627,11 @@ void Client::interface(QString interfaceName){
             m_interface.append( QString::fromStdString( arrayObj[i]["clickQuantity"].asString()));
             m_interface.append( QString::fromStdString( arrayObj[i]["shareQuantity"].asString()));
 
+        }
+        const Json::Value advertArrayObj = resultRoot["advertArray"];
+        for (unsigned int i = 0; i < advertArrayObj.size(); i++)
+        {
+              m_interface.append(QString::fromStdString( advertArrayObj[i]["source"].asString()));
         }
         std::cout <<"receive frome server : "<< data <<std::endl;
         return;

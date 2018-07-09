@@ -25,14 +25,13 @@ Rectangle {
         focus: false
         onFocusChanged: {
             if (focus == true) {
-                text = " "
+                text = ""
             } else
                 text = "搜索音乐，视频，歌词，电台"
         }
         onAccepted: {
-
-            text = client.search(text)
-            console.log(text)
+            client.search(text)
+            startSearch()
         }
 
     }

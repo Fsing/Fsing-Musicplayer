@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 2.0
 
 Rectangle {
+    property alias  modle: pathView.model
     id: advert_rec
     width: parent.width
     height: 300
@@ -14,6 +15,7 @@ Rectangle {
         onTriggered: pathView.incrementCurrentIndex()
     }
 
+    /*
     ListModel {
         id: model
         ListElement {
@@ -35,6 +37,7 @@ Rectangle {
             advertImg: "qrc:/images/advert/7.jpg"
         }
     }
+    */
 
     Rectangle {
         width: 20
