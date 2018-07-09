@@ -36,7 +36,7 @@ CommonDialog {
                 }
                 console.log(middleArea.leftArea.listmodel.count)
 
-                topRightButton.loginButtonSource = "qrc:/images/logo.jpg"
+                topRightButton.loginButtonSource = "file:///" + applicationDirPath + "/" + client.userIcon
                 topRightButton.fanName = client.userName
                 var i = 0
                 //                console.log(client.createdSongLists()[i])
@@ -64,6 +64,48 @@ CommonDialog {
                     }
 
                     i++
+                }
+                //用户信息界面插入原创歌单信息
+                i = 0;
+                while (client.createdSongLists()[i]) {
+                    middleArea.personal.songlistModel.append({
+                                                                 playquantity:50,
+                                                                 imageSource:"file:///" + applicationDirPath + "/" + client.userIcon,
+                                                                 songlistid:50,
+                                                                 songlistname:client.createdSongLists()[i]
+                                                             })
+                    i++
+                }
+                //用户信息界面插入收藏歌单信息
+                i = 0;
+                while (client.collectedSongLists()[i]) {
+                    middleArea.personal.songlistModel1.append({
+                                                                  playquantity:50,
+                                                                  imageSource:"file:///" + applicationDirPath + "/" + client.userIcon,
+                                                                  songlistid:10,
+                                                                  songlistname:client.collectedSongLists()[i]
+                                                              })
+                    i++
+                }
+
+                //用户信息界面插入关注用户信息
+                i = 0
+                while(client.attentedUsers()[i]){
+                    middleArea.attentedUserModel.append({
+                                                            usernametext:client.attentedUsers()[i],
+                                                            loginButtonSource:"file:///" + applicationDirPath + "/" + client.attentedUsers()[++i],
+                                                        })
+                    i++;
+                }
+
+                //用户信息界面插入粉丝用户信息
+                i=0
+                while(client.fanUsers()[i]){
+                    middleArea.attentedUserModel.append({
+                                                            usernametext:client.fanUsers()[i],
+                                                            loginButtonSource:"file:///" + applicationDirPath + "/" + client.fanUsers()[++i],
+                                                        })
+                    i++;
                 }
             }
         }

@@ -166,7 +166,7 @@ Rectangle {
             id:loginUserName
             width: parent.width * 0.7
             height: 40
-            maxTextLength: 11
+            maxTextLength: 30
             anchors{
                 top:parent.top
                 left: parent.left
@@ -180,6 +180,7 @@ Rectangle {
             width: parent.width * 0.7
             height: 40
             maxTextLength: 11
+            echoMode: TextInput.Password
             anchors{
                 top:loginUserName.bottom
                 left: parent.left

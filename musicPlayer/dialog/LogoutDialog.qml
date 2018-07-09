@@ -20,6 +20,11 @@ CommonDialog {
                 i++
             }
             console.log(middleArea.listmodel.count)
+
+            //清空用户信息界面的歌单信息
+            middleArea.personal.songlistModel.clear()
+            middleArea.personal.songlistModel1.clear()
+            middleArea.allAttentions.attenedUsersModel.clear()
         }
     }
 }

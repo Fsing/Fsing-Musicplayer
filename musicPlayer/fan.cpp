@@ -5,24 +5,32 @@ Fan::Fan(QString name, QString password, QString label, QString sex, QString bir
 
 }
 
-int Fan::attentionUserCount()
+int Fan::attentionUserCount() const
 {
     return _attentedUsers.count();
 }
 
-int Fan::fanUserCount()
+int Fan::fanUserCount() const
 {
     return _fanUsers.count();
 }
 
-int Fan::createdSongListCount()
+int Fan::createdSongListCount() const
 {
     return _createdSongList.count();
 }
 
-int Fan::collectedSongListCount()
+int Fan::collectedSongListCount() const
 {
     return _collectedSongList.count();
+}
+
+void Fan::clear()
+{
+    _collectedSongList.clear();
+    _createdSongList.clear();
+    _attentedUsers.clear();
+    _fanUsers.clear();
 }
 
 //getting
@@ -77,30 +85,37 @@ QString Fan::icon(){
 //setting
 void Fan::setUsername(QString username){
     m_name= username;
+    emit usernameChanged();
 }
 
 void Fan::setPassword(QString password){
     m_password = password;
+    emit passwordChanged();
 }
 
 void Fan::setLabel(QString label){
     m_label = label;
+    emit labelChanged();
 }
 
 void Fan::setSex(QString sex){
     m_sex = sex;
+    emit sexChanged();
 }
 
 void Fan::setBirthday(QString birthday){
     m_birthday = birthday;
+    emit birthdayChanged();
 }
 
 void Fan::setAddress(QString address){
     m_address = address;
+    emit addressChanged();
 }
 
 void Fan::setIcon(QString icon){
     m_icon = icon;
+    emit iconChanged();
 }
 
 

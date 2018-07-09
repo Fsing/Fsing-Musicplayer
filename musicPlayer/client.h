@@ -4,6 +4,7 @@
 #include <QObject>
 #include <boost/asio.hpp>
 #include <boost/shared_ptr.hpp>
+#include <QMap>
 #include "fan.h"
 //#include "fanproxy.h"
 
@@ -22,7 +23,11 @@ class Client:public QObject
     Q_PROPERTY(int userID READ userID WRITE setUserID NOTIFY userIDChanged)
     Q_PROPERTY(bool logining READ logining WRITE setLogining NOTIFY loginingChanged)
     Q_PROPERTY(QString result READ result WRITE setResult NOTIFY resultChanged)
-
+    Q_PROPERTY(int attentionUserCount READ attentionUserCount WRITE setAttentionUserCount NOTIFY attentionUserCountChanged)
+    Q_PROPERTY(int fanUserCount READ fanUserCount WRITE setFanUserCount NOTIFY fanUserCountChanged)
+    Q_PROPERTY(int createdSongListCount READ createdSongListCount WRITE setCreatedSongListCount NOTIFY createdSongListCountChanged)
+    Q_PROPERTY(int collecedSongListCount READ collecedSongListCount WRITE setCollecedSongListCount NOTIFY collecedSongListCountChanged)
+    Q_PROPERTY(QString userIcon READ userIcon WRITE setUserIcon NOTIFY userIconChanged)
 public:
     //构造函数
     Client();
@@ -40,15 +45,10 @@ public:
     //下载音乐
     Q_INVOKABLE QString songInformation(QString songId);
     Q_INVOKABLE QString search(QString key);
+    //请求文件
     Q_INVOKABLE void fileTransfer(QString fileName);
     Q_INVOKABLE void songList(QString songListId);//get songlist infomation
     Q_INVOKABLE void interface(QString interfaceName);//get songlist infomation
-
-    //关注、粉丝个数、用户名
-    Q_INVOKABLE int attentionUserCount(){return _fan.attentionUserCount();}
-    Q_INVOKABLE int fanUserCount(){return _fan.fanUserCount();}
-    Q_INVOKABLE int createdSongListCount(){return _fan.createdSongListCount();}
-    Q_INVOKABLE int collectedSongListCount(){return _fan.collectedSongListCount();}
 
 
     //setting
@@ -57,18 +57,43 @@ public:
     Q_INVOKABLE void setLogining(bool b){m_logining = b;}
     Q_INVOKABLE void setResult(QString str){m_result = str;}
 
-    //getting
+    //setting 关注用户数、粉丝个数、用户名，创建歌单数、收藏歌单数
+    Q_INVOKABLE void setAttentionUserCount(int i){m_attentedUserCount = i;}
+    Q_INVOKABLE void setFanUserCount(int i){m_fanUserCount = i;}
+    Q_INVOKABLE void setCreatedSongListCount(int i){m_CreatedSongListCount = i;}
+    Q_INVOKABLE void setCollecedSongListCount(int i){m_collectedSongListCount = i;}
+
+    //setting 更改用户头像
+    Q_INVOKABLE void setUserIcon(QString icon){m_icon = icon;}
+
+    //getting 用户信息
     Q_INVOKABLE QString userName(){return m_userName;}
     Q_INVOKABLE QString getSongName(){return m_songName;}
     Q_INVOKABLE int userID(){return m_userID;}
     Q_INVOKABLE bool logining(){return m_logining;}
+    Q_INVOKABLE QString userIcon(){return m_icon;}
+
     Q_INVOKABLE QString result(){return m_result;}
     Q_INVOKABLE QList<QString> getinterface() const{return m_interface;}
     Q_INVOKABLE QList<QString> getSongListInformation() const {return m_songListInformation;}
     Q_INVOKABLE QList<QString> getSongList() const{return m_songList;}
     Q_INVOKABLE int getSongListCount() const{return m_songList.size()/8;}
     Q_INVOKABLE QList<QString> getSongInformation() const{return m_songInformation;}
+
+    //创建歌单的名字集合
     Q_INVOKABLE QList<QString> createdSongLists() const{return _songlistNames;}
+    //收藏歌单名字集合
+    Q_INVOKABLE QList<QString> collectedSongLists() const{return _collectedSongListNames;}
+    //用户关注用户名字+icon集合
+    Q_INVOKABLE QList<QString> attentedUsers();
+    //用户粉丝信息集合
+    Q_INVOKABLE QList<QString> fanUsers();
+
+    //getting 关注用户数、粉丝个数、用户名，创建歌单数、收藏歌单数
+    Q_INVOKABLE int createdSongListCount() const{return m_CreatedSongListCount;}
+    Q_INVOKABLE int collecedSongListCount() const{return m_collectedSongListCount;}
+    Q_INVOKABLE int attentionUserCount() const {return m_attentedUserCount;}
+    Q_INVOKABLE int fanUserCount() const{return m_fanUserCount;}
 
     Q_INVOKABLE bool currentPlayListSong(const QString id) {
         if(m_currentPlayListSong.contains(id))
@@ -80,7 +105,9 @@ public:
     }
 
     //filetransfer
+    //接收文件
     void fileReceiver();
+    //传文件调用函数
     void handle_write(const boost::system::error_code& error, size_t bytes_transferred);
     void receive_file_content(std::string fileName);
     void handle_file(const boost::system::error_code& error);
@@ -93,12 +120,17 @@ signals:
     void loginingChanged();
     void resultChanged();
     void createdSongListsChanged();
-
+    void attentionUserCountChanged();
+    void fanUserCountChanged();
+    void createdSongListCountChanged();
+    void collecedSongListCountChanged();
+    void userIconChanged();
 private:
     //用户信息
     QString m_userName;
     int m_userID;
-    bool m_logining;
+    QString m_icon;
+    bool m_logining = false;
     int i;
 
     //用户代理
@@ -107,11 +139,20 @@ private:
     QString m_result;
     QString m_songName;
 
+    //用户信息
     Fan _fan;
+    int m_CreatedSongListCount = 0;
+    int m_collectedSongListCount = 0;
+    int m_fanUserCount = 0;
+    int m_attentedUserCount = 0;
+
     QList<QString> m_currentPlayListSong;//playlist song id
 
     //用户原创歌单名
     QList<QString> _songlistNames;
+    //用户收藏歌单名
+    QList<QString> _collectedSongListNames;
+
     QList<QString> m_interface;
     //songlist infomation
     QList<QString> m_songListInformation;

@@ -6,12 +6,15 @@ import "./element"
 
 Item {
 
-    property alias attentions: attention.number
-    property alias fans: fan.number
-    property alias personalInfo: info.contentText
-    property alias address: address.contentText
+    property alias attentions: attention.number     //关注用户数量
+    property alias fans: fan.number                 //粉丝数量
+    property alias personalInfo: info.contentText   //用户简介
+    property alias address: address.contentText     //用户地址
+    property alias userName: username.text          //用户名
 
     signal editInformationClicked
+    signal attentionsClicked
+    signal fansClicked
 
     ColumnLayout{
         id:first
@@ -22,7 +25,8 @@ Item {
             id:name
             spacing: parent.width * 0.4
             Text{
-                text:"那一份情，那么重"
+                id:username
+//                text:"那一份情，那么重"
                 font.pixelSize: 20
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -44,11 +48,13 @@ Item {
                 id:attention
                 number:"0"
                 text:"关注"
+                onNumberTextClicked: attentionsClicked()
             }
             NumberText{
                 id:fan
                 number:"0"
                 text:"粉丝"
+                onNumberTextClicked: fansClicked()
             }
         }
     }

@@ -106,6 +106,7 @@ std::shared_ptr<SongList> SongListBroker::findSongListBySongListNameAndUserName(
 
 std::map<string,std::shared_ptr<SongList>> SongListBroker::findSongListsByCollectionRelation(std::string username)
 {
+    std::cout << "enter findSongListsByCollectionRelation" << std::endl;
     std::map<string,std::shared_ptr<SongList>> collectedSongLists;
     MYSQL mysql;
     mysql_init(&mysql);
@@ -167,6 +168,7 @@ std::shared_ptr<SongList> SongListBroker::findSongListsBySongListID(std::string 
 }
 std::map<string,std::shared_ptr<SongList>> SongListBroker::findSongListsByUserName(std::string username)
 {
+    std::cout << "enter findSongListsByUserName" << std::endl;
     std::map<string,std::shared_ptr<SongList>> songlists;
     MYSQL mysql;
     mysql_init(&mysql);

@@ -9,6 +9,7 @@ Rectangle {
     property alias text: input.text
     property alias maxTextLength: input.maximumLength
     property alias validator: input.validator
+    property alias echoMode: input.echoMode
 
     //输入歌单名字时，有用于判断输入是否结束,也可以按下enter键时
     signal textAccepted
@@ -28,8 +29,9 @@ Rectangle {
     TextInput {
         id: input
         focus: true
-        width: parent.width
+        width: parent.width - 15
         height: parent.height
+        clip: true
         anchors{
             top:parent.top
             topMargin: parent.height * 0.2

@@ -14,7 +14,7 @@ public:
     std::map<string,std::shared_ptr<Fan>> findAttentedFanByRelation(string username);       //通过表FanRelation查找关联的用户---关注用户
     std::map<string,std::shared_ptr<Fan>> findFansByRelation(string username);              //通过表FanRelation查找关联的用户---粉丝
     std::shared_ptr<Fan> findUserByUserName(string username);                               //再Account中查找单个用户的信息,并返回Fan对象
-    std::map<std::string, std::shared_ptr<Fan> > findUserBySongListName(string songlistId);                         //通过歌单id，在CollectionRelation表中查找收藏歌单的用户
+//    std::map<std::string, std::shared_ptr<Fan> > findUserBySongListName(string songlistId);                         //通过歌单id，在CollectionRelation表中查找收藏歌单的用户
 private:
     FanBroker();        //保护构造函数，不能通过new创建对象
 //    ~FanBroker();

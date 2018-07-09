@@ -79,7 +79,6 @@ Rectangle {
 
             }
         }
-
     }
     Image {
         id: playImage

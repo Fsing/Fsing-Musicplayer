@@ -165,34 +165,34 @@ std::shared_ptr<Fan> FanBroker::findUserByUserName(string username)
     return nullptr;
 }
 
-std::map<string,std::shared_ptr<Fan>> FanBroker::findUserBySongListName(std::string songlistId)
-{
-    std::map<string,std::shared_ptr<Fan>> users;
-    MYSQL mysql;
-    mysql_init(&mysql);
-    if(!mysql_real_connect(&mysql,"localhost","fsing","fsing","Fsing",3306,NULL,0)){
-        cout << "findSongListsByCollectionRelation: conect MYSQL failed!" << endl;
-        return users;
-    }
+//std::map<string,std::shared_ptr<Fan>> FanBroker::findUserBySongListName(std::string songlistId)
+//{
+//    std::map<string,std::shared_ptr<Fan>> users;
+//    MYSQL mysql;
+//    mysql_init(&mysql);
+//    if(!mysql_real_connect(&mysql,"localhost","fsing","fsing","Fsing",3306,NULL,0)){
+//        cout << "findSongListsByCollectionRelation: conect MYSQL failed!" << endl;
+//        return users;
+//    }
 
-    char sql[512];
-    MYSQL_RES *result;
-    MYSQL_ROW row;
-    std::sprintf(sql,"select * from CollectionRelation where songlistID='%s'",songlistId.data());
-    size_t length = strlen(sql);
-    int res = mysql_real_query(&mysql,sql,length);
-    if(res != 0){
-        cout <<"findUserBySongListName:select * from CollectionRelation faild " << endl;
-    }else{
-        result = mysql_store_result(&mysql);
-        if(result){
-            while((row = mysql_fetch_row(result))){
-                users.insert(std::make_pair(row[0],findUser(row[0])));
-            }
-        }
-    }
-    return users;
-}
+//    char sql[512];
+//    MYSQL_RES *result;
+//    MYSQL_ROW row;
+//    std::sprintf(sql,"select * from CollectionRelation where songlistID='%s'",songlistId.data());
+//    size_t length = strlen(sql);
+//    int res = mysql_real_query(&mysql,sql,length);
+//    if(res != 0){
+//        cout <<"findUserBySongListName:select * from CollectionRelation faild " << endl;
+//    }else{
+//        result = mysql_store_result(&mysql);
+//        if(result){
+//            while((row = mysql_fetch_row(result))){
+//                users.insert(std::make_pair(row[0],findUser(row[0])));
+//            }
+//        }
+//    }
+//    return users;
+//}
 FanBroker::FanBroker()
 {
 

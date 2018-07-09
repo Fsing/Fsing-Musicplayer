@@ -130,7 +130,7 @@ Rectangle {
                 id:titlerec
                 width: 150
                 height: titlename.height * 1.5
-                maxTextLength:15
+                maxTextLength:30
                 anchors{
                     left: titlename.right
                     leftMargin: 10

@@ -49,6 +49,12 @@ Rectangle {
                     logoutDialog.open()
             }
         }
+
+        onUserImageClick: {
+            console.log("onUserImageClicked")
+            middleArea.personal.visible = true
+            middleArea.allAttentions.visible = false;
+        }
     }
     LoginDialog {
         id: loginDialog

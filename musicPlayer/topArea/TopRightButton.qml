@@ -5,14 +5,17 @@ import "../songList/element"
 
 Rectangle {
     id: topright
-    width: 250
+    width: 300
     height: parent.height
     anchors.right: parent.right
     anchors.rightMargin: 5
     color: parent.color
 
     signal loginButtonClicked
+    signal userImageClick
     property string loginButtonSource: "qrc:/images/common/ac0.png"
+
+
     property string fanName: "未登录"
     property int userx: 263
 
@@ -215,12 +218,16 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
         width: 25
         height: 25
-        MouseArea {
-            id: loginbuttonMouseArea
-            anchors.fill: parent
-            hoverEnabled: true
-            onClicked: loginButtonClicked()
+        //        MouseArea {
+        //            id: loginbuttonMouseArea
+        //            anchors.fill: parent
+        //            hoverEnabled: true
+        onClicked: {
+            console.log("userImageClick")
+            if(client.logining)
+                userImageClick()
         }
+        //        }
 
         background: CircleIcon {
             id: loginbuttonImage

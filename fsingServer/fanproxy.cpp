@@ -27,6 +27,11 @@ std::string FanProxy::myLogin(std::string username, std::string password)
         //用户存在
         root["userName"] = username;
         root["userPassword"] = password;
+        root["userLabel"] = res->getlabel();
+        root["userSex"] = res->getSex();
+        root["userBirthday"] = res->getBirthday();
+        root["userAddress"] = res->getAddress();
+        root["userIcon"] = res->getIcon();
         if(password != res->getUserPw()){
             root["loginSuccess"] = "PW_INVALID";  //用户密码错误
         }else{

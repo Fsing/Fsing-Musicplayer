@@ -27,10 +27,12 @@ public:
     Fan(QString name,QString password,QString label,QString sex,QString birthday,QString address,QString icon);
 
     //methods
-    int attentionUserCount();
-    int fanUserCount();
-    int createdSongListCount();
-    int collectedSongListCount();
+    int attentionUserCount() const;
+    int fanUserCount() const;
+    int createdSongListCount() const;
+    int collectedSongListCount() const;
+    void clear();
+
     //getting
     QString username();
     QString password();
