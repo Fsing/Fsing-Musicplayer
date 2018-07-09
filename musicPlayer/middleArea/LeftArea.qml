@@ -21,6 +21,7 @@ Rectangle {
     property int creatIndex: 9
     property int maxIndex: listModel.count
     property var listmodel: listModel
+    property alias createSongListDialog: createSongListDialog
     signal leftAreaClicked(int n)
 
     //-----

@@ -107,5 +107,7 @@
         <file>middleArea/RightAreaComponents/Search.qml</file>
         <file>dialog/SongOperationDialog.qml</file>
         <file>dialog/SongOperationItem.qml</file>
+        <file>dialog/CollectSongItem.qml</file>
+        <file>dialog/CollectSongDialog.qml</file>
     </qresource>
 </RCC>

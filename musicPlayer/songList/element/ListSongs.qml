@@ -181,13 +181,13 @@ Item {
         songOperationDialog.x = x
         songOperationDialog.y = topArea.height + songListTop.height + 40
                 + rec.height + 10 + 25 * tableview.currentIndex + y
-        console.log(topArea.height)
-        console.log(25 * index)
+        console.log("songlistcurrentindex:   " + tableview.currentIndex)
         console.log(songOperationDialog.x + "," + songOperationDialog.y)
         if (songOperationDialog.opened) {
             songOperationDialog.close()
         } else {
             songOperationDialog.open()
+            songOperationDialog.clickSongIndex(tableview.currentIndex)
         }
     }
 }
