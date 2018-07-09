@@ -135,6 +135,17 @@ Rectangle {
     }
     Component.onCompleted: {
         stackView.push(lyricComponent)
-        stackView.push(localMusicComponent)
+        client.interface("FindMusic")
+        var interfaceParamter = client.getinterface()
+        client.fileTransfer(interfaceParamter[6])
+        client.fileTransfer(interfaceParamter[16])
+        client.fileTransfer(interfaceParamter[26])
+        client.fileTransfer(interfaceParamter[36])
+        client.fileTransfer(interfaceParamter[46])
+        client.fileTransfer(interfaceParamter[56])
+        client.fileTransfer(interfaceParamter[66])
+        client.fileTransfer(interfaceParamter[76])
+        stackView.push(findMusicComponent)
+
     }
 }

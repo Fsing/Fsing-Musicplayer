@@ -5,8 +5,10 @@
 #include <boost/asio.hpp>
 #include <boost/shared_ptr.hpp>
 #include <QMap>
+#include <string>
 #include "fan.h"
-//#include "fanproxy.h"
+#include "songlist.h"
+#include "song.h"
 
 struct File_info {
     typedef unsigned long long Size_type;
@@ -74,10 +76,12 @@ public:
     Q_INVOKABLE QString userIcon(){return m_icon;}
 
     Q_INVOKABLE QString result(){return m_result;}
+    //
     Q_INVOKABLE QList<QString> getinterface() const{return m_interface;}
-    Q_INVOKABLE QList<QString> getSongListInformation() const {return m_songListInformation;}
-    Q_INVOKABLE QList<QString> getSongList() const{return m_songList;}
-    Q_INVOKABLE int getSongListCount() const{return m_songList.size()/8;}
+    Q_INVOKABLE QList<QString> getSongListInformation(QString songListId);
+    Q_INVOKABLE QList<QString> getSongListSongs(QString songListId);
+    Q_INVOKABLE int getSongListCount() const{return m_songListCount;}
+
     Q_INVOKABLE QList<QString> getSongInformation() const{return m_songInformation;}
 
     //创建歌单的名字集合
@@ -95,14 +99,20 @@ public:
     Q_INVOKABLE int attentionUserCount() const {return m_attentedUserCount;}
     Q_INVOKABLE int fanUserCount() const{return m_fanUserCount;}
 
+
+    //check the song id is added to the playlist
     Q_INVOKABLE bool currentPlayListSong(const QString id) {
         if(m_currentPlayListSong.contains(id))
             return true;
         else {
-            m_currentPlayListSong.append(id);
+                auto song = m_songsMap[id.toInt()];
+                  auto l =song->getName();
+                l = l.substr(0,sizeof(l)-4) + ".lrc";
+                fileTransfer(QString::fromStdString(l));
+                m_currentPlayListSong.append(id);
             return false;
         }
-    }
+}
 
     //filetransfer
     //接收文件
@@ -126,6 +136,11 @@ signals:
     void collecedSongListCountChanged();
     void userIconChanged();
 private:
+    //cache pool
+    std::map<int,std::shared_ptr<SongList>> m_songlistsMap;
+    std::map<int,std::shared_ptr<Song>> m_songsMap;
+
+
     //用户信息
     QString m_userName;
     int m_userID;
@@ -157,8 +172,8 @@ private:
     //songlist infomation
     QList<QString> m_songListInformation;
     QList<QString> m_songList;
-    QList<QString> m_songInformation;
     int m_songListCount;
+    QList<QString> m_songInformation;
 
     //for file transfer
     clock_t clock_;

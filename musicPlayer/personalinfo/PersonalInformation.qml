@@ -30,6 +30,7 @@ Rectangle{
         id: leftItem
         anchors.fill: parent
         clip: true
+        horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
         style: ScrollViewStyle {
             id: ss
             transientScrollBars: true

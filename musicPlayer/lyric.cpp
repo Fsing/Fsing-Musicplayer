@@ -5,6 +5,7 @@
 #include <QString>
 #include <QTextCodec>
 #include <iostream>
+#include <QGuiApplication>
 
 Lyric::Lyric(QObject *parent):QObject(parent)
 {
@@ -33,9 +34,8 @@ QList<QObject *> Lyric::getLyric(QString path)
     QList<QObject*> lyric;
 
     QFileInfo fi(path);
-    path = "./" + fi.completeBaseName() + ".lrc";
+    path ="./"+ fi.completeBaseName() + ".lrc";
     fi.setFile(path);
-
     if (fi.exists() && fi.isReadable()) {
         QFile flyric(path);
         if (! flyric.open(QIODevice::ReadOnly|QIODevice::Text)) {
