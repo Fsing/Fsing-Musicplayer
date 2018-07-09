@@ -46,6 +46,7 @@ public:
     Q_INVOKABLE void addCreateSongList(QString username, QString songlistName, QString time);
     //下载音乐
     Q_INVOKABLE QString songInformation(QString songId);
+    Q_INVOKABLE QString songInformationBySource(QString source);
     Q_INVOKABLE QList<QString> search(QString key);
     //请求文件
     Q_INVOKABLE void fileTransfer(QString fileName);

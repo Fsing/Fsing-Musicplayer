@@ -302,7 +302,14 @@ void Client::myRegister(QString username, QString userpw)
 
     }
 }
-
+QString Client::songInformationBySource(QString source){
+        for(auto &l:m_songsMap){
+            auto song = l.second;
+            if(song->getSource() == source.toStdString()){
+                return QString::fromStdString( song->getName());
+            }
+        }
+}
 QString Client::songInformation(QString songId){
     m_songInformation.clear();
     auto iter = m_songsMap.find(songId.toInt());
@@ -619,6 +626,11 @@ void Client::interface(QString interfaceName){
             m_interface.append( QString::fromStdString( arrayObj[i]["clickQuantity"].asString()));
             m_interface.append( QString::fromStdString( arrayObj[i]["shareQuantity"].asString()));
 
+        }
+        const Json::Value advertArrayObj = resultRoot["advertArray"];
+        for (unsigned int i = 0; i < advertArrayObj.size(); i++)
+        {
+              m_interface.append(QString::fromStdString( advertArrayObj[i]["source"].asString()));
         }
         std::cout <<"receive frome server : "<< data <<std::endl;
         return;

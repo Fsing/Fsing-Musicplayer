@@ -24,19 +24,43 @@ Rectangle {
     signal leftAreaClicked(int n)
 
     //-----
+    Connections {
+        target: mainWindow
+        onSongChanged:{
+            lyric.visible = true
+            songName.text = client.songInformationBySource(song)
+        }
+    }
+
     Rectangle {
         id: lyric
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.left: parent.left
         anchors.bottom: parent.bottom
-        width: 50
+        width: parent.width
         height: 50
-        color: "red"
+        color: "#E8E8E8"
+        visible: false
         MouseArea {
             anchors.fill: parent
             onClicked: {
 
                 leftAreaClicked(-1)
             }
+        }
+        Image {
+            id: songImage
+            width: 50
+            height: 50
+            anchors.left: parent.left
+            source: "../images/leftArea/btnlove2.png"
+
+        }
+        Text {
+            id: songName
+            anchors.left: songImage.right
+            anchors.leftMargin: 10
+            width: 50
+            color: "#FF3030"
         }
     }
 

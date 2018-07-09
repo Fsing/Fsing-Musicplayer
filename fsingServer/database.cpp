@@ -138,9 +138,11 @@ std::string DatabaseController::interface(std::string interfaceName){
         if(result){
             Json::Value root;
             Json::Value arrayObj;
+            Json::Value advertArrayObj;
             root["type"] = "INTERFACE";
 
-            while((row = mysql_fetch_row(result))){
+            int i = 0;
+           while((row = mysql_fetch_row(result)) && (i < 8)){
 
                 Json::Value item;
                 item["type"] = "SONGLIST";
@@ -155,8 +157,32 @@ std::string DatabaseController::interface(std::string interfaceName){
                 item["clickQuantity"] = row[8];
                 item["shareQuantity"] = row[9];
                 arrayObj.append(item);
+                //only transfer 6 songlist
+                ++i;
             }
+
+                 Json::Value item1;
+                 Json::Value item2;
+                 Json::Value item3;
+                 Json::Value item4;
+                 Json::Value item5;
+                 Json::Value item6;
+                 item1["source"] = "1.jpg";
+                 item2["source"] = "2.jpg";
+                 item3["source"] = "3.jpg";
+                 item4["source"] = "4.jpg";
+                 item5["source"] = "5.jpg";
+                 item6["source"] = "6.jpg";
+                 advertArrayObj.append(item1);
+                 advertArrayObj.append(item2);
+                 advertArrayObj.append(item3);
+                 advertArrayObj.append(item4);
+                 advertArrayObj.append(item5);
+                 advertArrayObj.append(item6);
+
+
             root["array"] = arrayObj;
+            root["advertArray"] = advertArrayObj;
             std::string out = root.toStyledString();
             return out.data();
         }

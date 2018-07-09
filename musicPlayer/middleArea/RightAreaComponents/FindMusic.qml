@@ -47,6 +47,7 @@ Rectangle {
                 ColumnLayout{
                     Advert {
                         id:advert
+                        modle:advertListmodle
                         Layout.fillWidth: true
                     }
 
@@ -185,6 +186,26 @@ Rectangle {
 
     ListModel {
         id: listmodel1
+    }
+    ListModel {
+        id: advertListmodle
+    }
+    Timer {
+        interval: 100
+        running: true
+        onTriggered:advertAppend()
+    }
+
+    function advertAppend() {
+
+        console.log(interfaceParamter)
+        for(var i = 0; i <6 ; ++i ){
+        advertListmodle.append(
+                {
+                    advertImg: "file:///" + applicationDirPath + "/" + interfaceParamter[i+80]
+                }
+                    )
+        }
     }
 
     function appendSong(id) {
