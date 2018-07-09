@@ -10,9 +10,11 @@ Rectangle {
     anchors.top: parent.top
     anchors.bottom: parent.bottom
 
+    property var songListInfo
+
     Connections {
         target: mainWindow
-        onStartSearch:{
+        onStartSearch: {
             console.log("search")
             stackView.push(searchComponent)
         }
@@ -136,10 +138,29 @@ Rectangle {
     }
     Component {
         id: searchComponent
-        Search{
-            id:search
+        Search {
+            id: search
         }
     }
+    Component {
+        id: mySongListComponent
+        SongList {
+            id: mysongList
+            listname: songListInfo[1]
+            username: songListInfo[2]
+            createTime: songListInfo[3]
+            model: songsModel
+            listImg: "file:///" + applicationDirPath + "/" + songListInfo[6]
+            label: songListInfo[4]
+            briefInfo: songListInfo[5]
+        }
+    }
+
+    ListModel {
+        id: songsModel
+
+    }
+
     Component.onCompleted: {
         stackView.push(lyricComponent)
         client.interface("FindMusic")
@@ -160,6 +181,21 @@ Rectangle {
         client.fileTransfer(interfaceParamter[84])
         client.fileTransfer(interfaceParamter[85])
         stackView.push(findMusicComponent)
+    }
 
+    function appendSong(id) {
+        var list = client.getSongListSongs(id)
+        var count = client.getSongListCount()
+        songsModel.clear()
+        for (var i = 0; i < count; ++i) {
+            songsModel.append({
+                                  album: list[i * 8 + 3],
+                                  id: list[i * 8],
+                                  name: list[i * 8 + 1],
+                                  playQuantity: list[i * 8 + 5],
+                                  singer: list[i * 8 + 2],
+                                  source: list[i * 8 + 4]
+                              })
+        }
     }
 }

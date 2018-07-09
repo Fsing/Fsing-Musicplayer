@@ -57,7 +57,6 @@ Item {
             onClicked: {
                 createClicked()
                 rec_parent.showAllCreateClicked = true
-
             }
         }
 
@@ -165,8 +164,8 @@ Item {
                 listModel.setProperty(index, "opaci", 1)
                 listModel.setProperty(index, "recColor", "#DCDCDC")
                 rec_parent.modelindex = index
-                middleArea.personal.visible = false;
-                middleArea.allAttentions.visible = false;
+                middleArea.personal.visible = false
+                middleArea.allAttentions.visible = false
                 //                        console.log("item click.  " + rec_parent.modelindex + "  " + index)
             }
         }

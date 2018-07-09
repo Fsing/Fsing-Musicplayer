@@ -90,6 +90,8 @@ public:
 
     //创建歌单的名字集合
     Q_INVOKABLE QList<QString> createdSongLists() const{return _songlistNames;}
+    Q_INVOKABLE QList<QString> createdSongListIDs() const{return _songlistIDs;}
+
     //收藏歌单名字集合
     Q_INVOKABLE QList<QString> collectedSongLists() const{return _collectedSongListNames;}
     //用户关注用户名字+icon集合
@@ -169,6 +171,8 @@ private:
 
     //用户原创歌单名
     QList<QString> _songlistNames;
+    QList<QString> _songlistIDs;
+
     //用户收藏歌单名
     QList<QString> _collectedSongListNames;
 

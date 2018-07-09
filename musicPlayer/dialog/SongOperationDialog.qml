@@ -6,7 +6,7 @@ CommonDialog {
 
     width: 300
     height: 300
-    clip: flase
+    //    clip: flase
     contentItem: SongOperationItem {
     }
 }

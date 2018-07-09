@@ -127,18 +127,21 @@ Item {
                 Text {
                     text: name
                     color: wrapper.ListView.isCurrentItem ? "red" : "black"
+                    elide: Text.ElideRight
                     font.pixelSize: wrapper.ListView.isCurrentItem ? 15 : 14
                     Layout.preferredWidth: 120
                 }
                 Text {
                     text: singer
                     color: wrapper.ListView.isCurrentItem ? "red" : "black"
+                    elide: Text.ElideRight
                     font.pixelSize: wrapper.ListView.isCurrentItem ? 15 : 14
                     Layout.preferredWidth: 120
                 }
                 Text {
                     text: album
                     color: wrapper.ListView.isCurrentItem ? "red" : "black"
+                    elide: Text.ElideRight
                     font.pixelSize: wrapper.ListView.isCurrentItem ? 15 : 14
                     Layout.preferredWidth: 120
                 }
@@ -160,6 +163,7 @@ Item {
         model: songlist.model
         header: headView
         focus: true
+        currentIndex: -1
 
         highlight: Rectangle {
             color: "lightblue"

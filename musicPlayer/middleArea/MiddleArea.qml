@@ -13,26 +13,26 @@ Rectangle {
     property alias leftArea: leftArea
     property alias personal: personal
     property alias allAttentions: allAttentions
-    property alias attentedUserModel:allAttentions.attenedUsersModel
+    property alias attentedUserModel: allAttentions.attenedUsersModel
 
     LeftArea {
         id: leftArea
     }
     RightArea {
         id: rightArea
-        PersonalInformation{
-            id:personal
+        PersonalInformation {
+            id: personal
             visible: false
-            createdSongListNumber:client.createdSongListCount
+            createdSongListNumber: client.createdSongListCount
             collectedSongListNumber: client.collecedSongListCount
             attentions: client.attentionUserCount
             fans: client.fanUserCount
             userName: client.userName
-            userIcon:"file:///" + applicationDirPath + "/" + client.userIcon
+            userIcon: "file:///" + applicationDirPath + "/" + client.userIcon
         }
 
-        AllAttentions{
-            id:allAttentions
+        AllAttentions {
+            id: allAttentions
             visible: false
         }
     }

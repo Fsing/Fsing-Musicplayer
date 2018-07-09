@@ -126,6 +126,7 @@ void Client::myLogin(QString username, QString userpw)
         if (ret == "SUCCESS"){
             _songlistNames.clear();
             _collectedSongListNames.clear();
+            _songlistIDs.clear();
             _fan.clear();
 
             _fan.setUsername(QString::fromStdString(resultRoot["userName"].asString()));
@@ -153,6 +154,7 @@ void Client::myLogin(QString username, QString userpw)
                 value = arrayObj[i];
                 //存储原创歌单名字
                 _songlistNames.append(QString::fromStdString(value["name"].asString()));
+                _songlistIDs.append(QString::fromStdString(value["id"].asString()));
 
                 QList<QString> ret;
                 ret.append(QString::fromStdString(value["id"].asString()));
@@ -803,8 +805,10 @@ void Client::addCreateSongList(QString username,QString songlistName, QString ti
 //--------------get--------------
 QList<QString> Client::getSongListInformation(QString songListId){
     if(songListId != ""){
-        auto songList = m_songlistsMap[songListId.toInt()];
+        int tmp = songListId.toInt();
+        auto songList = m_songlistsMap[tmp];
         QList<QString> ret;
+        ret.clear();
 
         ret.append(QString::number(songList->getId()));
         ret.append(QString::fromStdString(songList->getName()));
@@ -820,9 +824,12 @@ QList<QString> Client::getSongListInformation(QString songListId){
     }
 }
 QList<QString> Client::getSongListSongs(QString songListId){
+    std::cout << "exec Client::getSongListSongs" << std::endl;
     if(songListId != ""){
+        std::cout << "songListId: " << songListId.toInt() << std::endl;
         std::shared_ptr<SongList> songlist = m_songlistsMap[songListId.toInt()];
         QList<QString> ret;
+        ret.clear();
 
         auto songs = songlist->getSongs();
         for(auto &l : songs){

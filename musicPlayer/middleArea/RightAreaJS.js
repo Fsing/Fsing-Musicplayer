@@ -139,7 +139,7 @@ function popView(n) {
             return item.index === n ? true : false
         })
         if (songlist === null) {
-            stackView.push(mySonglistComponent)
+            stackView.push(mySongListComponent)
         } else {
             stackView.pop(songlist)
         }

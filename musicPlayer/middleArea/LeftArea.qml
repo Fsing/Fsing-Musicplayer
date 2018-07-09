@@ -26,7 +26,7 @@ Rectangle {
     //-----
     Connections {
         target: mainWindow
-        onSongChanged:{
+        onSongChanged: {
             lyric.visible = true
             songName.text = client.songInformationBySource(song)
         }
@@ -53,7 +53,6 @@ Rectangle {
             height: 50
             anchors.left: parent.left
             source: "../images/leftArea/btnlove2.png"
-
         }
         Text {
             id: songName
@@ -95,7 +94,22 @@ Rectangle {
             id: leftItemDelegates
             width: parent.width - 10
             height: classfify.visible ? 50 : 25
-            onItemClicked: leftAreaClicked(index)
+            onItemClicked: {
+                listView.currentIndex = index
+                console.log("listView.currentIndex = " + listView.currentIndex)
+                leftAreaClicked(index)
+                if (listView.currentIndex > 9) {
+                    var i = index - 10
+                    console.log(i + "]]]]]]]]]]")
+
+                    var j = client.createdSongListIDs()[i]
+                    console.log(j + "]]]]]]]]]]")
+                    client.songList(j)
+                    rightArea.songListInfo = client.getSongListInformation(j)
+                    console.log("songlistInfo: " + rightArea.songListInfo[1])
+                    rightArea.appendSong(j)
+                }
+            }
             onCreateClicked: createSongListDialog.open()
         }
     }
