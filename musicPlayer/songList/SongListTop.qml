@@ -83,7 +83,7 @@ Item {
                 Button {
                     id: downloadButton
                     text: "下载全部"
-                    icon.source: "../images/leftArea/btndownload.png"
+                    //icon.source: "../images/leftArea/btndownload.png"
                     onClicked: downloadClick()
                 }
             }
@@ -92,8 +92,8 @@ Item {
                 Label {
                     text: "标签"
                 }
-                Button {
-                    text: "添加标签"
+                Text {
+                    text:label
                 }
             }
 
@@ -101,10 +101,22 @@ Item {
                 Label {
                     text: "简介"
                 }
-                Button {
-                    text: "添加简介"
-                }
             }
         }
     }
+
+    Text {
+        x: 365
+        y: 204
+        width: 420
+        text:briefInfo
+        height: 75
+        wrapMode: Text.Wrap
+        smooth:true        //是平滑
+        elide: Text.ElideRight
+
+        }
+
 }
+
+

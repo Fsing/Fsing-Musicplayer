@@ -94,9 +94,11 @@ Rectangle {
         color: "black"
         anchors.top:backImage.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        width: 100
-        font.bold: true
-        font.pointSize: 14
+        width: parent.width
+        font.pointSize: 10
         visible:true
+        smooth:true        //是平滑
+        elide: Text.ElideRight
+        horizontalAlignment: Text.AlignHCenter
     }
 }
