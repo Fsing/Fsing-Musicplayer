@@ -4,6 +4,8 @@
 #include "songproxy.h"
 #include "json/json.h"
 #include "fanproxy.h"
+#include "fanbroker.h"
+
 #include <iostream>
 #include <string.h>
 using std::cout;
@@ -104,6 +106,11 @@ std::string SongListProxy::addSongList(std::string username, std::string songLis
         std::sprintf(sql,"insert into SongList(id,name,author,createTime,label,info,icon,collectionQuantity,clickQuantity,shareQuantity) values('%d','%s','%s','%s','0','0','0',0,0,0)",maxid,lname,uname,ctime);
         auto length = strlen(sql);
         if(!mysql_real_query(&mysql1,sql,length)){
+            //如果缓存中有该用户，则从缓存中删除，下一次查找更新
+            auto fanBroker = FanBroker::getInstance();
+            if(fanBroker->findUserInCache(username)){
+                fanBroker->updateCache(username);
+            }
             cout <<"addSongList:insert into SongList: " << songListName << " success!" << endl;
             root["recordSuccess"] = "SUCCESS";
             root.toStyledString();

@@ -21,6 +21,12 @@ CommonDialog {
                 client.addCreateSongList(client.userName,
                                          createSongListDialog.inputText,
                                          getCurDate())
+                middleArea.personal.songlistModel.append({
+                                                             playquantity:50,
+                                                             imageSource:"file:///" + applicationDirPath + "/" + client.userIcon,
+                                                             songlistid:50,
+                                                             songlistname:createSongListDialog.inputText
+                                                         })
             }
         }
     }

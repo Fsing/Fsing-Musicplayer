@@ -38,6 +38,8 @@ public:
     Q_INVOKABLE void myConnect();
     //自动登录，查找本地配置文件是否有登录信息
     Q_INVOKABLE void readUserConfig();
+    //写入本地登录配置信息
+    Q_INVOKABLE void writeUserConfig();
     //登录账户,服务器数据库查找用户信息
     Q_INVOKABLE void myLogin(QString username,QString userpw);
     //注册账户，服务器数据库查找，并插入信息

@@ -7,6 +7,7 @@
 #include <iostream>
 #include <algorithm>
 #include <boost/thread.hpp>
+#include "client.h"
 #include "macro.h"
 #include "json/json.h"
 
@@ -34,7 +35,6 @@ Client::Client()
 void Client::myConnect()
 {
     //    ip::tcp::socket sock(service);
-
     boost::system::error_code e;
     sock.async_connect(ep,[](const error_code &e){
         if(e){
@@ -48,13 +48,13 @@ void Client::myConnect()
             return;
         }
     });
-    //std::thread t(run_service);
-    //    t.detach();
-    //    boost::thread(run_service);
-    //    return sock;
     service.run();
 }
 
+void Client::writeUserConfig()
+{
+//    ofstream
+}
 void Client::readUserConfig()
 {
     ifstream in("User_Config");
@@ -103,8 +103,8 @@ void Client::myLogin(QString username, QString userpw)
         }
 
         //接受服务器返回的用户信息：基本信息、用户粉丝、关注、收藏歌单、创建歌单
-        char data[1024 * 5];
-        memset(data,0,sizeof(char)*1024 * 5);//reset 0 to data[]
+        char data[1024 * 10];
+        memset(data,0,sizeof(char)*1024 * 10);//reset 0 to data[]
         while(strlen(data)==0){
             sock.read_some(buffer(data),ec);
         }
@@ -125,6 +125,7 @@ void Client::myLogin(QString username, QString userpw)
             cout << "login " << ret<<endl;
             if (ret == "SUCCESS"){
                 _songlistNames.clear();
+                _collectedSongListNames.clear();
 //                _attentedUsers.clear();
                 _fan.clear();
 
@@ -736,6 +737,8 @@ void Client::addCreateSongList(QString username,QString songlistName, QString ti
             list.append("");
             _fan.addCreatedSongList(songlistName,list);
             m_CreatedSongListCount++;
+            _songlistNames.append(songlistName);
+
             emit createdSongListCountChanged();
         }
         return;

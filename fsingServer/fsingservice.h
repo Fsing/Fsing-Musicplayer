@@ -23,14 +23,18 @@ struct File_info {
 };
 
 class Server{
+//    friend std::string dealMessage(char data[],socket_ptr sock,std::shared_ptr<Server> server);
+
 public:
-
     Server();
-
     //接收客户端的连接
     void connect();
     //判断客户端发来的消息的类型,并调用相应的处理函数
-    std::string dealMessage(std::string sig, vector<std::string> str, socket_ptr sock);
+    void dealMessage(string sig,vector<string> str,socket_ptr sock);
+    //接收客户端信息
+    boost::system::error_code &getMessage(socket_ptr sock,boost::system::error_code &ec);
+    //分配客户端接收信息
+    void receiveMessage(socket_ptr sock);
     void fileSender(std::string fileName, socket_ptr sock);
 
     //处理客户端请求的操作
@@ -44,4 +48,5 @@ private:
     std::shared_ptr<SongProxy> _songProxy;
     DatabaseController database;
 };
+//std::string dealMessage(char data[], socket_ptr sock, std::shared_ptr<Server> server);
 #endif // FSINGSERVICE_H
