@@ -101,6 +101,4 @@ Rectangle {
         elide: Text.ElideRight
         horizontalAlignment: Text.AlignHCenter
     }
-
-
 }

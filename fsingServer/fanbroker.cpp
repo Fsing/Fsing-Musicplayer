@@ -19,6 +19,20 @@ std::shared_ptr<FanBroker> FanBroker::getInstance()
     return _instance;
 }
 
+std::shared_ptr<Fan> FanBroker::findUserInCache(std::string username)
+{
+    if(_fans.find(username) != _fans.end()){
+        return _fans[username];
+    }else{
+        return nullptr;
+    }
+}
+
+void FanBroker::updateCache(std::string username)
+{
+    _fans.erase(_fans.find(username));
+}
+
 std::shared_ptr<Fan> FanBroker::findUser(std::string username)
 {
     cout << "enter findUser" << endl;
@@ -164,6 +178,7 @@ std::shared_ptr<Fan> FanBroker::findUserByUserName(string username)
     }
     return nullptr;
 }
+
 
 //std::map<string,std::shared_ptr<Fan>> FanBroker::findUserBySongListName(std::string songlistId)
 //{

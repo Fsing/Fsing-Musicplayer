@@ -7,6 +7,7 @@
 #include <iostream>
 #include <algorithm>
 #include <boost/thread.hpp>
+#include "client.h"
 #include "macro.h"
 #include "json/json.h"
 
@@ -34,7 +35,6 @@ Client::Client()
 void Client::myConnect()
 {
     //    ip::tcp::socket sock(service);
-
     boost::system::error_code e;
     sock.async_connect(ep,[](const error_code &e){
         if(e){
@@ -48,13 +48,13 @@ void Client::myConnect()
             return;
         }
     });
-    //std::thread t(run_service);
-    //    t.detach();
-    //    boost::thread(run_service);
-    //    return sock;
     service.run();
 }
 
+void Client::writeUserConfig()
+{
+    //    ofstream
+}
 void Client::readUserConfig()
 {
     ifstream in("User_Config");
@@ -85,174 +85,174 @@ void Client::readUserConfig()
 
 void Client::myLogin(QString username, QString userpw)
 {
-        Json::Value root;
-        root["type"] = "LOGIN";
-        root["userName"] = username.toStdString();
-        root["userPassword"] = userpw.toStdString();
-        root.toStyledString();
-        std::string out = root.toStyledString();
+    Json::Value root;
+    root["type"] = "LOGIN";
+    root["userName"] = username.toStdString();
+    root["userPassword"] = userpw.toStdString();
+    root.toStyledString();
+    std::string out = root.toStyledString();
 
-        auto s = out.data();
-        boost::system::error_code ec;
-        //传输到服务器
-        sock.write_some(buffer(s,strlen(s)),ec);
-        if(ec)
-        {
-            std::cout << boost::system::system_error(ec).what() << std::endl;
-            return;
-        }
+    auto s = out.data();
+    boost::system::error_code ec;
+    //传输到服务器
+    sock.write_some(buffer(s,strlen(s)),ec);
+    if(ec)
+    {
+        std::cout << boost::system::system_error(ec).what() << std::endl;
+        return;
+    }
 
-        //接受服务器返回的用户信息：基本信息、用户粉丝、关注、收藏歌单、创建歌单
-        char data[1024 * 5];
-        memset(data,0,sizeof(char)*1024 * 5);//reset 0 to data[]
-        while(strlen(data)==0){
-            sock.read_some(buffer(data),ec);
-        }
-        if(ec)
-        {
-            std::cout << boost::system::system_error(ec).what() << std::endl;
-            return;
-        }
-        Json::Reader reader;
-        Json::Value resultRoot;
-        cout << strlen(data) << endl;
-        if(!reader.parse(data, resultRoot)){
-            std::cout << "json received faild" <<std::endl;
-            return;
-        }else {
-            string ret = resultRoot["loginSuccess"].asString();
-            m_result =  QString::fromStdString(ret);
-            cout << "login " << ret<<endl;
-            if (ret == "SUCCESS"){
-                _songlistNames.clear();
-//                _attentedUsers.clear();
-                _fan.clear();
+    //接受服务器返回的用户信息：基本信息、用户粉丝、关注、收藏歌单、创建歌单
+    char data[1024 * 10];
+    memset(data,0,sizeof(char)*1024 * 10);//reset 0 to data[]
+    while(strlen(data)==0){
+        sock.read_some(buffer(data),ec);
+    }
+    if(ec)
+    {
+        std::cout << boost::system::system_error(ec).what() << std::endl;
+        return;
+    }
+    Json::Reader reader;
+    Json::Value resultRoot;
+    cout << strlen(data) << endl;
+    if(!reader.parse(data, resultRoot)){
+        std::cout << "json received faild" <<std::endl;
+        return;
+    }else {
+        string ret = resultRoot["loginSuccess"].asString();
+        m_result =  QString::fromStdString(ret);
+        cout << "login " << ret<<endl;
+        if (ret == "SUCCESS"){
+            _songlistNames.clear();
+            _collectedSongListNames.clear();
+            _fan.clear();
 
-                _fan.setUsername(QString::fromStdString(resultRoot["userName"].asString()));
-                _fan.setPassword(QString::fromStdString(resultRoot["userPassword"].asString()));
-                _fan.setLabel(QString::fromStdString(resultRoot["userLabel"].asString()));
-                _fan.setSex(QString::fromStdString(resultRoot["userSex"].asString()));
-                _fan.setBirthday(QString::fromStdString(resultRoot["userBirthday"].asString()));
-                _fan.setAddress(QString::fromStdString(resultRoot["userAddress"].asString()));
-                _fan.setIcon(QString::fromStdString(resultRoot["userIcon"].asString()));
+            _fan.setUsername(QString::fromStdString(resultRoot["userName"].asString()));
+            _fan.setPassword(QString::fromStdString(resultRoot["userPassword"].asString()));
+            _fan.setLabel(QString::fromStdString(resultRoot["userLabel"].asString()));
+            _fan.setSex(QString::fromStdString(resultRoot["userSex"].asString()));
+            _fan.setBirthday(QString::fromStdString(resultRoot["userBirthday"].asString()));
+            _fan.setAddress(QString::fromStdString(resultRoot["userAddress"].asString()));
+            _fan.setIcon(QString::fromStdString(resultRoot["userIcon"].asString()));
 
-                //设置用户信息
-                m_logining = true;
-                 m_userName = username;
-                 m_icon = _fan.icon();
-                 emit userIconChanged();
-                 emit userNameChanged();
-                 emit resultChanged();
+            //设置用户信息
+            m_logining = true;
+            m_userName = username;
+            m_icon = _fan.icon();
+            emit userIconChanged();
+            emit userNameChanged();
+            emit resultChanged();
 
 
-                //创建歌单信息
-                const Json::Value arrayObj = resultRoot["array"];
-                for (unsigned int i = 0; i < arrayObj.size(); i++)
-                {
-                    Json::Value value;
-                    value = arrayObj[i];
-                    //存储原创歌单名字
-                    _songlistNames.append(QString::fromStdString(value["name"].asString()));
+            //创建歌单信息
+            const Json::Value arrayObj = resultRoot["array"];
+            for (unsigned int i = 0; i < arrayObj.size(); i++)
+            {
+                Json::Value value;
+                value = arrayObj[i];
+                //存储原创歌单名字
+                _songlistNames.append(QString::fromStdString(value["name"].asString()));
 
-                    QList<QString> ret;
-                    ret.append(QString::fromStdString(value["id"].asString()));
-                    ret.append(QString::fromStdString(value["name"].asString()));
-                    ret.append(QString::fromStdString(value["author"].asString()));
-                    ret.append(QString::fromStdString(value["createTime"].asString()));
-                    ret.append(QString::fromStdString(value["label"].asString()));
-                    ret.append(QString::fromStdString(value["info"].asString()));
-                    ret.append(QString::fromStdString(value["icon"].asString()));
-                    ret.append(QString::fromStdString(value["collectionQuantity"].asString()));
-                    ret.append(QString::fromStdString(value["clickQuantity"].asString()));
-                    ret.append(QString::fromStdString(value["shareQuantity"].asString()));
+                QList<QString> ret;
+                ret.append(QString::fromStdString(value["id"].asString()));
+                ret.append(QString::fromStdString(value["name"].asString()));
+                ret.append(QString::fromStdString(value["author"].asString()));
+                ret.append(QString::fromStdString(value["createTime"].asString()));
+                ret.append(QString::fromStdString(value["label"].asString()));
+                ret.append(QString::fromStdString(value["info"].asString()));
+                ret.append(QString::fromStdString(value["icon"].asString()));
+                ret.append(QString::fromStdString(value["collectionQuantity"].asString()));
+                ret.append(QString::fromStdString(value["clickQuantity"].asString()));
+                ret.append(QString::fromStdString(value["shareQuantity"].asString()));
 
-                    _fan.addCreatedSongList(QString::fromStdString(value["name"].asString()),ret);
-    //                for(int k = 0; k < _fan.createdSongLists()[i].size();k++)
-    //                    cout << (_fan.createdSongLists()[i].at(k)).toStdString() << endl;
-                }
-                m_CreatedSongListCount = _fan.createdSongListCount();
-                emit createdSongListCountChanged();
-                //收藏歌单信息
-                const Json::Value arrayObj1 = resultRoot["collectedArray"];
-                for (unsigned int i = 0; i < arrayObj1.size(); i++)
-                {
-                    Json::Value value;
-                    value = arrayObj1[i];
-                    //存储收藏歌单名字
-                    _collectedSongListNames.append(QString::fromStdString(value["name"].asString()));
-                    QList<QString> ret;
-                    ret.append(QString::fromStdString(value["id"].asString()));
-                    ret.append(QString::fromStdString(value["name"].asString()));
-                    ret.append(QString::fromStdString(value["author"].asString()));
-                    ret.append(QString::fromStdString(value["createTime"].asString()));
-                    ret.append(QString::fromStdString(value["label"].asString()));
-                    ret.append(QString::fromStdString(value["info"].asString()));
-                    ret.append(QString::fromStdString(value["icon"].asString()));
-                    ret.append(QString::fromStdString(value["collectionQuantity"].asString()));
-                    ret.append(QString::fromStdString(value["clickQuantity"].asString()));
-                    ret.append(QString::fromStdString(value["shareQuantity"].asString()));
-
-                    _fan.addCollectedSongLists(QString::fromStdString(value["name"].asString()),ret);
-    //                for(int k = 0; k < _fan.collectedSongLists()[i].size();k++)
-    //                    cout << (_fan.collectedSongLists()[i].at(k)).toStdString() << endl;
-                }
-                m_collectedSongListCount = _fan.collectedSongListCount();
-                emit collecedSongListCountChanged();
-                //关注用户信息
-                const Json::Value arrayObj2 = resultRoot["attentedUsers"];
-                for (unsigned int i = 0; i < arrayObj2.size(); i++)
-                {
-                    Json::Value value;
-                    value = arrayObj2[i];
-
-                    QList<QString> ret;
-                    ret.append(QString::fromStdString(value["name"].asString()));
-                    ret.append(QString::fromStdString(value["password"].asString()));
-                    ret.append(QString::fromStdString(value["label"].asString()));
-                    ret.append(QString::fromStdString(value["sex"].asString()));
-                    ret.append(QString::fromStdString(value["birthday"].asString()));
-                    ret.append(QString::fromStdString(value["address"].asString()));
-                    ret.append(QString::fromStdString(value["icon"].asString()));
-
-                    _fan.addAttentedUsers(QString::fromStdString(value["name"].asString()),ret);
-    //                for(int k = 0; k < _fan.attentedUsers()[i].size();k++)
-    //                    cout << (_fan.attentedUsers()[i].at(k)).toStdString() << endl;
-                }
-                m_attentedUserCount = _fan.attentionUserCount();
-                emit attentionUserCountChanged();
-                //粉丝信息
-                const Json::Value arrayObj3 = resultRoot["fanUsers"];
-                for (unsigned int i = 0; i < arrayObj3.size(); i++)
-                {
-                    Json::Value value;
-                    value = arrayObj3[i];
-
-                    QList<QString> ret;
-                    ret.append(QString::fromStdString(value["name"].asString()));
-                    ret.append(QString::fromStdString(value["password"].asString()));
-                    ret.append(QString::fromStdString(value["label"].asString()));
-                    ret.append(QString::fromStdString(value["sex"].asString()));
-                    ret.append(QString::fromStdString(value["birthday"].asString()));
-                    ret.append(QString::fromStdString(value["address"].asString()));
-                    ret.append(QString::fromStdString(value["icon"].asString()));
-
-                    _fan.addFanUsers(QString::fromStdString(value["name"].asString()),ret);
-    //                for(int k = 0; k < _fan.fanUsers()[i].size();k++)
-    //                    cout << (_fan.fanUsers()[i].at(k)).toStdString() << endl;
-                }
-                m_fanUserCount = _fan.fanUserCount();
-                emit fanUserCountChanged();
-    //            if(_songlistNames.size() != 0)
-    //                emit createdSongListsChanged();
-                for (unsigned int i = 0; i < _songlistNames.size(); i++)
-                {
-                    cout << _songlistNames.at(i).toStdString() << endl;
-                }
+                _fan.addCreatedSongList(QString::fromStdString(value["name"].asString()),ret);
+                //                for(int k = 0; k < _fan.createdSongLists()[i].size();k++)
+                //                    cout << (_fan.createdSongLists()[i].at(k)).toStdString() << endl;
             }
-            //socket_fileTransfer请求传送用户头像
-            cout << "请求头像： " << _fan.icon().toStdString() << endl;
-            fileTransfer(_fan.icon());
+            m_CreatedSongListCount = _fan.createdSongListCount();
+            emit createdSongListCountChanged();
+            //收藏歌单信息
+            const Json::Value arrayObj1 = resultRoot["collectedArray"];
+            for (unsigned int i = 0; i < arrayObj1.size(); i++)
+            {
+                Json::Value value;
+                value = arrayObj1[i];
+                //存储收藏歌单名字
+                _collectedSongListNames.append(QString::fromStdString(value["name"].asString()));
+                QList<QString> ret;
+                ret.append(QString::fromStdString(value["id"].asString()));
+                ret.append(QString::fromStdString(value["name"].asString()));
+                ret.append(QString::fromStdString(value["author"].asString()));
+                ret.append(QString::fromStdString(value["createTime"].asString()));
+                ret.append(QString::fromStdString(value["label"].asString()));
+                ret.append(QString::fromStdString(value["info"].asString()));
+                ret.append(QString::fromStdString(value["icon"].asString()));
+                ret.append(QString::fromStdString(value["collectionQuantity"].asString()));
+                ret.append(QString::fromStdString(value["clickQuantity"].asString()));
+                ret.append(QString::fromStdString(value["shareQuantity"].asString()));
+
+                _fan.addCollectedSongLists(QString::fromStdString(value["name"].asString()),ret);
+                //                for(int k = 0; k < _fan.collectedSongLists()[i].size();k++)
+                //                    cout << (_fan.collectedSongLists()[i].at(k)).toStdString() << endl;
+            }
+            m_collectedSongListCount = _fan.collectedSongListCount();
+            emit collecedSongListCountChanged();
+            //关注用户信息
+            const Json::Value arrayObj2 = resultRoot["attentedUsers"];
+            for (unsigned int i = 0; i < arrayObj2.size(); i++)
+            {
+                Json::Value value;
+                value = arrayObj2[i];
+
+                QList<QString> ret;
+                ret.append(QString::fromStdString(value["name"].asString()));
+                ret.append(QString::fromStdString(value["password"].asString()));
+                ret.append(QString::fromStdString(value["label"].asString()));
+                ret.append(QString::fromStdString(value["sex"].asString()));
+                ret.append(QString::fromStdString(value["birthday"].asString()));
+                ret.append(QString::fromStdString(value["address"].asString()));
+                ret.append(QString::fromStdString(value["icon"].asString()));
+
+                _fan.addAttentedUsers(QString::fromStdString(value["name"].asString()),ret);
+                //                for(int k = 0; k < _fan.attentedUsers()[i].size();k++)
+                //                    cout << (_fan.attentedUsers()[i].at(k)).toStdString() << endl;
+            }
+            m_attentedUserCount = _fan.attentionUserCount();
+            emit attentionUserCountChanged();
+            //粉丝信息
+            const Json::Value arrayObj3 = resultRoot["fanUsers"];
+            for (unsigned int i = 0; i < arrayObj3.size(); i++)
+            {
+                Json::Value value;
+                value = arrayObj3[i];
+
+                QList<QString> ret;
+                ret.append(QString::fromStdString(value["name"].asString()));
+                ret.append(QString::fromStdString(value["password"].asString()));
+                ret.append(QString::fromStdString(value["label"].asString()));
+                ret.append(QString::fromStdString(value["sex"].asString()));
+                ret.append(QString::fromStdString(value["birthday"].asString()));
+                ret.append(QString::fromStdString(value["address"].asString()));
+                ret.append(QString::fromStdString(value["icon"].asString()));
+
+                _fan.addFanUsers(QString::fromStdString(value["name"].asString()),ret);
+                //                for(int k = 0; k < _fan.fanUsers()[i].size();k++)
+                //                    cout << (_fan.fanUsers()[i].at(k)).toStdString() << endl;
+            }
+            m_fanUserCount = _fan.fanUserCount();
+            emit fanUserCountChanged();
+            //            if(_songlistNames.size() != 0)
+            //                emit createdSongListsChanged();
+            for (unsigned int i = 0; i < _songlistNames.size(); i++)
+            {
+                cout << _songlistNames.at(i).toStdString() << endl;
+            }
         }
+        //socket_fileTransfer请求传送用户头像
+        cout << "请求头像： " << _fan.icon().toStdString() << endl;
+        fileTransfer(_fan.icon());
+    }
 }
 
 
@@ -303,12 +303,12 @@ void Client::myRegister(QString username, QString userpw)
     }
 }
 QString Client::songInformationBySource(QString source){
-        for(auto &l:m_songsMap){
-            auto song = l.second;
-            if(song->getSource() == source.toStdString()){
-                return QString::fromStdString( song->getName());
-            }
+    for(auto &l:m_songsMap){
+        auto song = l.second;
+        if(song->getSource() == source.toStdString()){
+            return QString::fromStdString( song->getName());
         }
+    }
 }
 QString Client::songInformation(QString songId){
     m_songInformation.clear();
@@ -327,68 +327,68 @@ QString Client::songInformation(QString songId){
         return QString::fromStdString(song->getName());
     }else{
 
-    Json::Value root;
-    root["type"] = "SONGINFO";
-    root["songInfo"] = songId.toStdString();
-    std::string out = root.toStyledString();
+        Json::Value root;
+        root["type"] = "SONGINFO";
+        root["songInfo"] = songId.toStdString();
+        std::string out = root.toStyledString();
 
-    auto s = out.data();
-    boost::system::error_code ec;
-    sock.write_some(buffer(s,strlen(s)),ec);
-    std::cout<<"send message to server: " <<out<<endl;
-    if(ec)
-    {
-        std::cout << boost::system::system_error(ec).what() << std::endl;
-        return "ERROR";
-    }
-    char data[512];
-    memset(data,0,sizeof(char)*512);//reset 0 to data[]
-    while(strlen(data)==0){
-        sock.read_some(buffer(data),ec);
-    }
-    if(ec)
-    {
-        std::cout << boost::system::system_error(ec).what() << std::endl;
-        return "ERROR";
+        auto s = out.data();
+        boost::system::error_code ec;
+        sock.write_some(buffer(s,strlen(s)),ec);
+        std::cout<<"send message to server: " <<out<<endl;
+        if(ec)
+        {
+            std::cout << boost::system::system_error(ec).what() << std::endl;
+            return "ERROR";
+        }
+        char data[512];
+        memset(data,0,sizeof(char)*512);//reset 0 to data[]
+        while(strlen(data)==0){
+            sock.read_some(buffer(data),ec);
+        }
+        if(ec)
+        {
+            std::cout << boost::system::system_error(ec).what() << std::endl;
+            return "ERROR";
 
-    }
-    Json::Reader reader;
-    Json::Value resultRoot;
+        }
+        Json::Reader reader;
+        Json::Value resultRoot;
 
-    if(!reader.parse(data, resultRoot)){
-        std::cout << "json received faild" <<std::endl;
-        return "json received faild";
-    }else {
-        string ret = resultRoot["id"].asString();
-        m_songName = QString::fromStdString(resultRoot["name"].asString());
-        m_result = QString::fromStdString(ret);
+        if(!reader.parse(data, resultRoot)){
+            std::cout << "json received faild" <<std::endl;
+            return "json received faild";
+        }else {
+            string ret = resultRoot["id"].asString();
+            m_songName = QString::fromStdString(resultRoot["name"].asString());
+            m_result = QString::fromStdString(ret);
 
-        m_songInformation.append(QString::number(resultRoot["id"].asInt()));
-        m_songInformation.append(QString::fromStdString(resultRoot["name"].asString()));
-        m_songInformation.append(QString::fromStdString(resultRoot["singer"].asString()));
-        m_songInformation.append(QString::fromStdString(resultRoot["album"].asString()));
-        m_songInformation.append(QString::fromStdString(resultRoot["source"].asString()));
-        m_songInformation.append(QString::number(resultRoot["playQuantity"].asInt()));
-        m_songInformation.append(QString::number(resultRoot["downloadQuantity"].asInt()));
-        m_songInformation.append(QString::number(resultRoot["shareQuantity"].asInt()));
+            m_songInformation.append(QString::number(resultRoot["id"].asInt()));
+            m_songInformation.append(QString::fromStdString(resultRoot["name"].asString()));
+            m_songInformation.append(QString::fromStdString(resultRoot["singer"].asString()));
+            m_songInformation.append(QString::fromStdString(resultRoot["album"].asString()));
+            m_songInformation.append(QString::fromStdString(resultRoot["source"].asString()));
+            m_songInformation.append(QString::number(resultRoot["playQuantity"].asInt()));
+            m_songInformation.append(QString::number(resultRoot["downloadQuantity"].asInt()));
+            m_songInformation.append(QString::number(resultRoot["shareQuantity"].asInt()));
 
-//add to song cache pool
-        std::shared_ptr<Song> retSong = std::make_shared<Song>(
-                Song(resultRoot["id"].asInt(),
-                resultRoot["name"].asString(),
-                resultRoot["singer"].asString(),
-                resultRoot["album"].asString(),
-                resultRoot["source"].asString(),
-                resultRoot["playQuantity"].asInt(),
-                resultRoot["shareQuantity"].asInt(),
-                resultRoot["downloadQuantity"].asInt()));
-        m_songsMap.insert(std::make_pair(resultRoot["id"].asInt(),retSong));
+            //add to song cache pool
+            std::shared_ptr<Song> retSong = std::make_shared<Song>(
+                        Song(resultRoot["id"].asInt(),
+                        resultRoot["name"].asString(),
+                    resultRoot["singer"].asString(),
+                    resultRoot["album"].asString(),
+                    resultRoot["source"].asString(),
+                    resultRoot["playQuantity"].asInt(),
+                    resultRoot["shareQuantity"].asInt(),
+                    resultRoot["downloadQuantity"].asInt()));
+            m_songsMap.insert(std::make_pair(resultRoot["id"].asInt(),retSong));
 
 
 
-        std::cout <<"receive frome server : "<< data <<std::endl;
-        return m_songName;
-    }
+            std::cout <<"receive frome server : "<< data <<std::endl;
+            return m_songName;
+        }
     }
 
 }
@@ -442,11 +442,11 @@ QList<QString> Client::search(QString key){
     char data[1024*5];
     memset(data,0,sizeof(char)*1024*5);//reset 0 to data[]
     //-----------------------
-   boost::posix_time::ptime time_now,time_now1;
-   boost::posix_time::millisec_posix_time_system_config::time_duration_type time_elapse;
-   time_now = boost::posix_time::second_clock::universal_time();
+    boost::posix_time::ptime time_now,time_now1;
+    boost::posix_time::millisec_posix_time_system_config::time_duration_type time_elapse;
+    time_now = boost::posix_time::second_clock::universal_time();
 
-   // 得到两个时间间隔的秒数;
+    // 得到两个时间间隔的秒数;
     int sec = 0;
     while(strlen(data)==0 && sec <= 2){
         sock.read_some(buffer(data),ec);
@@ -459,7 +459,7 @@ QList<QString> Client::search(QString key){
         return ret;
     }
 
-   //---------------------------
+    //---------------------------
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -479,8 +479,8 @@ QList<QString> Client::search(QString key){
             //add to song cache pool
             if(arrayObj[i]["type"] == "SONGINFO"){
                 std::shared_ptr<Song> retSong = std::make_shared<Song>(
-                        Song(std::stoi(arrayObj[i]["id"].asString()),
-                        arrayObj[i]["name"].asString(),
+                            Song(std::stoi(arrayObj[i]["id"].asString()),
+                            arrayObj[i]["name"].asString(),
                         arrayObj[i]["singer"].asString(),
                         arrayObj[i]["album"].asString(),
                         arrayObj[i]["source"].asString(),
@@ -504,7 +504,7 @@ QList<QString> Client::search(QString key){
         m_searchCount = arrayObj.size();
         return ret;
     }
-   return ret;
+    return ret;
 }
 
 
@@ -512,53 +512,53 @@ void Client::songList(QString songListId){
     if(m_songlistsMap.find(songListId.toInt()) != m_songlistsMap.end()){
         std::cout << "find previous songlist "<< songListId.toStdString() << std::endl;
     }else{
-    Json::Value root;
-    root["type"] = "SONGLIST";
-    root["songListId"] = songListId.toStdString();
-    root.toStyledString();
-    std::string out = root.toStyledString();
+        Json::Value root;
+        root["type"] = "SONGLIST";
+        root["songListId"] = songListId.toStdString();
+        root.toStyledString();
+        std::string out = root.toStyledString();
 
-    auto s = out.data();
-    boost::system::error_code ec;
-    sock.write_some(buffer(s,strlen(s)),ec);
-    std::cout<<"send message to server: " <<out<<endl;
-    if(ec)
-    {
+        auto s = out.data();
+        boost::system::error_code ec;
+        sock.write_some(buffer(s,strlen(s)),ec);
+        std::cout<<"send message to server: " <<out<<endl;
+        if(ec)
+        {
 
-        std::cout << boost::system::system_error(ec).what() << std::endl;
-        return;
-    }
-    char data[1024*5];
-    memset(data,0,sizeof(char)*1024*5);//reset 0 to data[]
-    while(strlen(data)==0){
-        sock.read_some(buffer(data),ec);
-    }
-    if(ec)
-    {
-        std::cout << boost::system::system_error(ec).what() << std::endl;
-        return;
-    }
-    Json::Reader reader;
-    Json::Value resultRoot;
-    if (reader.parse(data, resultRoot)){
-        const Json::Value arrayObj = resultRoot["array"];
+            std::cout << boost::system::system_error(ec).what() << std::endl;
+            return;
+        }
+        char data[1024*5];
+        memset(data,0,sizeof(char)*1024*5);//reset 0 to data[]
+        while(strlen(data)==0){
+            sock.read_some(buffer(data),ec);
+        }
+        if(ec)
+        {
+            std::cout << boost::system::system_error(ec).what() << std::endl;
+            return;
+        }
+        Json::Reader reader;
+        Json::Value resultRoot;
+        if (reader.parse(data, resultRoot)){
+            const Json::Value arrayObj = resultRoot["array"];
 
-        std::shared_ptr<SongList> ret = std::make_shared<SongList>(SongList(resultRoot["id"].asInt(),
-                resultRoot["name"].asString(),
-                resultRoot["author"].asString(),
-                resultRoot["createTime"].asString(),
-                resultRoot["label"].asString(),
-                resultRoot["info"].asString(),
-                 resultRoot["icon"].asString(),
-                resultRoot["collectionQuantity"].asInt(),
-                resultRoot["clickQuantity"].asInt(),
-                resultRoot["shareQuantity"].asInt()));
+            std::shared_ptr<SongList> ret = std::make_shared<SongList>(SongList(resultRoot["id"].asInt(),
+                                                                       resultRoot["name"].asString(),
+                    resultRoot["author"].asString(),
+                    resultRoot["createTime"].asString(),
+                    resultRoot["label"].asString(),
+                    resultRoot["info"].asString(),
+                    resultRoot["icon"].asString(),
+                    resultRoot["collectionQuantity"].asInt(),
+                    resultRoot["clickQuantity"].asInt(),
+                    resultRoot["shareQuantity"].asInt()));
             std::map<int,std::shared_ptr<Song>> songs;
             for (unsigned int i = 0; i < arrayObj.size(); i++)
             {
                 std::shared_ptr<Song> retSong = std::make_shared<Song>(
-                        Song(arrayObj[i]["id"].asInt(),
-                         arrayObj[i]["name"].asString(),
+                            Song(arrayObj[i]["id"].asInt(),
+                            arrayObj[i]["name"].asString(),
                         arrayObj[i]["singer"].asString(),
                         arrayObj[i]["album"].asString(),
                         arrayObj[i]["source"].asString(),
@@ -570,11 +570,11 @@ void Client::songList(QString songListId){
                 //add to song cache pool
                 m_songsMap.insert(std::make_pair(arrayObj[i]["id"].asInt(),retSong));
             }
-         ret->setSongs(songs);
-        m_songlistsMap.insert(std::make_pair(resultRoot["id"].asInt(),ret)) ;
-        std::cout <<"receive frome server : "<< data <<std::endl;
-        return;
-    }
+            ret->setSongs(songs);
+            m_songlistsMap.insert(std::make_pair(resultRoot["id"].asInt(),ret)) ;
+            std::cout <<"receive frome server : "<< data <<std::endl;
+            return;
+        }
     }
     cout<<"json receive failed"<<endl;
     return;
@@ -630,7 +630,7 @@ void Client::interface(QString interfaceName){
         const Json::Value advertArrayObj = resultRoot["advertArray"];
         for (unsigned int i = 0; i < advertArrayObj.size(); i++)
         {
-              m_interface.append(QString::fromStdString( advertArrayObj[i]["source"].asString()));
+            m_interface.append(QString::fromStdString( advertArrayObj[i]["source"].asString()));
         }
         std::cout <<"receive frome server : "<< data <<std::endl;
         return;
@@ -640,7 +640,7 @@ void Client::interface(QString interfaceName){
 QList<QString> Client::attentedUsers(){
     QList<QString> ret;
     auto it = _fan.attentedUsers().begin();
-//    cout << attentionUserCount() << endl;
+    //    cout << attentionUserCount() << endl;
     for(auto it = _fan.attentedUsers().constBegin();it!= _fan.attentedUsers().constEnd();it++)
     {
         ret.append(it.value().at(0));
@@ -664,6 +664,7 @@ QList<QString> Client::fanUsers(){
 //**************************
 
 void Client::fileReceiver(){
+
     clock_ = clock();
     sock_fileTransfer.receive(buffer(reinterpret_cast<char*>(&file_info_), sizeof(file_info_)));
     if(file_info_.filename_size == 0){
@@ -788,6 +789,8 @@ void Client::addCreateSongList(QString username,QString songlistName, QString ti
             list.append("");
             _fan.addCreatedSongList(songlistName,list);
             m_CreatedSongListCount++;
+            _songlistNames.append(songlistName);
+
             emit createdSongListCountChanged();
         }
         return;
@@ -819,22 +822,22 @@ QList<QString> Client::getSongListInformation(QString songListId){
 }
 QList<QString> Client::getSongListSongs(QString songListId){
     if(songListId != ""){
-    std::shared_ptr<SongList> songlist = m_songlistsMap[songListId.toInt()];
-    QList<QString> ret;
+        std::shared_ptr<SongList> songlist = m_songlistsMap[songListId.toInt()];
+        QList<QString> ret;
 
-    auto songs = songlist->getSongs();
-    for(auto &l : songs){
-        auto song = l.second;
-        ret.append(QString::number(song->getId()));
-        ret.append(QString::fromStdString(song->getName()));
-        ret.append(QString::fromStdString(song->getSinger()));
-        ret.append(QString::fromStdString(song->getAlbum()));
-        ret.append(QString::fromStdString(song->getSource()));
-        ret.append(QString::number(song->getPlayQuantity()));
-        ret.append(QString::number(song->getDownloadQuantity()));
-        ret.append(QString::number(song->getShareQuantity()));
-    }
-    m_songListCount = ret.size()/8;
+        auto songs = songlist->getSongs();
+        for(auto &l : songs){
+            auto song = l.second;
+            ret.append(QString::number(song->getId()));
+            ret.append(QString::fromStdString(song->getName()));
+            ret.append(QString::fromStdString(song->getSinger()));
+            ret.append(QString::fromStdString(song->getAlbum()));
+            ret.append(QString::fromStdString(song->getSource()));
+            ret.append(QString::number(song->getPlayQuantity()));
+            ret.append(QString::number(song->getDownloadQuantity()));
+            ret.append(QString::number(song->getShareQuantity()));
+        }
+        m_songListCount = ret.size()/8;
         return ret;
     }
 }
