@@ -37,6 +37,7 @@ CommonDialog {
                 console.log(middleArea.leftArea.listmodel.count)
 
                 topRightButton.loginButtonSource = "file:///" + applicationDirPath + "/" + client.userIcon
+                middleArea.personal.userIcon = "file:///" + applicationDirPath + "/" + client.userIcon
                 topRightButton.fanName = client.userName
                 var i = 0
                 //                console.log(client.createdSongLists()[i])
