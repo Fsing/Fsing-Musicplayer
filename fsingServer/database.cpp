@@ -167,12 +167,12 @@ std::string DatabaseController::interface(std::string interfaceName){
                  Json::Value item4;
                  Json::Value item5;
                  Json::Value item6;
-                 item1["source"] = "1.jpg";
-                 item2["source"] = "2.jpg";
-                 item3["source"] = "3.jpg";
-                 item4["source"] = "4.jpg";
-                 item5["source"] = "5.jpg";
-                 item6["source"] = "6.jpg";
+                 item1["source"] = "ad1.jpg";
+                 item2["source"] = "ad2.jpg";
+                 item3["source"] = "ad3.jpg";
+                 item4["source"] = "ad4.jpg";
+                 item5["source"] = "ad5.jpg";
+                 item6["source"] = "ad6.jpg";
                  advertArrayObj.append(item1);
                  advertArrayObj.append(item2);
                  advertArrayObj.append(item3);

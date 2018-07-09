@@ -45,7 +45,7 @@ Item {
                     }
 
                     Text {
-                        text: "时长"
+                        text: "playQuantity"
                         font.pixelSize: 15
                         Layout.fillWidth: true
                     }

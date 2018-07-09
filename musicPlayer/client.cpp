@@ -598,8 +598,8 @@ void Client::interface(QString interfaceName){
     }
 
 
-    char data[1024*5];
-    memset(data,0,sizeof(char)*1024*5);//reset 0 to data[]
+    char data[1024*10];
+    memset(data,0,sizeof(char)*1024*10);//reset 0 to data[]
     while(strlen(data)==0){
         sock.read_some(buffer(data),ec);
     }

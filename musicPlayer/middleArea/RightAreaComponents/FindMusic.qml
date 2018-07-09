@@ -62,7 +62,7 @@ Rectangle {
                             Layout.maximumWidth: 300
                             Layout.minimumHeight: 200
                             SongListRectangle {
-                                playQuantity: String(50)
+                                playQuantity: interfaceParamter[7]
                                 source: "file:///" + applicationDirPath + "/" + interfaceParamter[6]
                                 songlistId: interfaceParamter[0]
                                 songlistName: interfaceParamter[1]
@@ -75,7 +75,7 @@ Rectangle {
                             Layout.maximumWidth: 300
                             Layout.minimumHeight: 200
                             SongListRectangle {
-                                playQuantity: String(60)
+                                playQuantity: interfaceParamter[17]
                                 source: "file:///" + applicationDirPath + "/" + interfaceParamter[16]
                                 songlistId: interfaceParamter[10]
                                 songlistName: interfaceParamter[11]
@@ -88,7 +88,7 @@ Rectangle {
                             Layout.maximumWidth: 300
                             Layout.minimumHeight: 200
                             SongListRectangle {
-                                playQuantity: String(70)
+                                playQuantity: interfaceParamter[27]
                                 source: "file:///" + applicationDirPath + "/" + interfaceParamter[26]
                                 songlistId: interfaceParamter[20]
                                 songlistName: interfaceParamter[21]
@@ -101,7 +101,7 @@ Rectangle {
                             Layout.maximumWidth: 300
                             Layout.minimumHeight: 200
                             SongListRectangle {
-                                playQuantity: String(80)
+                                playQuantity: interfaceParamter[37]
                                 source: "file:///" + applicationDirPath + "/" + interfaceParamter[36]
                                 songlistId: interfaceParamter[30]
                                 songlistName: interfaceParamter[31]
@@ -114,7 +114,7 @@ Rectangle {
                             Layout.maximumWidth: 300
                             Layout.minimumHeight: 200
                             SongListRectangle {
-                                playQuantity: String(50)
+                                playQuantity: interfaceParamter[47]
                                 source: "file:///" + applicationDirPath + "/" + interfaceParamter[46]
                                 songlistId: interfaceParamter[40]
                                 songlistName: interfaceParamter[41]
@@ -127,7 +127,7 @@ Rectangle {
                             Layout.maximumWidth: 300
                             Layout.minimumHeight: 200
                             SongListRectangle {
-                                playQuantity: String(60)
+                                playQuantity: interfaceParamter[57]
                                 source: "file:///" + applicationDirPath + "/" + interfaceParamter[56]
                                 songlistId: interfaceParamter[50]
                                 songlistName: interfaceParamter[51]
@@ -140,7 +140,7 @@ Rectangle {
                             Layout.maximumWidth: 300
                             Layout.minimumHeight: 200
                             SongListRectangle {
-                                playQuantity: String(70)
+                                playQuantity: interfaceParamter[67]
                                 source: "file:///" + applicationDirPath + "/" + interfaceParamter[66]
                                 songlistId: interfaceParamter[60]
                                 songlistName: interfaceParamter[61]
@@ -153,7 +153,7 @@ Rectangle {
                             Layout.maximumWidth: 300
                             Layout.minimumHeight: 200
                             SongListRectangle {
-                                playQuantity: String(80)
+                                playQuantity: interfaceParamter[77]
                                 source: "file:///" + applicationDirPath + "/" + interfaceParamter[76]
                                 songlistId: interfaceParamter[70]
                                 songlistName: interfaceParamter[71]

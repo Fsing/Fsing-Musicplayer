@@ -115,8 +115,8 @@ void receiveMessage(socket_ptr sock)
 
         if(result2 != "fileTransfer"){
         //写回客户端
-        char data2[1024*5];
-        memset(data2,0,sizeof(char)*1024*5);
+        char data2[1024*10];
+        memset(data2,0,sizeof(char)*1024*10);
         result2.copy(data2,result2.size(),0);
         sock->write_some(buffer(data2), ec);  //客户输入的消息，重新写到客户端
         if(ec)
