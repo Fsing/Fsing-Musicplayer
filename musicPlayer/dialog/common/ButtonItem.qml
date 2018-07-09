@@ -7,6 +7,7 @@ Rectangle {
 
     property var usource
     property var utext
+    property bool endImageVisible: true
 
     signal buttonClick
 
@@ -33,6 +34,7 @@ Rectangle {
     Image {
         width: 12
         height: 8
+        visible: endImageVisible
         anchors.right: parent.right
         anchors.rightMargin: 5
         anchors.verticalCenter: parent.verticalCenter

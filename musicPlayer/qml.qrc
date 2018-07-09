@@ -105,5 +105,7 @@
         <file>personalinfo/AllAttentions.qml</file>
         <file>personalinfo/element/UserInfoOverView.qml</file>
         <file>middleArea/RightAreaComponents/Search.qml</file>
+        <file>dialog/SongOperationDialog.qml</file>
+        <file>dialog/SongOperationItem.qml</file>
     </qresource>
 </RCC>

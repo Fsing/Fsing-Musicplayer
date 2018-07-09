@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import "./element"
+import "../dialog"
 
 Rectangle {
     id: songlist
@@ -23,8 +24,6 @@ Rectangle {
     property var label
     //歌单简介
     property var briefInfo
-
-
 
     ScrollView {
         id: scroll
@@ -52,5 +51,9 @@ Rectangle {
                 height: 1500
             }
         }
+    }
+
+    SongOperationDialog {
+        id: songOperationDialog
     }
 }

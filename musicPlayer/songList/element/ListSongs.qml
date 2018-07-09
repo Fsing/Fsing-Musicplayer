@@ -6,6 +6,8 @@ import QtQuick.Window 2.2
 Item {
     property bool tvisible: false
 
+    signal rightClick(var x, var y)
+
     Component {
         id: headView
         Item {
@@ -71,30 +73,40 @@ Item {
             width: parent.width
             height: 25
 
+            MouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.LeftButton | Qt.RightButton
+
+                onClicked: {
+
+                    wrapper.ListView.view.currentIndex = index
+                    if (mouse.button === Qt.RightButton) {
+                        rightClick(mouseX, mouseY)
+                    }
+                }
+                onDoubleClicked: {
+                    propagateComposedEvents: true
+                    client.songInformation(listmodel1.get(
+                                               tableview.currentIndex).id)
+                    if (!client.currentPlayListSong(
+                                listmodel1.get(tableview.currentIndex).id)) {
+                        mediaPlayer.playlist.addItem(
+                                    listmodel1.get(
+                                        tableview.currentIndex).source)
+                        songChanged(listmodel1.get(
+                                        tableview.currentIndex).source)
+                        mediaPlayer.play()
+                    }
+
+                    mouse.accepted = false
+                }
+            }
+
             RowLayout {
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
                 spacing: 8
-                MouseArea {
-                    anchors.fill: parent
 
-                    onClicked: {
-
-                        wrapper.ListView.view.currentIndex = index
-                    }
-                    onDoubleClicked: {
-                        propagateComposedEvents: true
-                        client.songInformation(listmodel1.get(tableview.currentIndex).id)
-                        if(!client.currentPlayListSong(listmodel1.get(tableview.currentIndex).id)){
-                        mediaPlayer.playlist.addItem(listmodel1.get(tableview.currentIndex).source)
-                        songChanged(listmodel1.get(tableview.currentIndex).source)
-                        mediaPlayer.play()
-                        }
-
-                        mouse.accepted = false
-                    }
-
-                }
                 Text {
                     text: id
                     color: wrapper.ListView.isCurrentItem ? "red" : "black"
@@ -152,13 +164,26 @@ Item {
         highlight: Rectangle {
             color: "lightblue"
         }
-
     }
     onTvisibleChanged: {
         if (!tvisible)
             tableview.visible = false
         else {
             tableview.visible = true
+        }
+    }
+
+    onRightClick: {
+        songOperationDialog.x = x
+        songOperationDialog.y = topArea.height + songListTop.height + 40
+                + rec.height + 10 + 25 * tableview.currentIndex + y
+        console.log(topArea.height)
+        console.log(25 * index)
+        console.log(songOperationDialog.x + "," + songOperationDialog.y)
+        if (songOperationDialog.opened) {
+            songOperationDialog.close()
+        } else {
+            songOperationDialog.open()
         }
     }
 }
