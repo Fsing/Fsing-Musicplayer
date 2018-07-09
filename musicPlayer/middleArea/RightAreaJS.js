@@ -133,7 +133,7 @@ function popView(n) {
         ;
         break
     default:
-        /*
+
         var songlist = stackView.find(function (item) {
 
             return item.index === n ? true : false
@@ -144,7 +144,7 @@ function popView(n) {
             stackView.pop(songlist)
         }
         ;
-        */
+
         break
     }
 }

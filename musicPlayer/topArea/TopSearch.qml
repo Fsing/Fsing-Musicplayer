@@ -16,6 +16,7 @@ Rectangle {
         anchors.left: parent.left
         anchors.leftMargin: 10
         anchors.verticalCenter: parent.verticalCenter
+        selectByMouse: true
 
         text: "搜索音乐，视频，歌词，电台"
         //        font.pointSize:

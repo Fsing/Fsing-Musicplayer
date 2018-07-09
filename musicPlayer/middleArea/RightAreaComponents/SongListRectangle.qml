@@ -99,6 +99,4 @@ Rectangle {
         font.pointSize: 14
         visible:true
     }
-
-
 }

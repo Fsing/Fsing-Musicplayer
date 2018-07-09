@@ -30,9 +30,9 @@ public:
     //接收客户端的连接
     void connect();
     //判断客户端发来的消息的类型,并调用相应的处理函数
-    void dealMessage(string sig,vector<string> str,socket_ptr sock);
+    std::string dealMessage(string sig, vector<string> str, socket_ptr sock);
     //接收客户端信息
-    boost::system::error_code &getMessage(socket_ptr sock,boost::system::error_code &ec);
+//    boost::system::error_code &getMessage(socket_ptr sock,boost::system::error_code &ec);
     //分配客户端接收信息
     void receiveMessage(socket_ptr sock);
     void fileSender(std::string fileName, socket_ptr sock);

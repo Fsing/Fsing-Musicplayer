@@ -102,62 +102,108 @@ void sendMessage(string result2,socket_ptr sock)
     }
 }
 //异步读取客户端传送的消息
-boost::system::error_code &Server::getMessage(socket_ptr sock,boost::system::error_code &ec)
-{
-    char data1[512];
-    memset(data1,0,sizeof(char)*512);
+//boost::system::error_code &Server::getMessage(socket_ptr sock,boost::system::error_code &ec)
+//{
+//    char data1[512];
+//    memset(data1,0,sizeof(char)*512);
 
-    //同步接收消息，异步处理
-    sock->read_some(buffer(data1), ec);
-    if(ec)
-    {
-        std::cout << boost::system::system_error(ec).what() << std::endl;
-        return ec;
-    }
-    cout << "receive from client : " << data1<<endl;
+//    //同步接收消息，异步处理
+//    sock->read_some(buffer(data1), ec);
+//    if(ec)
+//    {
+//        std::cout << boost::system::system_error(ec).what() << std::endl;
+//        return ec;
+//    }
+//    cout << "receive from client : " << data1<<endl;
 
-    auto result1 = jsonParase(data1);
-    boost::thread(boost::bind(&Server::dealMessage,this,result1[0],result1,sock));
-}
-void Server::dealMessage(string sig,vector<string> str,socket_ptr sock)
+//    auto result1 = jsonParase(data1);
+//    boost::thread(boost::bind(&Server::dealMessage,this,result1[0],result1,sock));
+//}
+//void Server::dealMessage(string sig,vector<string> str,socket_ptr sock,boost::system::error_code &ec)
+//{
+//    string res;
+//    if(sig == "SONGINFO"){
+//        res = _songProxy->songInformation(str[1]);
+//        boost::thread(boost::bind(sendMessage,res,sock));
+//    }else if(sig == "REGISTER"){
+//        res = _fanProxy->myRegister(str[1],str[2]);
+//        boost::thread(boost::bind(sendMessage,res,sock));
+//    }else if(sig == "LOGIN"){
+//        cout << "enter dealMessage" << endl;
+//        res = _fanProxy->myLogin(str[1],str[2]);
+//        boost::thread(boost::bind(sendMessage,res,sock));
+//    }else if(sig == "SEARCH"){
+//        res = database.search(str[1]);
+//        boost::thread(boost::bind(sendMessage,res,sock));
+//    }else if(sig == "FILETRANSFER"){
+//        fileSender(str[1],sock);
+//        res = "fileTransfer";
+//        boost::thread(boost::bind(sendMessage,res,sock));
+//    }else if(sig == "CREATESONGLIST"){
+//        res = res = _songListProxy->addSongList(str[1],str[2],str[3]);
+//        boost::thread(boost::bind(sendMessage,res,sock));
+//    }
+//    else if(sig == "SONGLIST"){
+//        res = _songListProxy->songListInformation(str[1]) ;
+//        boost::thread(boost::bind(sendMessage,res,sock));
+//    }
+//    else if(sig == "INTERFACE"){
+//        res = database.interface(str[1]);
+//        boost::thread(boost::bind(sendMessage,res,sock));
+//    }
+//    else if(sig == "wrongParameter"){
+//        res = "wrongParameter";
+//        boost::thread(boost::bind(sendMessage,res,sock));
+//    }else{
+//        boost::thread(boost::bind(sendMessage,"nomatch sig",sock));
+//    }
+//    //    return "nomatch sig";
+//}
+string Server::dealMessage(string sig,vector<string> str,socket_ptr sock)
 {
     string res;
     if(sig == "SONGINFO"){
         res = _songProxy->songInformation(str[1]);
-        boost::thread(boost::bind(sendMessage,res,sock));
+        sendMessage(res,sock);
+        return res;
     }else if(sig == "REGISTER"){
         res = _fanProxy->myRegister(str[1],str[2]);
-        boost::thread(boost::bind(sendMessage,res,sock));
+        sendMessage(res,sock);
+        return res;
     }else if(sig == "LOGIN"){
         cout << "enter dealMessage" << endl;
         res = _fanProxy->myLogin(str[1],str[2]);
-        boost::thread(boost::bind(sendMessage,res,sock));
+        sendMessage(res,sock);
+        return res;
     }else if(sig == "SEARCH"){
         res = database.search(str[1]);
-        boost::thread(boost::bind(sendMessage,res,sock));
+        sendMessage(res,sock);
+        return res;
     }else if(sig == "FILETRANSFER"){
         fileSender(str[1],sock);
         res = "fileTransfer";
-        boost::thread(boost::bind(sendMessage,res,sock));
+        sendMessage(res,sock);
     }else if(sig == "CREATESONGLIST"){
         res = res = _songListProxy->addSongList(str[1],str[2],str[3]);
-        boost::thread(boost::bind(sendMessage,res,sock));
+        sendMessage(res,sock);
+        return res;
     }
     else if(sig == "SONGLIST"){
         res = _songListProxy->songListInformation(str[1]) ;
-        boost::thread(boost::bind(sendMessage,res,sock));
+        sendMessage(res,sock);
+        return res;
     }
     else if(sig == "INTERFACE"){
         res = database.interface(str[1]);
-        boost::thread(boost::bind(sendMessage,res,sock));
+        sendMessage(res,sock);
+        return res;
     }
     else if(sig == "wrongParameter"){
         res = "wrongParameter";
-        boost::thread(boost::bind(sendMessage,res,sock));
-    }else{
-        boost::thread(boost::bind(sendMessage,"nomatch sig",sock));
+        sendMessage(res,sock);
+        return res;
     }
-    //    return "nomatch sig";
+    return "nomatch sig";
 }
 
 //接受客户端传来的请求事务,并将结果返回给客户端
@@ -172,8 +218,8 @@ void Server::receiveMessage(socket_ptr sock)
     }
     std::cout<<ep1.address().to_string()<<"连接"<<std::endl;
 
-//    Server service1;
-//    boost::thread(boost::bind(readMessage,sock));
+    //    Server service1;
+    //    boost::thread(boost::bind(readMessage,sock));
     //    while(true){
     //        char data[1024 * 5];
     //        memset(data,0,sizeof(char) * 1024 * 5);
@@ -194,8 +240,10 @@ void Server::receiveMessage(socket_ptr sock)
         }
         cout << "receive from client : " << data1<<endl;
 
-        auto result1 = jsonParase(data1);
-        boost::thread(boost::bind(&Server::dealMessage,this,result1[0],result1,sock));
+        if(strlen(data1) != 0){
+            auto result1 = jsonParase(data1);
+            boost::thread(boost::bind(&Server::dealMessage,this,result1[0],result1,sock));
+        }
     }
     std::cout<<ep1.address().to_string()<<"关闭"<<std::endl;
 }
