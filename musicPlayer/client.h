@@ -46,7 +46,7 @@ public:
     Q_INVOKABLE void addCreateSongList(QString username, QString songlistName, QString time);
     //下载音乐
     Q_INVOKABLE QString songInformation(QString songId);
-    Q_INVOKABLE QString search(QString key);
+    Q_INVOKABLE QList<QString> search(QString key);
     //请求文件
     Q_INVOKABLE void fileTransfer(QString fileName);
     Q_INVOKABLE void songList(QString songListId);//get songlist infomation
@@ -81,6 +81,7 @@ public:
     Q_INVOKABLE QList<QString> getSongListInformation(QString songListId);
     Q_INVOKABLE QList<QString> getSongListSongs(QString songListId);
     Q_INVOKABLE int getSongListCount() const{return m_songListCount;}
+    Q_INVOKABLE int getSearchCount() const{return m_searchCount;}
 
     Q_INVOKABLE QList<QString> getSongInformation() const{return m_songInformation;}
 
@@ -174,6 +175,9 @@ private:
     QList<QString> m_songList;
     int m_songListCount;
     QList<QString> m_songInformation;
+
+    //for search
+    int m_searchCount;
 
     //for file transfer
     clock_t clock_;

@@ -10,6 +10,14 @@ Rectangle {
     anchors.top: parent.top
     anchors.bottom: parent.bottom
 
+    Connections {
+        target: mainWindow
+        onStartSearch:{
+            console.log("search")
+            stackView.push(searchComponent)
+        }
+    }
+
     StackView {
         id: stackView
         anchors.fill: parent
@@ -126,11 +134,10 @@ Rectangle {
             id: mymv
         }
     }
-
     Component {
-        id: mySonglistComponent
-        SongList {
-            id: songlist
+        id: searchComponent
+        Search{
+            id:search
         }
     }
     Component.onCompleted: {

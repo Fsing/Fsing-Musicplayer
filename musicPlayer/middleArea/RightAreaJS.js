@@ -108,6 +108,18 @@ function popView(n) {
         }
         ;
         break
+    case 9:
+        var search = stackView.find(function (item) {
+
+            return item.index === n ? true : false
+        })
+        if (search === null) {
+            stackView.push(searchComponent)
+        } else {
+            stackView.pop(search)
+        }
+        ;
+        break
     case -1:
         var lyric = stackView.find(function (item) {
 
@@ -121,6 +133,7 @@ function popView(n) {
         ;
         break
     default:
+        /*
         var songlist = stackView.find(function (item) {
 
             return item.index === n ? true : false
@@ -131,6 +144,7 @@ function popView(n) {
             stackView.pop(songlist)
         }
         ;
+        */
         break
     }
 }

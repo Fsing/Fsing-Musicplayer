@@ -110,5 +110,6 @@
         <file>images/common/ac0.png</file>
         <file>personalinfo/AllAttentions.qml</file>
         <file>personalinfo/element/UserInfoOverView.qml</file>
+        <file>middleArea/RightAreaComponents/Search.qml</file>
     </qresource>
 </RCC>
