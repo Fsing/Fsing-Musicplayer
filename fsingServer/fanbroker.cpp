@@ -5,6 +5,7 @@
 #include <cstring>
 #include <vector>
 #include <memory>
+#include <sstream>
 #include "songlist.h"
 #include "songlistbroker.h"
 
@@ -28,9 +29,13 @@ std::shared_ptr<Fan> FanBroker::findUserInCache(std::string username)
     }
 }
 
-void FanBroker::updateCache(std::string username)
+void FanBroker::updateCacheForCreatedSongList(std::string username, std::shared_ptr<SongList> songlist)
 {
-    _fans.erase(_fans.find(username));
+    std::stringstream ss;
+    ss << songlist->getId();
+    string id;
+    ss >> id;
+    _fans[username]->addCreatedSongList(id,songlist);
 }
 
 std::shared_ptr<Fan> FanBroker::findUser(std::string username)

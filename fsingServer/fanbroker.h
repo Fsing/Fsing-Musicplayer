@@ -16,7 +16,7 @@ public:
     std::shared_ptr<Fan> findUserByUserName(string username);                               //再Account中查找单个用户的信息,并返回Fan对象
 //    std::map<std::string, std::shared_ptr<Fan> > findUserBySongListName(string songlistId);   //通过歌单id，在CollectionRelation表中查找收藏歌单的用户
     std::shared_ptr<Fan> findUserInCache(std::string username);            //在缓存中查找是否存在数据
-    void updateCache(std::string username);       //更新缓存
+    void updateCacheForCreatedSongList(std::string username, std::shared_ptr<SongList> songlist);       //更新缓存
 
 private:
     FanBroker();        //保护构造函数，不能通过new创建对象

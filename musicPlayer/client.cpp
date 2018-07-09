@@ -735,7 +735,6 @@ void Client::receive_file_content(string fileName)
 
 void Client::addCreateSongList(QString username,QString songlistName, QString time)
 {
-    _songlistNames.append(songlistName);
     Json::Value root;
     root["type"] = "CREATESONGLIST";
     root["username"] = username.toStdString();

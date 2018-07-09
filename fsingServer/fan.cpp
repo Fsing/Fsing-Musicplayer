@@ -62,3 +62,8 @@ void Fan::setCreatedSongLists(std::map<std::string, std::shared_ptr<SongList>> c
     _createdSongList = createdSongList;
 }
 
+void Fan::addCreatedSongList(std::string songlistID, std::shared_ptr<SongList> songlist)
+{
+    _createdSongList.insert(std::make_pair(songlistID,songlist));
+}
+

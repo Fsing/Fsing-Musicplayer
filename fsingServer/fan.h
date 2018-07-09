@@ -39,6 +39,9 @@ public:
     void setCollectedSongLists(std::map<string,std::shared_ptr<SongList>> collectedSongList);
     void setCreatedSongLists(std::map<std::string, std::shared_ptr<SongList> > createdSongList);
 
+    //adding
+    void addCreatedSongList(string songlistID,std::shared_ptr<SongList> songlist);
+
 private:
 //    int m_userID;               //用户id
     std::string m_name;         //用户名

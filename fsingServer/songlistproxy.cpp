@@ -109,7 +109,9 @@ std::string SongListProxy::addSongList(std::string username, std::string songLis
             //如果缓存中有该用户，则从缓存中删除，下一次查找更新
             auto fanBroker = FanBroker::getInstance();
             if(fanBroker->findUserInCache(username)){
-                fanBroker->updateCache(username);
+                auto songlistBroker = SongListBroker::getInstance();
+                auto songlist = songlistBroker->findSongListBySongListNameAndUserName(songListName,username);
+                fanBroker->updateCacheForCreatedSongList(username,songlist);
             }
             cout <<"addSongList:insert into SongList: " << songListName << " success!" << endl;
             root["recordSuccess"] = "SUCCESS";
