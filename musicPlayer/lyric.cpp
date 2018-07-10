@@ -26,7 +26,10 @@ QString Lyric::text() const
 {
     return m_text;
 }
-
+QString Lyric::getLyricName(QString path){
+    QFileInfo fi(path);
+    return fi.completeBaseName() + ".lrc";
+}
 QList<QObject *> Lyric::getLyric(QString path)
 {
     //    QString path = "/root/tmp/一路向北.mp3";

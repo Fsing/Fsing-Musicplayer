@@ -32,7 +32,7 @@ Rectangle {
             }
         }
         onSongChanged: {
-
+            client.fileTransfer(lyric.getLyricName(song))
             lyricview.model = lyric.getLyric(song)
             console.log(song)
         }

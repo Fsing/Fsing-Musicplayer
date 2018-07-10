@@ -715,19 +715,7 @@ QList<QString> Client::fanUsers(){
 
 void Client::fileReceiver(){
 
-    //-----------------------
-    boost::posix_time::ptime time_now,time_now1;
-    boost::posix_time::millisec_posix_time_system_config::time_duration_type time_elapse;
-    time_now = boost::posix_time::second_clock::universal_time();
-
-    // 得到两个时间间隔的秒数;
-    int sec = 0;
-    file_info_.filename_size = 0;
-
     sock_fileTransfer.receive(buffer(reinterpret_cast<char*>(&file_info_), sizeof(file_info_)));
-    cout<<file_info_.filename_size<<endl;
-
-
     if(file_info_.filename_size == 0){
         std::cout<<"file is not exist"<<std::endl;
         return;

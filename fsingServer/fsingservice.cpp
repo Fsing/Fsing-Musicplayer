@@ -183,7 +183,7 @@ string Server::dealMessage(string sig,vector<string> str,socket_ptr sock)
     }else if(sig == "FILETRANSFER"){
         fileSender(str[1],sock);
         res = "fileTransfer";
-        sendMessage(res,sock);
+        return res;
     }else if(sig == "CREATESONGLIST"){
         res = _songListProxy->addSongList(str[1],str[2],str[3]);
         sendMessage(res,sock);
@@ -253,7 +253,11 @@ void Server::receiveMessage(socket_ptr sock)
         if(strlen(data1) != 0){
             auto result1 = jsonParase(data1);
             cout << "++++++++++++++++++: " << result1[0] << endl;
+            if(result1[0]== "FILETRANSFER"){
+                dealMessage(result1[0],result1,sock);
+            }else{
             boost::thread(boost::bind(&Server::dealMessage,this,result1[0],result1,sock));
+            }
         }
     }
     std::cout<<ep1.address().to_string()<<"关闭"<<std::endl;
@@ -314,7 +318,7 @@ void Server::fileSender(string fileName,socket_ptr sock){
     if (fp == NULL) {
         cout << "cannot open file\n" <<endl;
         File_info file_info;
-        char buffer[32 * 1024];
+        char buffer[16];
         memcpy(buffer, &file_info, sizeof(file_info));
         sock->send(boost::asio::buffer(buffer, sizeof(buffer)), 0);
         return;

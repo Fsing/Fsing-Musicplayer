@@ -18,7 +18,7 @@ insert into Song(id,name,source,singer,album,playQuantity,downloadQuantity,share
 insert into Song(id,name,source,singer,album,playQuantity,downloadQuantity,shareQuantity) values(7,'奇妙能力歌','rtsp://192.168.8.79/music/qimiaonenglige.mp3','陈粒','陈粒的单曲列表',1,0,20);
 insert into Song(id,name,source,singer,album,playQuantity,downloadQuantity,shareQuantity) values(8,'曾经的你','rtsp://192.168.8.79/music/cengjingdeni.mp3','许巍','每一刻都是崭新的',34,0,20);
 insert into Song(id,name,source,singer,album,playQuantity,downloadQuantity,shareQuantity) values(9,'匆匆那年','rtsp://192.168.8.79/music/congcongnanian.mp3','王菲','匆匆那年',102,0,20);
-insert into Song(id,name,source,singer,album,playQuantity,downloadQuantity,shareQuantity) values(10,'理想三旬','rtsp://192.168.8.79/music/理想三旬.mp3','陈鸿宇','浓烟下的诗歌电台',110,0,20);
+insert into Song(id,name,source,singer,album,playQuantity,downloadQuantity,shareQuantity) values(10,'理想三旬','rtsp://192.168.8.79/music/lixiangsanxun.mp3','陈鸿宇','浓烟下的诗歌电台',110,0,20);
 
 insert into SongList(id,name,author,createTime,label,info,icon,collectionQuantity,clickQuantity,shareQuantity) 
 values(1,'你的嘴角 说话的时候有浅浅的笑','鮭魚先森','2016-11-5 17:00:00','流行 华语',' 你的嘴角,说话的时候,有浅浅的笑,那道线条,像一个记号,永远都擦不掉.','1.jpg',10,20,30);

@@ -21,6 +21,7 @@ public:
 
 
     Q_INVOKABLE QList<QObject*> getLyric(QString path);
+    Q_INVOKABLE QString getLyricName(QString path);
 
 private:
     int m_time;
