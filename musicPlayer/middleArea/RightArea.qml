@@ -143,6 +143,12 @@ Rectangle {
         }
     }
     Component {
+        id: favoriteComponent
+        MyFavorite {
+            id: favorite
+        }
+    }
+    Component {
         id: mySongListComponent
         SongList {
             id: mysongList
