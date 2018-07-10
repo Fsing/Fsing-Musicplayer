@@ -109,5 +109,6 @@
         <file>dialog/SongOperationItem.qml</file>
         <file>dialog/CollectSongItem.qml</file>
         <file>dialog/CollectSongDialog.qml</file>
+        <file>middleArea/RightAreaComponents/MyFavorite.qml</file>
     </qresource>
 </RCC>
