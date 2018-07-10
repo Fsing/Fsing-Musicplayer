@@ -798,6 +798,53 @@ void Client::addCreateSongList(QString username,QString songlistName, QString ti
     }
 }
 
+void Client::addSongToSongList(QString songListID, QString songID)
+{
+    Json::Value root;
+    root["type"] = "ADDSONGTOSONGLIST";
+    root["songListID"] = songListID.toStdString();
+    root["songID"] = songID.toStdString();
+    root.toStyledString();
+    std::string out = root.toStyledString();
+
+    auto s = out.data();
+    boost::system::error_code ec;
+    sock.write_some(buffer(s,strlen(s)),ec);
+    if(ec)
+    {
+        std::cout << boost::system::system_error(ec).what() << std::endl;
+        return;
+    }
+    std::cout<<"send message to server: " <<out<<endl;
+
+    //读取服务器返回的消息：是否成功记录
+    char data[512];
+    memset(data,0,sizeof(char)*512);//reset 0 to data[]
+    while(strlen(data)==0){
+        sock.read_some(buffer(data),ec);
+    }
+    if(ec)
+    {
+        std::cout << boost::system::system_error(ec).what() << std::endl;
+        return;
+
+    }
+    cout << "receive from server : " << data<<endl;
+    Json::Reader reader;
+    Json::Value resultRoot;
+    if(!reader.parse(data, resultRoot)){
+        std::cout << "json received faild" <<std::endl;
+        return;
+    }else {
+        string ret = resultRoot["recordSuccess"].asString();
+        cout << "record create song list " << ret<<endl;
+        if(ret == "SUCCESS"){
+           cout << "Add Song To SongList Success!" << endl;
+        }
+        return;
+    }
+}
+
 //void Client::run_service()
 //{
 //    service.run();

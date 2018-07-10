@@ -7,6 +7,7 @@ Rectangle {
     width: 200
     height: 30 * collectSongModel.count
     property alias collectSongModel: collectSongModel
+    property var viewCurrentIndex: collectedSongListsView.currentIndex
 
     signal createSongList
     signal collectSongToSongList

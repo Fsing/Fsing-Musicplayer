@@ -186,8 +186,8 @@ Item {
         if (songOperationDialog.opened) {
             songOperationDialog.close()
         } else {
-            songOperationDialog.open()
             songOperationDialog.clickSongIndex(tableview.currentIndex)
+            songOperationDialog.open()
         }
     }
 }

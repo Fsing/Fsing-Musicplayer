@@ -6,6 +6,7 @@ CommonDialog {
 
     width: 200
     height: 300
+    z: 10
 
     property var songIndex: -1
 

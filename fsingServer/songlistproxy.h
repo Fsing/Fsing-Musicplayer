@@ -7,5 +7,6 @@ class SongListProxy
 public:
     std::string songListInformation(std::string songId);
     std::string addSongList(std::string username, std::string songListName, std::string time);
+    std::string addSongToSongList(std::string songlistID, std::string songID);
 };
 #endif // SONGLISTPROXY_H

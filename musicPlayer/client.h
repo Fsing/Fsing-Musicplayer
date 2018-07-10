@@ -46,6 +46,8 @@ public:
     Q_INVOKABLE void myRegister(QString username,QString userpw);
     //创建歌单
     Q_INVOKABLE void addCreateSongList(QString username, QString songlistName, QString time);
+    //收藏音乐到歌单
+    Q_INVOKABLE void addSongToSongList(QString songListID, QString songID);
     //下载音乐
     Q_INVOKABLE QString songInformation(QString songId);
     Q_INVOKABLE QString songInformationBySource(QString source);

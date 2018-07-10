@@ -8,6 +8,7 @@ import "../dialog"
 Rectangle {
     id: songlist
     property int index: 9
+    property string songListId
     //用于显示歌曲的model
     property var model: []
     //歌单名
@@ -55,5 +56,10 @@ Rectangle {
 
     SongOperationDialog {
         id: songOperationDialog
+    }
+
+    function collecSong() {
+        console.log("songListInfo[0];  " + songListId)
+        return songListId
     }
 }

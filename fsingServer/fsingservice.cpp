@@ -162,6 +162,7 @@ void sendMessage(string result2,socket_ptr sock)
 string Server::dealMessage(string sig,vector<string> str,socket_ptr sock)
 {
     string res;
+    cout << "==================:  " << sig << endl;
     if(sig == "SONGINFO"){
         res = _songProxy->songInformation(str[1]);
         sendMessage(res,sock);
@@ -184,7 +185,11 @@ string Server::dealMessage(string sig,vector<string> str,socket_ptr sock)
         res = "fileTransfer";
         sendMessage(res,sock);
     }else if(sig == "CREATESONGLIST"){
-        res = res = _songListProxy->addSongList(str[1],str[2],str[3]);
+        res = _songListProxy->addSongList(str[1],str[2],str[3]);
+        sendMessage(res,sock);
+        return res;
+    }else if(sig == "ADDSONGTOSONGLIST"){
+        res = _songListProxy->addSongToSongList(str[1], str[2]);
         sendMessage(res,sock);
         return res;
     }
@@ -242,6 +247,7 @@ void Server::receiveMessage(socket_ptr sock)
 
         if(strlen(data1) != 0){
             auto result1 = jsonParase(data1);
+            cout << "++++++++++++++++++: " << result1[0] << endl;
             boost::thread(boost::bind(&Server::dealMessage,this,result1[0],result1,sock));
         }
     }
@@ -278,6 +284,10 @@ vector<string>  jsonParase(char data[]){
             parameter.push_back(value["username"].asString());
             parameter.push_back(value["songListName"].asString());
             parameter.push_back(value["createTime"].asString());
+        }else if(type == "ADDSONGTOSONGLIST"){
+            parameter.push_back(value["type"].asString());
+            parameter.push_back(value["songListID"].asString());
+            parameter.push_back(value["songID"].asString());
         }else if(type == "SONGLIST"){
             parameter.push_back(value["type"].asString());
             parameter.push_back(value["songListId"].asString());

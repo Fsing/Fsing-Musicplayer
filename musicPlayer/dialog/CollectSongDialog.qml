@@ -3,6 +3,7 @@ import "../dialog/common"
 
 CommonDialog {
     id: collectSongDialog
+    z: 10
     property alias collectSongModel: collectsongItem.collectSongModel
 
     width: 200
@@ -15,7 +16,18 @@ CommonDialog {
             songOperationDialog.close()
         }
         onCollectSongToSongList: {
+            var tmp = songlist.collecSong()
+            console.log("rightArea.collecSong(tmp):   " + tmp)
+            var list = client.getSongListSongs(tmp)
+            var songId = list[songOperationDialog.songIndex * 8]
+            var collectSongListId = client.createdSongListIDs(
+                        )[collectsongItem.viewCurrentIndex - 2]
 
+            console.log("songId:   " + songId)
+            console.log("cellectSongListId:   " + collectSongListId)
+            client.addSongToSongList(collectSongListId, songId)
+            collectSongDialog.close()
+            songOperationDialog.close()
         }
     }
 }

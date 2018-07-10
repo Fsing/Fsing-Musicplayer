@@ -146,6 +146,10 @@ Rectangle {
         id: mySongListComponent
         SongList {
             id: mysongList
+            songListId: {
+                songListInfo[0]
+                console.log("RightAreasonglistID:           " + songListInfo[0])
+            }
             listname: songListInfo[1]
             username: songListInfo[2]
             createTime: songListInfo[3]
@@ -158,7 +162,6 @@ Rectangle {
 
     ListModel {
         id: songsModel
-
     }
 
     Component.onCompleted: {

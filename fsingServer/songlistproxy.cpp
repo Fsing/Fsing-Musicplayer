@@ -130,3 +130,59 @@ std::string SongListProxy::addSongList(std::string username, std::string songLis
         return root.toStyledString();
     }
 }
+
+std::string SongListProxy::addSongToSongList(std::string songlistID, std::string songID)
+{
+    Json::Value root;
+    root["type"] = "ADDSONGTOSONGLIST";
+    root["songListID"] = songlistID;
+    root["songID"] = songID;   //歌单名
+
+    MYSQL mysql;
+    mysql_init(&mysql);
+    if(!mysql_real_connect(&mysql,"localhost","fsing","fsing","Fsing",3306,NULL,0)){
+        cout << "addSongToSongList conect MYSQL failed!" << endl;
+        root["collectSongSuccess"] = "FAILD";
+        root.toStyledString();
+        return root.toStyledString();
+    }
+
+    //验证歌单中是否已经存在此歌曲
+    char sql[512];
+    MYSQL_RES *result;
+    MYSQL_ROW row;
+    std::sprintf(sql,"select * from SongListRelation where songlistID='%s' and songID='%s'",songlistID.data(),songID.data());
+    if(!mysql_real_query(&mysql,sql,strlen(sql))){
+        result = mysql_store_result(&mysql);
+        if(result){
+            while((row = mysql_fetch_row(result))){
+                root["collectSongSuccess"] = "SONG_EXISRENCE";
+                root.toStyledString();
+                return root.toStyledString();
+            }
+        }
+    }else{
+        cout <<"addSongToSongList: select * from SongListRelation faild!" << endl;
+        root["collectSongSuccess"] = "FAILD";
+        root.toStyledString();
+        return root.toStyledString();
+    }
+
+    //插入收藏歌曲信息
+    char sql1[512];
+    auto songlistId = songlistID.data();
+    auto songId = songID.data();
+    std::sprintf(sql1,"insert into SongListRelation(songlistID, songID) values('%s','%s')",songlistId,songId);
+    auto length = strlen(sql1);
+    if(!mysql_real_query(&mysql,sql1,length)){
+        cout <<"addSongToSongList:insert into SongListRelation success!" << endl;
+        root["cellectSongToSuccess"] = "SUCCESS";
+        root.toStyledString();
+        return root.toStyledString();
+    }else {
+        cout <<"record insert song to songlist false" << endl;
+        root["collectSongSuccess"] = "FAILD";
+        root.toStyledString();
+        return root.toStyledString();
+    }
+}

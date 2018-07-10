@@ -178,6 +178,7 @@ Rectangle {
                 width: parent.width
                 height: parent.height
                 model: listmodel1
+                songListId: songListInformation[0]
                 userImg: "qrc:/images/logo.jpg"
                 createTime: songListInformation[3]
 
