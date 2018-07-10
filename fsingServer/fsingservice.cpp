@@ -203,6 +203,11 @@ string Server::dealMessage(string sig,vector<string> str,socket_ptr sock)
         sendMessage(res,sock);
         return res;
     }
+    else if(sig == "SONGALBUM"){
+        res = database.songAlbumInformation(str[1]);
+        sendMessage(res,sock);
+        return res;
+    }
     else if(sig == "wrongParameter"){
         res = "wrongParameter";
         sendMessage(res,sock);
@@ -291,6 +296,9 @@ vector<string>  jsonParase(char data[]){
         }else if(type == "SONGLIST"){
             parameter.push_back(value["type"].asString());
             parameter.push_back(value["songListId"].asString());
+        }else if(type == "SONGALBUM"){
+            parameter.push_back(value["type"].asString());
+            parameter.push_back(value["songId"].asString());
         }else if(type == "INTERFACE"){
             parameter.push_back(value["type"].asString());
             parameter.push_back(value["interfaceName"].asString());
@@ -350,9 +358,11 @@ void Server::fileSender(string fileName,socket_ptr sock){
 
     cost_time = clock() - cost_time;
     if (cost_time == 0) cost_time = 1;
+
     double speed = total_bytes_read * (CLOCKS_PER_SEC / 1024.0 / 1024.0) / cost_time;
     std::cout << "cost time: " << cost_time / (double) CLOCKS_PER_SEC  << " s "
               << "  transferred_bytes: " << total_bytes_read << " bytes\n"
               << "speed: " <<  speed << " MB/s\n\n";
+
     return;
 }

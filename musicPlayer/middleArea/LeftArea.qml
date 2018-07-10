@@ -30,6 +30,13 @@ Rectangle {
         onSongChanged: {
             lyric.visible = true
             songName.text = client.songInformationBySource(song)
+            var source = client.songAlbumbySongName(song)
+            client.fileTransfer(source)
+            songImage.source = "file:///" +
+                    applicationDirPath + "/" +
+                    source
+
+
         }
     }
 

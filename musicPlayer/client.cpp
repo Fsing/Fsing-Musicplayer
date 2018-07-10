@@ -581,6 +581,54 @@ void Client::songList(QString songListId){
     cout<<"json receive failed"<<endl;
     return;
 }
+QString Client::songAlbumbySongName(QString songSource){
+
+    int id = 0;
+    for(auto &l : m_songsMap){
+        auto song = l.second;
+        if(song->getSource() == songSource.toStdString())
+            id = song->getId();
+    }
+
+    if(id != 0){
+
+        Json::Value root;
+        root["type"] = "SONGALBUM";
+        root["songId"] = id;
+        root.toStyledString();
+        std::string out = root.toStyledString();
+
+        auto s = out.data();
+        boost::system::error_code ec;
+        sock.write_some(buffer(s,strlen(s)),ec);
+        std::cout<<"send message to server: " <<out<<endl;
+        if(ec)
+        {
+
+            std::cout << boost::system::system_error(ec).what() << std::endl;
+            return "unknow album";
+        }
+        char data[1024];
+        memset(data,0,sizeof(char)*1024);//reset 0 to data[]
+        while(strlen(data)==0){
+            sock.read_some(buffer(data),ec);
+        }
+        if(ec)
+        {
+            std::cout << boost::system::system_error(ec).what() << std::endl;
+            return "unknow album";
+        }
+        Json::Reader reader;
+        Json::Value resultRoot;
+        if (reader.parse(data, resultRoot)){
+            string albumSource = resultRoot["songAlbumSource"].asString();
+            return QString::fromStdString(albumSource);
+        }
+        return "unknow album";
+    }else
+        return "unknow album";
+
+}
 void Client::interface(QString interfaceName){
     Json::Value root;
     root["type"] = "INTERFACE";
@@ -667,14 +715,36 @@ QList<QString> Client::fanUsers(){
 
 void Client::fileReceiver(){
 
-    clock_ = clock();
+    //-----------------------
+    boost::posix_time::ptime time_now,time_now1;
+    boost::posix_time::millisec_posix_time_system_config::time_duration_type time_elapse;
+    time_now = boost::posix_time::second_clock::universal_time();
+
+    // 得到两个时间间隔的秒数;
+    int sec = 0;
+    file_info_.filename_size = 0;
+
     sock_fileTransfer.receive(buffer(reinterpret_cast<char*>(&file_info_), sizeof(file_info_)));
+    cout<<file_info_.filename_size<<endl;
+
+
     if(file_info_.filename_size == 0){
         std::cout<<"file is not exist"<<std::endl;
         return;
     }
     boost::system::error_code error;
     handle_header(error);
+    /*
+    sock_fileTransfer.receive(buffer(reinterpret_cast<char*>(&file_info_), sizeof(file_info_)));
+
+
+    if(file_info_.filename_size == 0){
+        std::cout<<"file is not exist"<<std::endl;
+        return;
+    }
+    boost::system::error_code error;
+    handle_header(error);
+    **/
 }
 void Client::handle_header(const boost::system::error_code& error)
 {
@@ -839,7 +909,7 @@ void Client::addSongToSongList(QString songListID, QString songID)
         string ret = resultRoot["recordSuccess"].asString();
         cout << "record create song list " << ret<<endl;
         if(ret == "SUCCESS"){
-           cout << "Add Song To SongList Success!" << endl;
+            cout << "Add Song To SongList Success!" << endl;
         }
         return;
     }

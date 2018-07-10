@@ -189,6 +189,7 @@ Rectangle {
         client.fileTransfer(interfaceParamter[83])
         client.fileTransfer(interfaceParamter[84])
         client.fileTransfer(interfaceParamter[85])
+
         stackView.push(findMusicComponent)
     }
 

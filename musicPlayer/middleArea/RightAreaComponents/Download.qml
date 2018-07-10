@@ -14,7 +14,7 @@ Rectangle {
         MouseArea {
             anchors.fill: parent
             onClicked:{
-                client.fileTransfer("test.mp3")
+                client.fileTransfer("zaiaiwoyici.jpg")
 
             }
         }

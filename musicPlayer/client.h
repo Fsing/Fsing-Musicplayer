@@ -56,7 +56,7 @@ public:
     Q_INVOKABLE void fileTransfer(QString fileName);
     Q_INVOKABLE void songList(QString songListId);//get songlist infomation
     Q_INVOKABLE void interface(QString interfaceName);//get songlist infomation
-
+    Q_INVOKABLE QString songAlbumbySongName(QString songSource);
 
     //setting
     Q_INVOKABLE void setUserName(QString name){m_userName = name;}
@@ -113,10 +113,6 @@ public:
         if(m_currentPlayListSong.contains(id))
             return true;
         else {
-                auto song = m_songsMap[id.toInt()];
-                  auto l =song->getName();
-                l = l.substr(0,sizeof(l)-4) + ".lrc";
-                fileTransfer(QString::fromStdString(l));
                 m_currentPlayListSong.append(id);
             return false;
         }
