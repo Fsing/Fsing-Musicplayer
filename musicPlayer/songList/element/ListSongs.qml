@@ -95,11 +95,16 @@ Item {
                                         tableview.currentIndex).source)
                         songChanged(listmodel1.get(
                                         tableview.currentIndex).source)
+                        clickedListSong(listmodel1.get(
+                                            tableview.currentIndex).source)
                         mediaPlayer.play()
                     }else{
                         songChanged(listmodel1.get(
                                         tableview.currentIndex).source)
+                        clickedListSong(listmodel1.get(
+                                            tableview.currentIndex).source)
                         mediaPlayer.play()
+
                     }
 
                     mouse.accepted = false
@@ -173,6 +178,7 @@ Item {
             color: "lightblue"
         }
     }
+
     onTvisibleChanged: {
         if (!tvisible)
             tableview.visible = false

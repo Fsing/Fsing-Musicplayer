@@ -29,6 +29,8 @@ Window {
     signal leftButtonPressed
     signal rightButtonPressed
     signal startSearch
+    signal lyricClicked
+    signal clickedListSong(string songSource)
 
     //---------------------top栏
     TopArea {

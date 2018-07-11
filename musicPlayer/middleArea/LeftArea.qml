@@ -51,7 +51,7 @@ Rectangle {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-
+                lyricClicked()
                 leftAreaClicked(-1)
             }
         }

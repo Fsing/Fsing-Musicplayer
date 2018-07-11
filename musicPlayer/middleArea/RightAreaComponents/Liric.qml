@@ -11,8 +11,15 @@ Rectangle {
 
     property int index: -1
 
+    property var songSource
     LyricObject {
         id: lyric
+    }
+    Image {
+        id: albumImage
+        anchors.fill:parent
+
+
     }
     Connections {
         target: mainWindow
@@ -31,7 +38,16 @@ Rectangle {
                 }
             }
         }
+        onLyricClicked:{
+            var source = client.songAlbumbySongName(songSource)
+            client.fileTransfer(source)
+            albumImage.source = "file:///" +
+                    applicationDirPath + "/" +
+                    source
+        }
+
         onSongChanged: {
+            songSource = song
             client.fileTransfer(lyric.getLyricName(song))
             lyricview.model = lyric.getLyric(song)
             console.log(song)
@@ -52,6 +68,7 @@ Rectangle {
         displayMarginEnd: 0
         model: lyric.getLyric("./test")
         delegate: Rectangle {
+            color: Qt.rgba(0,0,0,0)
             height: 25
             width: parent.width
             Text {

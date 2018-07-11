@@ -15,12 +15,16 @@ Rectangle {
     width: 300
     height: 500
     ListView {
+        id:listView
         anchors.fill: parent
         model: currentPlaylist
         delegate:Rectangle{
             height: 30
             width: parent.width
-            color: currentListRectangle.color
+            color: currentPlaylist.currentIndex
+            == index
+                   ?"#BFEFFF" :currentListRectangle.color
+
             Text {
                 text: client.getSongInformation()[1]
             }
@@ -29,6 +33,20 @@ Rectangle {
                 onClicked:{
                 currentPlaylist.currentIndex = index
                 songChanged(currentPlaylist.currentItemSource)
+                }
+            }
+        }
+    }
+    Connections {
+        target: mainWindow
+        onClickedListSong:{
+            var rowCount = listView.count;
+            console.log("--------")
+            console.log(rowCount)
+            for( var i = 0;i < rowCount;i++ ) {
+                var data = currentPlaylist.itemSource(i);
+                if(data == songSource) {
+                    currentPlaylist.currentIndex = i
                 }
             }
         }
