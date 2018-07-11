@@ -49,7 +49,10 @@ QList<QObject *> Lyric::getLyric(QString path)
         bool isNum;
         QString lyricLine;
         QTextStream input(&flyric);
+        input.setCodec("gbk");
+        /*
         int i = 0;
+
         while (true){
             const QString text = input.read(1);
 
@@ -63,8 +66,10 @@ QList<QObject *> Lyric::getLyric(QString path)
             }
             if(m == 3)
                 break;
+
             i++;
         }
+        */
         int times;
 
         lyric.clear();
