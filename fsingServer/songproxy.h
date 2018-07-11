@@ -6,5 +6,6 @@ class SongProxy
 {
 public:
     std::string songInformation(std::string songId);
+    std::string fetchSong(std::string songID);
 };
 #endif // SONGPROXY_H

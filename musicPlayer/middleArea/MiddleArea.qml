@@ -14,6 +14,7 @@ Rectangle {
     property alias personal: personal
     property alias allAttentions: allAttentions
     property alias attentedUserModel: allAttentions.attenedUsersModel
+    property alias rightAreaaDownload: rightArea.downloadModel2
 
     LeftArea {
         id: leftArea

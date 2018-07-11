@@ -149,6 +149,11 @@ string Server::dealMessage(string sig,vector<string> str,socket_ptr sock)
         res = database.interface(str[1]);
         sendMessage(res,sock);
         return res;
+    }else if(sig == "FETCHSONG"){
+        //获取单首歌曲信息
+        res = _songProxy->fetchSong(str[1]);
+        sendMessage(res,sock);
+        return res;
     }
     else if(sig == "SONGALBUM"){
         res = database.songAlbumInformation(str[1]);
@@ -257,6 +262,9 @@ vector<string>  jsonParase(char data[]){
         }else if(type == "INTERFACE"){
             parameter.push_back(value["type"].asString());
             parameter.push_back(value["interfaceName"].asString());
+        }else if(type == "FETCHSONG"){
+            parameter.push_back(value["type"].asString());
+            parameter.push_back(value["songID"].asString());
         }else parameter.push_back("wrongParameter");
     }
     return parameter;

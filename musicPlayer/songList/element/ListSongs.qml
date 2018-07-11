@@ -1,4 +1,4 @@
-import QtQuick 2.2
+ import QtQuick 2.2
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
@@ -7,6 +7,7 @@ Item {
     property bool tvisible: false
 
     signal rightClick(var x, var y)
+    signal downloadClicked(var songID,var SongName,var songSinger,var songAlbum,var songPlayQuantity)
 
     Component {
         id: headView
@@ -117,6 +118,7 @@ Item {
                 spacing: 8
 
                 Text {
+                    id:a
                     text: id
                     color: wrapper.ListView.isCurrentItem ? "red" : "black"
                     font.pixelSize: wrapper.ListView.isCurrentItem ? 15 : 14
@@ -131,9 +133,27 @@ Item {
                     Layout.preferredWidth: 120
                     onButtonClick: {
                         wrapper.ListView.view.currentIndex = index
+                        //往下载列表中添加一行
+//                        middleArea.rightAreaa.downloadComponent.downLoadModel.append({
+//                                                                                         songid:a.text,
+//                                                                                         title:b.text,
+//                                                                                         singer:c.text,
+//                                                                                         Ablum:e.text,
+//                                                                                         playQuantity:f.text
+//                                                                                     })
+                        middleArea.rightAreaaDownload.append({
+                                                                 songid:a.text,
+                                                                 title:b.text,
+                                                                 singer:c.text,
+                                                                 Ablum:e.text,
+                                                                 playQuantity:f.text
+                                                             })
+                        client.downloadMusic(a.text)
+//                        downloadClicked(fsd.text,b.text,c.text,e.text,f.text)
                     }
                 }
                 Text {
+                    id:b
                     text: name
                     color: wrapper.ListView.isCurrentItem ? "red" : "black"
                     elide: Text.ElideRight
@@ -141,6 +161,7 @@ Item {
                     Layout.preferredWidth: 120
                 }
                 Text {
+                    id:c
                     text: singer
                     color: wrapper.ListView.isCurrentItem ? "red" : "black"
                     elide: Text.ElideRight
@@ -148,6 +169,7 @@ Item {
                     Layout.preferredWidth: 120
                 }
                 Text {
+                    id:e
                     text: album
                     color: wrapper.ListView.isCurrentItem ? "red" : "black"
                     elide: Text.ElideRight
@@ -156,6 +178,7 @@ Item {
                 }
 
                 Text {
+                    id:f
                     text: playQuantity
                     color: wrapper.ListView.isCurrentItem ? "red" : "black"
                     font.pixelSize: wrapper.ListView.isCurrentItem ? 15 : 14

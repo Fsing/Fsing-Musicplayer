@@ -10,6 +10,12 @@ Rectangle {
     anchors.top: parent.top
     anchors.bottom: parent.bottom
 
+    property alias downloadModel2:downloadModel1
+
+    ListModel{
+        id:downloadModel1
+    }
+
     property var songListInfo
 
     Connections {
@@ -115,8 +121,10 @@ Rectangle {
     }
     Component {
         id: downloadComponent
+//        property alias dowload: download
         Download {
             id: download
+            downloadModels:downloadModel1
         }
     }
     Component {

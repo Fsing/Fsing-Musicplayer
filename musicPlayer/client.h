@@ -49,6 +49,10 @@ public:
     //收藏音乐到歌单
     Q_INVOKABLE void addSongToSongList(QString songListID, QString songID);
     //下载音乐
+    Q_INVOKABLE void downloadMusic(QString songID);
+    //再数据库中查找某一首歌曲
+    Q_INVOKABLE std::string fetchSong(QString songID);
+
     Q_INVOKABLE QString songInformation(QString songId);
     Q_INVOKABLE QString songInformationBySource(QString source);
     Q_INVOKABLE QList<QString> search(QString key);
