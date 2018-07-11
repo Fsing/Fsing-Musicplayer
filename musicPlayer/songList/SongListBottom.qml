@@ -6,7 +6,6 @@ import "./element"
 Rectangle {
     id: rectangle
 
-
     Column {
         RowLayout {
             id: rec
@@ -48,6 +47,7 @@ Rectangle {
                 id: listsongs
                 anchors.fill: list
                 tvisible: true
+                songListModel: songlist.model
             }
         }
     }

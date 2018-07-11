@@ -11,15 +11,17 @@ Rectangle {
     anchors.bottom: parent.bottom
 
     property var songListInfo
+    property alias stackView: stackView
+    property alias searchComponent: searchComponent
+    //    property alias searchMusicModel: searchMusicModel
 
-    Connections {
-        target: mainWindow
-        onStartSearch: {
-            console.log("search")
-            stackView.push(searchComponent)
-        }
-    }
-
+    //    Connections {
+    //        target: mainWindow
+    //        onStartSearch: {
+    //            console.log("search--------------------------------")
+    //            stackView.push(searchComponent)
+    //        }
+    //    }
     StackView {
         id: stackView
         anchors.fill: parent
@@ -141,6 +143,7 @@ Rectangle {
         id: searchComponent
         Search {
             id: search
+            searchModel: searchMusicModel
         }
     }
     Component {
@@ -171,6 +174,10 @@ Rectangle {
         id: songsModel
     }
 
+    ListModel {
+        id: searchMusicModel
+    }
+
     Component.onCompleted: {
         stackView.push(lyricComponent)
         client.interface("FindMusic")
@@ -194,21 +201,27 @@ Rectangle {
         stackView.push(findMusicComponent)
     }
 
-    //    function appendSong(id) {
-    //        var list = client.getSongListSongs(id)
-    //        var count = client.getSongListCount()
-    //        songsModel.clear()
-    //        for (var i = 0; i < count; ++i) {
-    //            songsModel.append({
-    //                                  album: list[i * 8 + 3],
-    //                                  id: list[i * 8],
-    //                                  name: list[i * 8 + 1],
-    //                                  playQuantity: list[i * 8 + 5],
-    //                                  singer: list[i * 8 + 2],
-    //                                  source: list[i * 8 + 4]
-    //                              })
-    //        }
-    //    }
+    function searchSongs(searchlist, listcount) {
+        var list = searchlist
+        var count = listcount
+        console.log("searchlist[0]: " + list[0])
+        console.log("searchlist[1]: " + list[1])
+        console.log("searchlist[2]: " + list[2])
+        console.log("listcount： " + count)
+        searchMusicModel.clear()
+        for (var i = 0; i < count; ++i) {
+            searchMusicModel.append({
+                                        salbum: list[i * 8 + 3],
+                                        sid: list[i * 8],
+                                        sname: list[i * 8 + 1],
+                                        splayQuantity: list[i * 8 + 5],
+                                        ssinger: list[i * 8 + 2],
+                                        ssource: list[i * 8 + 4]
+                                    })
+        }
+        console.log("searchMusicModel: " + searchMusicModel.count)
+    }
+
     function appendSongs(id) {
         var list = client.getSongListSongsFromServer(id)
         var count = client.getSongListSongCount()

@@ -7,9 +7,14 @@ Rectangle {
     anchors.left: leftRightButton.right
     anchors.leftMargin: 10
     anchors.verticalCenter: parent.verticalCenter
+    signal search
 
     color: "#a82828"
 
+    property var searchList
+    property var searchCount
+
+    //    signal startSearch
     TextInput {
         id: textEdit
         width: parent.width
@@ -31,9 +36,15 @@ Rectangle {
                 text = "搜索音乐，视频，歌词，电台"
         }
         onAccepted: {
-            client.search(text)
-            startSearch()
+            searchList = client.search(text)
+            searchCount = client.getSearchCount()
+            search()
+            middleArea.rightArea.searchSongs(searchList, searchCount)
         }
+    }
 
+    onSearch: {
+        middleArea.rightArea.stackView.push(
+                    middleArea.rightArea.searchComponent)
     }
 }

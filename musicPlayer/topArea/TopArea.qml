@@ -14,6 +14,7 @@ Rectangle {
     property var xPosition: 0.0
     property var yPosition: 0.0
     property alias loginDialog: loginDialog
+    property alias topSearch: topSearch
 
     //--------------左上角图标
     Image {
@@ -53,7 +54,7 @@ Rectangle {
         onUserImageClick: {
             console.log("onUserImageClicked")
             middleArea.personal.visible = true
-            middleArea.allAttentions.visible = false;
+            middleArea.allAttentions.visible = false
         }
     }
     LoginDialog {
