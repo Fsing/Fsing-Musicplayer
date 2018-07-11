@@ -5,6 +5,7 @@ import QtQuick.Window 2.2
 
 Item {
     property bool tvisible: false
+    property var songListModel: []
 
     signal rightClick(var x, var y)
     signal downloadClicked(var songID,var SongName,var songSinger,var songAlbum,var songPlayQuantity)
@@ -99,13 +100,12 @@ Item {
                         clickedListSong(listmodel1.get(
                                             tableview.currentIndex).source)
                         mediaPlayer.play()
-                    }else{
+                    } else {
                         songChanged(listmodel1.get(
                                         tableview.currentIndex).source)
                         clickedListSong(listmodel1.get(
                                             tableview.currentIndex).source)
                         mediaPlayer.play()
-
                     }
 
                     mouse.accepted = false
@@ -192,7 +192,7 @@ Item {
         id: tableview
         anchors.fill: parent
         delegate: listRowItem
-        model: songlist.model
+        model: songListModel
         header: headView
         focus: true
         currentIndex: -1

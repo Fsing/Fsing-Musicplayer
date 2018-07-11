@@ -11,6 +11,7 @@ Rectangle {
 
     property var listmodel: leftArea.listmodel
     property alias leftArea: leftArea
+    property alias rightArea: rightArea
     property alias personal: personal
     property alias allAttentions: allAttentions
     property alias attentedUserModel: allAttentions.attenedUsersModel

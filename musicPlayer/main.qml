@@ -28,7 +28,7 @@ Window {
     signal songChanged(string song)
     signal leftButtonPressed
     signal rightButtonPressed
-    signal startSearch
+//    signal startSearch
     signal lyricClicked
     signal clickedListSong(string songSource)
 
@@ -46,8 +46,8 @@ Window {
         id: bottomArea
     }
 
-    Client{
-        id:client
+    Client {
+        id: client
     }
 
     MediaPlayer {
@@ -60,10 +60,10 @@ Window {
         }
     }
     Playlist {
-        id:currentPlaylist
+        id: currentPlaylist
     }
 
-    CurrentPlayList{
-         id:currentListRectangle
+    CurrentPlayList {
+        id: currentListRectangle
     }
 }
