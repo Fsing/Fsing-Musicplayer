@@ -749,6 +749,11 @@ void Client::handle_header(const boost::system::error_code& error)
     handle_file(error);
 }
 
+int Client::getSongListSongCount() const
+{
+    return m_songListSongCount;
+}
+
 void Client::handle_file(const boost::system::error_code& error)
 {
     if (error) {
@@ -793,7 +798,7 @@ void Client::receive_file_content(string fileName)
     cout << "transfer successful " << fileName<<endl;
 }
 
-void Client::addCreateSongList(QString username,QString songlistName, QString time)
+QString Client::addCreateSongList(QString username,QString songlistName, QString time)
 {
     Json::Value root;
     root["type"] = "CREATESONGLIST";
@@ -809,7 +814,7 @@ void Client::addCreateSongList(QString username,QString songlistName, QString ti
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
-        return;
+        return "";
     }
     std::cout<<"send message to server: " <<out<<endl;
 
@@ -822,7 +827,7 @@ void Client::addCreateSongList(QString username,QString songlistName, QString ti
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
-        return;
+        return "";
 
     }
     cout << "receive from server : " << data<<endl;
@@ -830,13 +835,13 @@ void Client::addCreateSongList(QString username,QString songlistName, QString ti
     Json::Value resultRoot;
     if(!reader.parse(data, resultRoot)){
         std::cout << "json received faild" <<std::endl;
-        return;
+        return "";
     }else {
         string ret = resultRoot["recordSuccess"].asString();
         cout << "record create song list " << ret<<endl;
         if(ret == "SUCCESS"){
             QList<QString> list;
-            list.append("");
+            list.append(QString::fromStdString(resultRoot["songListID"].asString()));
             list.append(songlistName);
             list.append(username);
             list.append(time);
@@ -848,11 +853,13 @@ void Client::addCreateSongList(QString username,QString songlistName, QString ti
             list.append("");
             _fan.addCreatedSongList(songlistName,list);
             m_CreatedSongListCount++;
+            _songlistIDs.append(QString::fromStdString(resultRoot["songListID"].asString()));
+            QString id = QString::fromStdString(resultRoot["songListID"].asString());
+            cout << "songlistID:" << id.toStdString()  << endl;
             _songlistNames.append(songlistName);
-
             emit createdSongListCountChanged();
         }
-        return;
+        return QString::fromStdString(resultRoot["songListID"].asString());
     }
 }
 
@@ -929,7 +936,6 @@ QList<QString> Client::getSongListInformation(QString songListId){
     }
 }
 QList<QString> Client::getSongListSongs(QString songListId){
-    std::cout << "exec Client::getSongListSongs" << std::endl;
     if(songListId != ""){
         std::cout << "songListId: " << songListId.toInt() << std::endl;
         std::shared_ptr<SongList> songlist = m_songlistsMap[songListId.toInt()];
@@ -950,5 +956,65 @@ QList<QString> Client::getSongListSongs(QString songListId){
         }
         m_songListCount = ret.size()/8;
         return ret;
+    }
+}
+
+QList<QString> Client::getSongListSongsFromServer(QString songListId)
+{
+    Json::Value root;
+    root["type"] = "GETSONGSFROMSONGLIST";
+    root["songListID"] = songListId.toStdString();
+    root.toStyledString();
+    std::string out = root.toStyledString();
+
+    auto s = out.data();
+    boost::system::error_code ec;
+    sock.write_some(buffer(s,strlen(s)),ec);
+    if(ec)
+    {
+        std::cout << boost::system::system_error(ec).what() << std::endl;
+    }
+    std::cout<<"send message to server: " <<out<<endl;
+
+    //读取服务器返回的消息：是否成功记录
+    char data[1024*5];
+    memset(data,0,sizeof(char)*1024*5);//reset 0 to data[]
+    while(strlen(data)==0){
+        sock.read_some(buffer(data),ec);
+    }
+    if(ec)
+    {
+        std::cout << boost::system::system_error(ec).what() << std::endl;
+    }
+    cout << "receive from server : " << data<<endl;
+    Json::Reader reader;
+    Json::Value resultRoot;
+    if(!reader.parse(data, resultRoot)){
+        std::cout << "json received faild" <<std::endl;
+    }else {
+        string ret = resultRoot["recordSuccess"].asString();
+        cout << "record create song list " << ret<<endl;
+        if(ret == "SUCCESS"){
+            cout << "Add Song To SongList Success!" << endl;
+        }
+
+        Json::Value arrayObj = resultRoot["array"];
+        m_songListSongCount = 0;
+        for(int i = 0; i < arrayObj.size(); i++){
+            Json::Value value;
+            value = arrayObj[i];
+            m_songListSongCount++;
+
+            _songs.append(QString::fromStdString(value["id"].asString()));
+            _songs.append(QString::fromStdString(value["name"].asString()));
+            _songs.append(QString::fromStdString(value["singer"].asString()));
+            _songs.append(QString::fromStdString(value["album"].asString()));
+            _songs.append(QString::fromStdString(value["source"].asString()));
+            _songs.append(QString::fromStdString(value["playQuantity"].asString()));
+            _songs.append(QString::fromStdString(value["downloadQuantity"].asString()));
+            _songs.append(QString::fromStdString(value["shareQuantity"].asString()));
+        }
+
+        return _songs;
     }
 }

@@ -43,6 +43,8 @@ public:
     //setting
     void setSongs(std::map<std::string,std::shared_ptr<Song>> songs);
     void setCollectionUsers(std::map<std::string,std::shared_ptr<Fan>> collectionUsers){_collectionUsers = collectionUsers;}
+
+    void addSong(std::string songID, std::shared_ptr<Song> song);
 private:
     int m_id;                       //歌单ID，歌单的关键字，标识符
     std::string m_name;             //歌单名

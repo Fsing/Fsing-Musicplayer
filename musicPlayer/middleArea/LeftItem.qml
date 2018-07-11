@@ -152,6 +152,7 @@ Item {
             }
             onClicked: {
 
+                console.log("console.log(index):   " + index)
                 itemClicked(index)
                 //console.log(index)
                 if (rec_parent.modelindex != -1) {

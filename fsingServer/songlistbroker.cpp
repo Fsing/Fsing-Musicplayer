@@ -4,6 +4,7 @@
 #include <string>
 #include "songbroker.h"
 #include "fsingservice.h"
+#include <sstream>
 
 using std::cout;
 using std::endl;
@@ -165,6 +166,25 @@ std::shared_ptr<SongList> SongListBroker::findSongListsBySongListID(std::string 
         }
     }
     return songlist;
+}
+
+std::shared_ptr<SongList> SongListBroker::findSongListInCache(std::string songlistID)
+{
+    if(_songLists.find(songlistID) != _songLists.end()){
+        return _songLists[songlistID];
+    }else{
+        return nullptr;
+    }
+}
+
+void SongListBroker::updateCacheForSong(std::string songlistID,std::string songID, std::shared_ptr<Song> song)
+{
+    std::stringstream ss;
+    ss << songlistID;
+    string songlistId;
+    ss >> songlistId;
+    _songLists[songlistId]->addSong(songID,song);
+
 }
 std::map<string,std::shared_ptr<SongList>> SongListBroker::findSongListsByUserName(std::string username)
 {

@@ -11,9 +11,9 @@
 using std::cout;
 using std::endl;
 
-std::string SongListProxy::songListInformation(std::string songId){
+std::string SongListProxy::songListInformation(std::string songListId){
     auto songListBroker = SongListBroker::getInstance();
-    auto res =songListBroker->findSongList(songId);
+    auto res =songListBroker->findSongList(songListId);
 
     Json::Value root;
     Json::Value arryObj;
@@ -115,6 +115,7 @@ std::string SongListProxy::addSongList(std::string username, std::string songLis
             }
             cout <<"addSongList:insert into SongList: " << songListName << " success!" << endl;
             root["recordSuccess"] = "SUCCESS";
+            root["songListID"] = maxid;
             root.toStyledString();
             return root.toStyledString();
         }else {
@@ -177,6 +178,9 @@ std::string SongListProxy::addSongToSongList(std::string songlistID, std::string
     if(!mysql_real_query(&mysql,sql1,length)){
         cout <<"addSongToSongList:insert into SongListRelation success!" << endl;
         root["cellectSongToSuccess"] = "SUCCESS";
+        auto songlistBroker = SongListBroker::getInstance();
+        auto songBroker = SongBroker::getInstance();
+        songlistBroker->updateCacheForSong(songlistID,songID,songBroker->findSong(songID));
         root.toStyledString();
         return root.toStyledString();
     }else {

@@ -108,30 +108,30 @@ function popView(n) {
         }
         ;
         break
-    case 9:
-        //        var search = stackView.find(function (item) {
+        //    case 9:
+        //        //        var search = stackView.find(function (item) {
+
+        //        //            return item.index === n ? true : false
+        //        //        })
+        //        //        if (search === null) {
+        //        //            stackView.push(searchComponent)
+        //        //        } else {
+        //        //            stackView.pop(search)
+        //        //        }
+        //        //        ;
+        //        //        break
+        //        var songlist = stackView.find(function (item) {
 
         //            return item.index === n ? true : false
         //        })
-        //        if (search === null) {
-        //            stackView.push(searchComponent)
+        //        if (songlist === null) {
+        //            stackView.push(favoriteComponent)
         //        } else {
-        //            stackView.pop(search)
+        //            stackView.pop(favoriteComponent)
         //        }
         //        ;
+
         //        break
-        var songlist = stackView.find(function (item) {
-
-            return item.index === n ? true : false
-        })
-        if (songlist === null) {
-            stackView.push(favoriteComponent)
-        } else {
-            stackView.pop(favoriteComponent)
-        }
-        ;
-
-        break
     case -1:
         var lyric = stackView.find(function (item) {
 
@@ -146,17 +146,17 @@ function popView(n) {
         break
     default:
 
-        //        var songlist = stackView.find(function (item) {
+        var songlist = stackView.find(function (item) {
 
-        //            return item.index === n ? true : false
-        //        })
-        //        if (songlist === null) {
-        //            stackView.push(mySongListComponent)
-        //        } else {
-        //            stackView.pop(songlist)
-        //        }
-        //        ;
+            return item.index === n ? true : false
+        })
+        if (songlist === null) {
+            stackView.push(mySongListComponent)
+        } else {
+            stackView.pop(songlist)
+        }
+        ;
 
-        //        break
+        break
     }
 }

@@ -55,14 +55,15 @@ QList<QObject *> Lyric::getLyric(QString path)
 
             QByteArray str = text.toUtf8();
             int m = str.size();
-            if (m == 1)
-                continue;
-            if(m == 2){
-                input.setCodec("gbk");
-                break;
-            }
-            if(m == 3)
-                break;
+            input.setCodec("gbk");
+//            if (m == 1)
+//                continue;
+//            if(m == 2){
+//                input.setCodec("gbk");
+//                break;
+//            }
+//            if(m == 3)
+//                break;
             i++;
         }
         int times;

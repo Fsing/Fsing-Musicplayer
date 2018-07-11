@@ -1,6 +1,7 @@
 import QtQuick 2.2
 import QtQuick.Controls 2.1
 import "common"
+import "../middleArea/RightAreaJS.js" as Js
 
 CommonDialog {
     id: createSongListDialog
@@ -17,15 +18,15 @@ CommonDialog {
             inputAccepted()
             console.log(client.userName + createSongListDialog.inputText + getCurDate(
                             ))
-            if(client.logining){
+            if (client.logining) {
                 client.addCreateSongList(client.userName,
                                          createSongListDialog.inputText,
                                          getCurDate())
                 middleArea.personal.songlistModel.append({
-                                                             playquantity:50,
-                                                             imageSource:"file:///" + applicationDirPath + "/" + client.userIcon,
-                                                             songlistid:50,
-                                                             songlistname:createSongListDialog.inputText
+                                                             playquantity: 50,
+                                                             imageSource: "file:///" + applicationDirPath + "/" + client.userIcon,
+                                                             songlistid: 50,
+                                                             songlistname: createSongListDialog.inputText
                                                          })
             }
         }

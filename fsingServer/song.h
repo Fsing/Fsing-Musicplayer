@@ -21,6 +21,7 @@ public:
     int getDownloadQuantity(){return m_downloadQuantity;}
     int getShareQuantity(){return m_shareQuantity;}
 
+
 private:
     int m_id;
     std::string m_name;         //歌曲名

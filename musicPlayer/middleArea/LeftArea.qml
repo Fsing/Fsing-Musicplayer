@@ -32,11 +32,7 @@ Rectangle {
             songName.text = client.songInformationBySource(song)
             var source = client.songAlbumbySongName(song)
             client.fileTransfer(source)
-            songImage.source = "file:///" +
-                    applicationDirPath + "/" +
-                    source
-
-
+            songImage.source = "file:///" + applicationDirPath + "/" + source
         }
     }
 
@@ -108,14 +104,13 @@ Rectangle {
                 leftAreaClicked(index)
                 if (listView.currentIndex > 9) {
                     var i = index - 10
-                    console.log(i + "]]]]]]]]]]")
 
                     var j = client.createdSongListIDs()[i]
                     console.log(j + "]]]]]]]]]]")
                     client.songList(j)
                     rightArea.songListInfo = client.getSongListInformation(j)
                     console.log("songlistInfo: " + rightArea.songListInfo[1])
-                    rightArea.appendSong(j)
+                    rightArea.appendSongs(j)
                 }
             }
             onCreateClicked: createSongListDialog.open()

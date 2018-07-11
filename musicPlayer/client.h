@@ -45,7 +45,7 @@ public:
     //注册账户，服务器数据库查找，并插入信息
     Q_INVOKABLE void myRegister(QString username,QString userpw);
     //创建歌单
-    Q_INVOKABLE void addCreateSongList(QString username, QString songlistName, QString time);
+    Q_INVOKABLE QString addCreateSongList(QString username, QString songlistName, QString time);
     //收藏音乐到歌单
     Q_INVOKABLE void addSongToSongList(QString songListID, QString songID);
     //下载音乐
@@ -85,6 +85,11 @@ public:
     Q_INVOKABLE QList<QString> getinterface() const{return m_interface;}
     Q_INVOKABLE QList<QString> getSongListInformation(QString songListId);
     Q_INVOKABLE QList<QString> getSongListSongs(QString songListId);
+
+    //点击原创歌单获取歌曲
+    Q_INVOKABLE QList<QString> getSongListSongsFromServer(QString songListId);
+
+
     Q_INVOKABLE int getSongListCount() const{return m_songListCount;}
     Q_INVOKABLE int getSearchCount() const{return m_searchCount;}
 
@@ -100,6 +105,9 @@ public:
     Q_INVOKABLE QList<QString> attentedUsers();
     //用户粉丝信息集合
     Q_INVOKABLE QList<QString> fanUsers();
+
+    //获取歌单歌曲数量
+    Q_INVOKABLE int getSongListSongCount() const;
 
     //getting 关注用户数、粉丝个数、用户名，创建歌单数、收藏歌单数
     Q_INVOKABLE int createdSongListCount() const{return m_CreatedSongListCount;}
@@ -126,6 +134,8 @@ public:
     void receive_file_content(std::string fileName);
     void handle_file(const boost::system::error_code& error);
     void handle_header(const boost::system::error_code& error);
+
+
 
 
 signals:
@@ -167,9 +177,15 @@ private:
 
     QList<QString> m_currentPlayListSong;//playlist song id
 
+    //歌单的歌曲数量
+    int m_songListSongCount;
+
     //用户原创歌单名
     QList<QString> _songlistNames;
     QList<QString> _songlistIDs;
+
+    //用户原创歌单歌曲
+    QList<QString> _songs;
 
     //用户收藏歌单名
     QList<QString> _collectedSongListNames;

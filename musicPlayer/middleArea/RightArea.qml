@@ -67,6 +67,7 @@ Rectangle {
     Connections {
         target: leftArea
         onLeftAreaClicked: {
+            console.log("Js.popView(n)" + n)
             Js.popView(n)
 
             console.log("deepth" + stackView.depth)
@@ -193,10 +194,26 @@ Rectangle {
         stackView.push(findMusicComponent)
     }
 
-    function appendSong(id) {
-        var list = client.getSongListSongs(id)
-        var count = client.getSongListCount()
+    //    function appendSong(id) {
+    //        var list = client.getSongListSongs(id)
+    //        var count = client.getSongListCount()
+    //        songsModel.clear()
+    //        for (var i = 0; i < count; ++i) {
+    //            songsModel.append({
+    //                                  album: list[i * 8 + 3],
+    //                                  id: list[i * 8],
+    //                                  name: list[i * 8 + 1],
+    //                                  playQuantity: list[i * 8 + 5],
+    //                                  singer: list[i * 8 + 2],
+    //                                  source: list[i * 8 + 4]
+    //                              })
+    //        }
+    //    }
+    function appendSongs(id) {
+        var list = client.getSongListSongsFromServer(id)
+        var count = client.getSongListSongCount()
         songsModel.clear()
+        console.log("=============: " + list[0])
         for (var i = 0; i < count; ++i) {
             songsModel.append({
                                   album: list[i * 8 + 3],
@@ -207,5 +224,6 @@ Rectangle {
                                   source: list[i * 8 + 4]
                               })
         }
+        console.log("jiegou: " + (count - 1) * 8 + 5)
     }
 }
