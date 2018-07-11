@@ -18,8 +18,7 @@ Rectangle {
     Image {
         id: albumImage
         anchors.fill:parent
-
-
+        opacity: 0.5
     }
     Connections {
         target: mainWindow
