@@ -91,8 +91,19 @@ void sendMessage(string result2,socket_ptr sock)
         //写回客户端
         char data2[1024*10];
         memset(data2,0,sizeof(char)*1024*10);
+
+        char headLength[10];
+        memset(headLength,0,sizeof(char)*(10));
+        sprintf(headLength, "%d", (result2.size()));
         result2.copy(data2,result2.size(),0);
-        cout << strlen(data2) << endl;
+        //memcpy(data2,headLength,sizeof(headLength));
+
+        cout << strlen(data2) << "ss"<<headLength<< endl;
+        sock->write_some(buffer(headLength), ec);  //客户输入的消息，重新写到客户端
+        if(ec)
+        {
+            std::cout << boost::system::system_error(ec).what() << std::endl;
+        }
         sock->write_some(buffer(data2), ec);  //客户输入的消息，重新写到客户端
         if(ec)
         {

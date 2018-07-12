@@ -22,7 +22,7 @@ using std::stringstream;
 
 //typedef boost::shared_ptr<ip::tcp::socket> socket_ptr;
 io_service service;
-ip::tcp::endpoint ep(address::from_string("127.0.0.1"),2001);
+ip::tcp::endpoint ep(address::from_string("192.168.43.32"),2001);
 //客户端异步连接，有多个套接字，每次发送信息、接受信息都重新分配一个套接字，并且分配一个线程独立进行
 ip::tcp::socket sock(service);
 ip::tcp::socket sock_fileTransfer(service);
@@ -103,11 +103,21 @@ void Client::myLogin(QString username, QString userpw)
     }
 
     //接受服务器返回的用户信息：基本信息、用户粉丝、关注、收藏歌单、创建歌单
-    char data[1024 * 10];
-    memset(data,0,sizeof(char)*1024 * 10);//reset 0 to data[]
-    while(strlen(data)==0){
+    char dataSize[10];
+    memset(dataSize,0,sizeof(char)*10);//reset 0 to data[]
+    while(strlen(dataSize) == 0)
+    sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
+    //cout << dataSize <<endl;
+
+    char data[2048];
+    memset(data,0,sizeof(char)*2048);//reset 0 to data[]
+
+    string receiveData;
+        while(receiveData.length() < atoi(dataSize)){
         sock.read_some(buffer(data),ec);
-    }
+        receiveData.append(data,0,sizeof(data));
+        memset(data,0,sizeof(char)*2048);
+        }
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -115,8 +125,7 @@ void Client::myLogin(QString username, QString userpw)
     }
     Json::Reader reader;
     Json::Value resultRoot;
-    cout << strlen(data) << endl;
-    if(!reader.parse(data, resultRoot)){
+    if(!reader.parse(receiveData.data(), resultRoot)){
         std::cout << "json received faild" <<std::endl;
         return;
     }else {
@@ -253,7 +262,8 @@ void Client::myLogin(QString username, QString userpw)
         }
         //socket_fileTransfer请求传送用户头像
         cout << "请求头像： " << _fan.icon().toStdString() << endl;
-        fileTransfer(_fan.icon());
+        if(_fan.icon().toStdString() != "")
+           fileTransfer(_fan.icon());
     }
 }
 
@@ -278,11 +288,21 @@ void Client::myRegister(QString username, QString userpw)
     std::cout<<"send message to server: " <<out<<endl;
 
     //读取服务器返回的消息：是否注册成功
-    char data[512];
-    memset(data,0,sizeof(char)*512);//reset 0 to data[]
-    while(strlen(data)==0){
+    char dataSize[10];
+    memset(dataSize,0,sizeof(char)*10);//reset 0 to data[]
+    while(strlen(dataSize) == 0)
+    sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
+    //cout << dataSize <<endl;
+
+    char data[2048];
+    memset(data,0,sizeof(char)*2048);//reset 0 to data[]
+
+    string receiveData;
+        while(receiveData.length() < atoi(dataSize)){
         sock.read_some(buffer(data),ec);
-    }
+        receiveData.append(data,0,sizeof(data));
+        memset(data,0,sizeof(char)*2048);
+        }
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -292,7 +312,7 @@ void Client::myRegister(QString username, QString userpw)
     cout << "receive from server : " << data<<endl;
     Json::Reader reader;
     Json::Value resultRoot;
-    if(!reader.parse(data, resultRoot)){
+    if(!reader.parse(receiveData.data(), resultRoot)){
         std::cout << "json received faild" <<std::endl;
         return;
     }else {
@@ -343,11 +363,21 @@ QString Client::songInformation(QString songId){
             std::cout << boost::system::system_error(ec).what() << std::endl;
             return "ERROR";
         }
-        char data[512];
-        memset(data,0,sizeof(char)*512);//reset 0 to data[]
-        while(strlen(data)==0){
+        char dataSize[10];
+        memset(dataSize,0,sizeof(char)*10);//reset 0 to data[]
+        while(strlen(dataSize) == 0)
+        sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
+        //cout << dataSize <<endl;
+
+        char data[2048];
+        memset(data,0,sizeof(char)*2048);//reset 0 to data[]
+
+        string receiveData;
+            while(receiveData.length() < atoi(dataSize)){
             sock.read_some(buffer(data),ec);
-        }
+            receiveData.append(data,0,sizeof(data));
+            memset(data,0,sizeof(char)*2048);
+            }
         if(ec)
         {
             std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -357,7 +387,7 @@ QString Client::songInformation(QString songId){
         Json::Reader reader;
         Json::Value resultRoot;
 
-        if(!reader.parse(data, resultRoot)){
+        if(!reader.parse(receiveData.data(), resultRoot)){
             std::cout << "json received faild" <<std::endl;
             return "json received faild";
         }else {
@@ -435,14 +465,9 @@ QList<QString> Client::search(QString key){
     QList<QString> ret;
     if(ec)
     {
-
         std::cout << boost::system::system_error(ec).what() << std::endl;
         return ret;
     }
-
-
-    char data[1024*5];
-    memset(data,0,sizeof(char)*1024*5);//reset 0 to data[]
     //-----------------------
     boost::posix_time::ptime time_now,time_now1;
     boost::posix_time::millisec_posix_time_system_config::time_duration_type time_elapse;
@@ -450,14 +475,25 @@ QList<QString> Client::search(QString key){
 
     // 得到两个时间间隔的秒数;
     int sec = 0;
-    while(strlen(data)==0 && sec <= 2){
-        sock.read_some(buffer(data),ec);
+    char dataSize[10];
+    memset(dataSize,0,sizeof(char)*10);//reset 0 to data[]
+    string receiveData;
+    char data[2048];
+    memset(data,0,sizeof(char)*2048);//reset 0 to data[]
+    while(strlen(data)==0 && sec <= 1){
+        while(strlen(dataSize) == 0)
+        sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
+        //cout << dataSize <<endl;
+            while(receiveData.length() < atoi(dataSize)){
+            sock.read_some(buffer(data),ec);
+            receiveData.append(data,0,sizeof(data));
+            memset(data,0,sizeof(char)*2048);
+            }
         time_now1 = boost::posix_time::second_clock::universal_time();
         time_elapse = time_now1 - time_now;
         sec = time_elapse.total_seconds();
-        cout <<sec<<endl;
     }
-    if(strlen(data) == 0){
+    if(receiveData.length() == 0){
         return ret;
     }
 
@@ -473,7 +509,7 @@ QList<QString> Client::search(QString key){
     Json::Value resultRoot;
 
 
-    if (reader.parse(data, resultRoot))
+    if (reader.parse(receiveData.data(), resultRoot))
     {
         const Json::Value arrayObj = resultRoot["array"];
         for (unsigned int i = 0; i < arrayObj.size(); i++)
@@ -502,7 +538,7 @@ QList<QString> Client::search(QString key){
             }
             //------------------------------
         }
-        std::cout <<"receive frome server : "<< data <<std::endl;
+        std::cout <<"receive frome server : "<< receiveData <<std::endl;
         m_searchCount = arrayObj.size();
         return ret;
     }
@@ -530,11 +566,21 @@ void Client::songList(QString songListId){
             std::cout << boost::system::system_error(ec).what() << std::endl;
             return;
         }
-        char data[1024*5];
-        memset(data,0,sizeof(char)*1024*5);//reset 0 to data[]
-        while(strlen(data)==0){
+        char dataSize[10];
+        memset(dataSize,0,sizeof(char)*10);//reset 0 to data[]
+        while(strlen(dataSize) == 0)
+        sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
+        //cout << dataSize <<endl;
+
+        char data[2048];
+        memset(data,0,sizeof(char)*2048);//reset 0 to data[]
+
+        string receiveData;
+            while(receiveData.length() < atoi(dataSize)){
             sock.read_some(buffer(data),ec);
-        }
+            receiveData.append(data,0,sizeof(data));
+            memset(data,0,sizeof(char)*2048);
+            }
         if(ec)
         {
             std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -542,7 +588,7 @@ void Client::songList(QString songListId){
         }
         Json::Reader reader;
         Json::Value resultRoot;
-        if (reader.parse(data, resultRoot)){
+        if (reader.parse(receiveData.data(), resultRoot)){
             const Json::Value arrayObj = resultRoot["array"];
 
             std::shared_ptr<SongList> ret = std::make_shared<SongList>(SongList(resultRoot["id"].asInt(),
@@ -608,11 +654,21 @@ QString Client::songAlbumbySongName(QString songSource){
             std::cout << boost::system::system_error(ec).what() << std::endl;
             return "unknow album";
         }
-        char data[1024];
-        memset(data,0,sizeof(char)*1024);//reset 0 to data[]
-        while(strlen(data)==0){
+        char dataSize[10];
+        memset(dataSize,0,sizeof(char)*10);//reset 0 to data[]
+        while(strlen(dataSize) == 0)
+        sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
+        //cout << dataSize <<endl;
+
+        char data[2048];
+        memset(data,0,sizeof(char)*2048);//reset 0 to data[]
+
+        string receiveData;
+            while(receiveData.length() < atoi(dataSize)){
             sock.read_some(buffer(data),ec);
-        }
+            receiveData.append(data,0,sizeof(data));
+            memset(data,0,sizeof(char)*2048);
+            }
         if(ec)
         {
             std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -620,7 +676,7 @@ QString Client::songAlbumbySongName(QString songSource){
         }
         Json::Reader reader;
         Json::Value resultRoot;
-        if (reader.parse(data, resultRoot)){
+        if (reader.parse(receiveData.data(), resultRoot)){
             string albumSource = resultRoot["songAlbumSource"].asString();
             return QString::fromStdString(albumSource);
         }
@@ -648,12 +704,18 @@ void Client::interface(QString interfaceName){
     }
 
 
-    char data[1024*10];
-    memset(data,0,sizeof(char)*1024*10);//reset 0 to data[]
-    while(strlen(data)==0){
+    char dataSize[10];//head of message
+    memset(dataSize,0,sizeof(char)*10);
+    sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
+    char data[2048];//buffer
+    memset(data,0,sizeof(char)*2048);
+
+    string receiveData;//received message
+        while(receiveData.length() < atoi(dataSize)){
         sock.read_some(buffer(data),ec);
-    }
-    std::cout << data << std::endl;
+        receiveData.append(data,0,sizeof(data));
+        memset(data,0,sizeof(char)*2048);
+        }
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -661,7 +723,7 @@ void Client::interface(QString interfaceName){
     }
     Json::Reader reader;
     Json::Value resultRoot;
-    if (reader.parse(data, resultRoot))
+    if (reader.parse(receiveData.data(), resultRoot))
     {
         const Json::Value arrayObj = resultRoot["array"];
         for (unsigned int i = 0; i < arrayObj.size(); i++)
@@ -683,7 +745,7 @@ void Client::interface(QString interfaceName){
         {
             m_interface.append(QString::fromStdString( advertArrayObj[i]["source"].asString()));
         }
-        std::cout <<"receive frome server : "<< data <<std::endl;
+        std::cout <<"receive frome server : "<< receiveData <<std::endl;
         return;
     }
 }
@@ -820,11 +882,21 @@ QString Client::addCreateSongList(QString username,QString songlistName, QString
     std::cout<<"send message to server: " <<out<<endl;
 
     //读取服务器返回的消息：是否成功记录
-    char data[512];
-    memset(data,0,sizeof(char)*512);//reset 0 to data[]
-    while(strlen(data)==0){
+    char dataSize[10];
+    memset(dataSize,0,sizeof(char)*10);//reset 0 to data[]
+    while(strlen(dataSize) == 0)
+    sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
+    //cout << dataSize <<endl;
+
+    char data[2048];
+    memset(data,0,sizeof(char)*2048);//reset 0 to data[]
+
+    string receiveData;
+        while(receiveData.length() < atoi(dataSize)){
         sock.read_some(buffer(data),ec);
-    }
+        receiveData.append(data,0,sizeof(data));
+        memset(data,0,sizeof(char)*2048);
+        }
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -834,7 +906,7 @@ QString Client::addCreateSongList(QString username,QString songlistName, QString
     cout << "receive from server : " << data<<endl;
     Json::Reader reader;
     Json::Value resultRoot;
-    if(!reader.parse(data, resultRoot)){
+    if(!reader.parse(receiveData.data(), resultRoot)){
         std::cout << "json received faild" <<std::endl;
         return "";
     }else {
@@ -884,11 +956,21 @@ void Client::addSongToSongList(QString songListID, QString songID)
     std::cout<<"send message to server: " <<out<<endl;
 
     //读取服务器返回的消息：是否成功记录
-    char data[512];
-    memset(data,0,sizeof(char)*512);//reset 0 to data[]
-    while(strlen(data)==0){
+    char dataSize[10];
+    memset(dataSize,0,sizeof(char)*10);//reset 0 to data[]
+    while(strlen(dataSize) == 0)
+    sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
+    //cout << dataSize <<endl;
+
+    char data[2048];
+    memset(data,0,sizeof(char)*2048);//reset 0 to data[]
+
+    string receiveData;
+        while(receiveData.length() < atoi(dataSize)){
         sock.read_some(buffer(data),ec);
-    }
+        receiveData.append(data,0,sizeof(data));
+        memset(data,0,sizeof(char)*2048);
+        }
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -898,7 +980,7 @@ void Client::addSongToSongList(QString songListID, QString songID)
     cout << "receive from server : " << data<<endl;
     Json::Reader reader;
     Json::Value resultRoot;
-    if(!reader.parse(data, resultRoot)){
+    if(!reader.parse(receiveData.data(), resultRoot)){
         std::cout << "json received faild" <<std::endl;
         return;
     }else {
@@ -942,11 +1024,21 @@ std::string Client::fetchSong(QString songID)
     std::cout<<"send message to server: " <<out<<endl;
 
     //读取服务器返回的消息：是否成功记录
-    char data[512];
-    memset(data,0,sizeof(char)*512);//reset 0 to data[]
-    while(strlen(data)==0){
+    char dataSize[10];
+    memset(dataSize,0,sizeof(char)*10);//reset 0 to data[]
+    while(strlen(dataSize) == 0)
+    sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
+    //cout << dataSize <<endl;
+
+    char data[2048];
+    memset(data,0,sizeof(char)*2048);//reset 0 to data[]
+
+    string receiveData;
+        while(receiveData.length() < atoi(dataSize)){
         sock.read_some(buffer(data),ec);
-    }
+        receiveData.append(data,0,sizeof(data));
+        memset(data,0,sizeof(char)*2048);
+        }
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -956,7 +1048,7 @@ std::string Client::fetchSong(QString songID)
     cout << "receive from server : " << data<<endl;
     Json::Reader reader;
     Json::Value resultRoot;
-    if(!reader.parse(data, resultRoot)){
+    if(!reader.parse(receiveData.data(), resultRoot)){
         std::cout << "json received faild" <<std::endl;
         return "";
     }else {
@@ -1020,6 +1112,7 @@ QList<QString> Client::getSongListSongs(QString songListId){
 
 QList<QString> Client::getSongListSongsFromServer(QString songListId)
 {
+    std::cout << "enter getSongListSongsFromServer" << std::endl;
     Json::Value root;
     root["type"] = "GETSONGSFROMSONGLIST";
     root["songListID"] = songListId.toStdString();
@@ -1036,11 +1129,21 @@ QList<QString> Client::getSongListSongsFromServer(QString songListId)
     std::cout<<"send message to server: " <<out<<endl;
 
     //读取服务器返回的消息：是否成功记录
-    char data[1024*5];
-    memset(data,0,sizeof(char)*1024*5);//reset 0 to data[]
-    while(strlen(data)==0){
+    char dataSize[10];
+    memset(dataSize,0,sizeof(char)*10);//reset 0 to data[]
+    while(strlen(dataSize) == 0)
+        sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
+    cout << dataSize <<endl;
+
+    char data[2048];
+    memset(data,0,sizeof(char)*2048);//reset 0 to data[]
+
+    string receiveData;
+        while(receiveData.length() < atoi(dataSize)){
         sock.read_some(buffer(data),ec);
-    }
+        receiveData.append(data,0,sizeof(data));
+        memset(data,0,sizeof(char)*2048);
+        }
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -1048,7 +1151,7 @@ QList<QString> Client::getSongListSongsFromServer(QString songListId)
     cout << "receive from server : " << data<<endl;
     Json::Reader reader;
     Json::Value resultRoot;
-    if(!reader.parse(data, resultRoot)){
+    if(!reader.parse(receiveData.data(), resultRoot)){
         std::cout << "json received faild" <<std::endl;
     }else {
         string ret = resultRoot["recordSuccess"].asString();

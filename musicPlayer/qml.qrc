@@ -110,6 +110,5 @@
         <file>dialog/CollectSongItem.qml</file>
         <file>dialog/CollectSongDialog.qml</file>
         <file>middleArea/RightAreaComponents/MyFavorite.qml</file>
-        <file>searchmusic/SearchMusic.qml</file>
     </qresource>
 </RCC>
