@@ -99,7 +99,7 @@ Rectangle{
             PersonalCreatedSongLists{
                 id:personalCreatedSongLists
                 width: personalInformation.width
-                height:600
+                height:200
             }
             //            Grid{
             //                columns: 4

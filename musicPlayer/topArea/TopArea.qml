@@ -17,11 +17,20 @@ Rectangle {
     property alias topSearch: topSearch
 
     //--------------左上角图标
-    Image {
-        id: titleImage
-        x: 14
+//    Image {
+//        id: titleImage
+//        x: 14
+//        anchors.verticalCenter: parent.verticalCenter
+//        source: "qrc:/images/topArea/title.png"
+//    }
+    Text {
+        id: titleName
+        x:14
         anchors.verticalCenter: parent.verticalCenter
-        source: "qrc:/images/topArea/title.png"
+        text: qsTr("FSing 音乐")
+        font.pixelSize: 20
+        color: "#CCCCCC"
+
     }
     //---------------前进后退按钮组件
     LeftRightButton {

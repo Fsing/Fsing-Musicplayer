@@ -22,7 +22,7 @@ using std::stringstream;
 
 //typedef boost::shared_ptr<ip::tcp::socket> socket_ptr;
 io_service service;
-ip::tcp::endpoint ep(address::from_string("192.168.43.32"),2001);
+ip::tcp::endpoint ep(address::from_string("127.0.0.1"),2001);
 //客户端异步连接，有多个套接字，每次发送信息、接受信息都重新分配一个套接字，并且分配一个线程独立进行
 ip::tcp::socket sock(service);
 ip::tcp::socket sock_fileTransfer(service);
@@ -106,18 +106,18 @@ void Client::myLogin(QString username, QString userpw)
     char dataSize[10];
     memset(dataSize,0,sizeof(char)*10);//reset 0 to data[]
     while(strlen(dataSize) == 0)
-    sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
+        sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
     //cout << dataSize <<endl;
 
     char data[2048];
     memset(data,0,sizeof(char)*2048);//reset 0 to data[]
 
     string receiveData;
-        while(receiveData.length() < atoi(dataSize)){
+    while(receiveData.length() < atoi(dataSize)){
         sock.read_some(buffer(data),ec);
         receiveData.append(data,0,sizeof(data));
         memset(data,0,sizeof(char)*2048);
-        }
+    }
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -263,7 +263,7 @@ void Client::myLogin(QString username, QString userpw)
         //socket_fileTransfer请求传送用户头像
         cout << "请求头像： " << _fan.icon().toStdString() << endl;
         if(_fan.icon().toStdString() != "")
-           fileTransfer(_fan.icon());
+            fileTransfer(_fan.icon());
     }
 }
 
@@ -291,18 +291,18 @@ void Client::myRegister(QString username, QString userpw)
     char dataSize[10];
     memset(dataSize,0,sizeof(char)*10);//reset 0 to data[]
     while(strlen(dataSize) == 0)
-    sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
+        sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
     //cout << dataSize <<endl;
 
     char data[2048];
     memset(data,0,sizeof(char)*2048);//reset 0 to data[]
 
     string receiveData;
-        while(receiveData.length() < atoi(dataSize)){
+    while(receiveData.length() < atoi(dataSize)){
         sock.read_some(buffer(data),ec);
         receiveData.append(data,0,sizeof(data));
         memset(data,0,sizeof(char)*2048);
-        }
+    }
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -366,18 +366,18 @@ QString Client::songInformation(QString songId){
         char dataSize[10];
         memset(dataSize,0,sizeof(char)*10);//reset 0 to data[]
         while(strlen(dataSize) == 0)
-        sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
+            sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
         //cout << dataSize <<endl;
 
         char data[2048];
         memset(data,0,sizeof(char)*2048);//reset 0 to data[]
 
         string receiveData;
-            while(receiveData.length() < atoi(dataSize)){
+        while(receiveData.length() < atoi(dataSize)){
             sock.read_some(buffer(data),ec);
             receiveData.append(data,0,sizeof(data));
             memset(data,0,sizeof(char)*2048);
-            }
+        }
         if(ec)
         {
             std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -482,13 +482,13 @@ QList<QString> Client::search(QString key){
     memset(data,0,sizeof(char)*2048);//reset 0 to data[]
     while(strlen(data)==0 && sec <= 1){
         while(strlen(dataSize) == 0)
-        sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
+            sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
         //cout << dataSize <<endl;
-            while(receiveData.length() < atoi(dataSize)){
+        while(receiveData.length() < atoi(dataSize)){
             sock.read_some(buffer(data),ec);
             receiveData.append(data,0,sizeof(data));
             memset(data,0,sizeof(char)*2048);
-            }
+        }
         time_now1 = boost::posix_time::second_clock::universal_time();
         time_elapse = time_now1 - time_now;
         sec = time_elapse.total_seconds();
@@ -569,18 +569,18 @@ void Client::songList(QString songListId){
         char dataSize[10];
         memset(dataSize,0,sizeof(char)*10);//reset 0 to data[]
         while(strlen(dataSize) == 0)
-        sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
+            sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
         //cout << dataSize <<endl;
 
         char data[2048];
         memset(data,0,sizeof(char)*2048);//reset 0 to data[]
 
         string receiveData;
-            while(receiveData.length() < atoi(dataSize)){
+        while(receiveData.length() < atoi(dataSize)){
             sock.read_some(buffer(data),ec);
             receiveData.append(data,0,sizeof(data));
             memset(data,0,sizeof(char)*2048);
-            }
+        }
         if(ec)
         {
             std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -657,18 +657,18 @@ QString Client::songAlbumbySongName(QString songSource){
         char dataSize[10];
         memset(dataSize,0,sizeof(char)*10);//reset 0 to data[]
         while(strlen(dataSize) == 0)
-        sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
+            sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
         //cout << dataSize <<endl;
 
         char data[2048];
         memset(data,0,sizeof(char)*2048);//reset 0 to data[]
 
         string receiveData;
-            while(receiveData.length() < atoi(dataSize)){
+        while(receiveData.length() < atoi(dataSize)){
             sock.read_some(buffer(data),ec);
             receiveData.append(data,0,sizeof(data));
             memset(data,0,sizeof(char)*2048);
-            }
+        }
         if(ec)
         {
             std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -711,11 +711,11 @@ void Client::interface(QString interfaceName){
     memset(data,0,sizeof(char)*2048);
 
     string receiveData;//received message
-        while(receiveData.length() < atoi(dataSize)){
+    while(receiveData.length() < atoi(dataSize)){
         sock.read_some(buffer(data),ec);
         receiveData.append(data,0,sizeof(data));
         memset(data,0,sizeof(char)*2048);
-        }
+    }
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -885,18 +885,18 @@ QString Client::addCreateSongList(QString username,QString songlistName, QString
     char dataSize[10];
     memset(dataSize,0,sizeof(char)*10);//reset 0 to data[]
     while(strlen(dataSize) == 0)
-    sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
+        sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
     //cout << dataSize <<endl;
 
     char data[2048];
     memset(data,0,sizeof(char)*2048);//reset 0 to data[]
 
     string receiveData;
-        while(receiveData.length() < atoi(dataSize)){
+    while(receiveData.length() < atoi(dataSize)){
         sock.read_some(buffer(data),ec);
         receiveData.append(data,0,sizeof(data));
         memset(data,0,sizeof(char)*2048);
-        }
+    }
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -959,18 +959,18 @@ void Client::addSongToSongList(QString songListID, QString songID)
     char dataSize[10];
     memset(dataSize,0,sizeof(char)*10);//reset 0 to data[]
     while(strlen(dataSize) == 0)
-    sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
+        sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
     //cout << dataSize <<endl;
 
     char data[2048];
     memset(data,0,sizeof(char)*2048);//reset 0 to data[]
 
     string receiveData;
-        while(receiveData.length() < atoi(dataSize)){
+    while(receiveData.length() < atoi(dataSize)){
         sock.read_some(buffer(data),ec);
         receiveData.append(data,0,sizeof(data));
         memset(data,0,sizeof(char)*2048);
-        }
+    }
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -1027,18 +1027,18 @@ std::string Client::fetchSong(QString songID)
     char dataSize[10];
     memset(dataSize,0,sizeof(char)*10);//reset 0 to data[]
     while(strlen(dataSize) == 0)
-    sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
+        sock.read_some(buffer(dataSize,sizeof(char)*10),ec);
     //cout << dataSize <<endl;
 
     char data[2048];
     memset(data,0,sizeof(char)*2048);//reset 0 to data[]
 
     string receiveData;
-        while(receiveData.length() < atoi(dataSize)){
+    while(receiveData.length() < atoi(dataSize)){
         sock.read_some(buffer(data),ec);
         receiveData.append(data,0,sizeof(data));
         memset(data,0,sizeof(char)*2048);
-        }
+    }
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
@@ -1139,11 +1139,11 @@ QList<QString> Client::getSongListSongsFromServer(QString songListId)
     memset(data,0,sizeof(char)*2048);//reset 0 to data[]
 
     string receiveData;
-        while(receiveData.length() < atoi(dataSize)){
+    while(receiveData.length() < atoi(dataSize)){
         sock.read_some(buffer(data),ec);
         receiveData.append(data,0,sizeof(data));
         memset(data,0,sizeof(char)*2048);
-        }
+    }
     if(ec)
     {
         std::cout << boost::system::system_error(ec).what() << std::endl;
